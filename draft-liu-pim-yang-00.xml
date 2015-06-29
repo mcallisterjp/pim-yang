@@ -18,8 +18,6 @@
       "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6020.xml">
     <!ENTITY rfc6087 SYSTEM
       "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6087.xml">
-    <!ENTITY rfc6226 SYSTEM
-      "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6226.xml">
     <!ENTITY rfc6241 SYSTEM
       "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6241.xml">
     <!ENTITY I-D.ietf-netmod-rfc6087bis SYSTEM
@@ -89,10 +87,11 @@
 
     <section title="Introduction">
       <t>
-        YANG <xref target="RFC6020"/> is a data definition language that was 
-        introduced to model the configuration and running state of a device 
-        managed using NETCONF <xref target="RFC6241"/>. YANG is now also being
-        used as a component of wider management interfaces, such as CLIs.
+        YANG <xref target="RFC6020"/> <xref target="RFC6087"/> is a data
+        definition language that was introduced to model the configuration
+        and running state of a device managed using NETCONF <xref target="RFC6241"/>.
+        YANG is now also being used as a component of wider management
+        interfaces, such as CLIs.
       </t>
       <t>
         This document defines a draft YANG data model that can be used to
@@ -139,6 +138,11 @@
           in this draft of the data model. This model is being circulated in its
           current form for early oversight and review of the basic hierarchy.
         </t>
+        <t>
+          This model does not cover other multicast protocols such as IGMP/MLD or
+          MSDP. It does not cover any configuration required to generate the MRIB.
+          These will be covered by future Internet Drafts.
+        </t>
       </section>
       <section title="Optional capabilities">
         <t>
@@ -184,35 +188,15 @@
     </section>
 
     <section title="Unresolved Issues">
-      <section title="TODO list">
+      <section title="Current status of work in progress">
         <t>
-          In this draft, several aspects of the model are incomplete. The PIM-DM
-          and BI-DIR modules are just placeholders for now to demonstrate the 
-          hierarchy of the model. Other things the draft will include when
-          complete but does not yet include:
-          <list style='symbols'>
-            <t>
-              State reporting
-            </t>
-            <t>
-              Notifications
-            </t>
-            <t>
-              Neighbor configuration
-            </t>
-            <t>
-              Constraints (constant ranges, validation)
-            </t>
-            <t>
-              State-limiting and policy.
-            </t>
-          </list>
+          The model so far details how the PIM modules interact and covers the
+          higher levels of their hierarchy. Some details of interface configuration,
+          RP configuration, and PIM-ASM-specific parameters are also complete.
         </t>
         <t>
-          For these subjects, we will employ the same design principles of
-          expressing a highly general model; vendors may use features and add
-          augmentations in order to express which subsets of this general model
-          are valid in their implementations.
+          For a list of the most substantial areas still to cover, please see the
+          "TODO list" section below.
         </t>
       </section>
       <section title="Position of address family in hierarchy">
@@ -334,7 +318,8 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
         </t>
         <figure><artwork><![CDATA[
 module: ietf-pim-rp
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family:
    +--rw rp
       +--rw static-rp
       |  +--rw ipv4-rp* [ipv4-addr]
@@ -354,7 +339,8 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
             +--rw interface    if:interface-ref
             +--rw policy?      string
             +--rw mode?        identityref
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family:
    +--ro rp
         ]]></artwork></figure>
       </section>
@@ -364,7 +350,8 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/
         </t>
         <figure><artwork><![CDATA[
 module: ietf-pim-sm
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family:
    +--rw sm
       +--rw asm
       |  +--rw anycast-rp!
@@ -382,10 +369,13 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
       |     +--rw policy-name?      string
       +--rw ssm!
          +--rw range-poligy?   string
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family/pim-base:interfaces/pim-base:interface:
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family/pim-base:interfaces/
+pim-base:interface:
    +--rw sm!
       +--rw passive?   empty
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family:
    +--ro sm
         ]]></artwork></figure>
       </section>
@@ -395,11 +385,15 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/
         </t>
         <figure><artwork><![CDATA[
 module: ietf-pim-dm
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family:
    +--rw dm!
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family/pim-base:interfaces/pim-base:interface:
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family/pim-base:interfaces/
+pim-base:interface:
    +--rw dm!
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family:
    +--ro dm
         ]]></artwork></figure>
       </section>
@@ -409,11 +403,15 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/
         </t>
         <figure><artwork><![CDATA[
 module: ietf-pim-bidir
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family:
    +--rw bidir
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family/pim-base:interfaces/pim-base:interface:
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family/pim-base:interfaces/
+pim-base:interface:
    +--rw bidir!
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family:
    +--ro bidir
         ]]></artwork></figure>
       </section>
@@ -1407,6 +1405,38 @@ module ietf-pim-bidir {
       </section>
     </section>
 
+    <section title="TODO list">
+      <t>
+        In this draft, several aspects of the model are incomplete. The PIM-DM
+        and BI-DIR modules are just placeholders for now to demonstrate the 
+        hierarchy of the model. Other things the draft will include when
+        complete but does not yet include:
+        <list style='symbols'>
+          <t>
+            State reporting
+          </t>
+          <t>
+            Notifications
+          </t>
+          <t>
+            Neighbor configuration
+          </t>
+          <t>
+            Constraints (constant ranges, validation)
+          </t>
+          <t>
+            State-limiting and policy.
+          </t>
+        </list>
+      </t>
+      <t>
+        For these subjects, we will employ the same design principles of
+        expressing a highly general model; vendors may use features and add
+        augmentations in order to express which subsets of this general model
+        are valid in their implementations.
+      </t>
+    </section>
+
     <section title="Security Considerations">
       <t>
         The data model defined does not introduce any security implications.
@@ -1450,7 +1480,6 @@ module ietf-pim-bidir {
       &rfc5015;
       &rfc5059;
       &rfc6087;
-      &rfc6226;
       &I-D.ietf-netmod-routing-cfg;
     </references>
 
