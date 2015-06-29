@@ -73,7 +73,7 @@ Table of Contents
      3.3.  RP configuration tree . . . . . . . . . . . . . . . . . .   5
    4.  Module Structure  . . . . . . . . . . . . . . . . . . . . . .   5
      4.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .   5
-     4.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .   6
+     4.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .   7
      4.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .   7
      4.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .   8
      4.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .   9
@@ -269,9 +269,9 @@ Internet-Draft                  PIM YANG                       June 2015
 4.1.  PIM base module
 
    The PIM base module defines the router-wide configuration options not
-   specific to any PIM mode, and includes the other modules.
-
-
+   specific to any PIM mode, and is included by the other modules.
+   There are a couple of things worth mentioning here regarding where
+   the PIM model fits in the overall routing hierarchy:
 
 
 
@@ -281,6 +281,18 @@ Liu & McAllister        Expires December 31, 2015               [Page 5]
 
 Internet-Draft                  PIM YANG                       June 2015
 
+
+   1.  Our current direction is to agree to a routing-instance-centric
+       (VRF) model as opposed to protocol-centric mainly because it fits
+       well into the routing-instance model, and it is easier to map
+       from the VRF-centric to the protocol-centric than the other way
+       around due to forward references.
+
+   2.  The PIM base model will augment "/rt:routing/rt:routing-instance/
+       rt:routing-protocols:" as opposed to augmenting "/rt:routing/
+       rt:routing-instance/rt:routing-protocols:/rt:routing-protocol" as
+       the latter would allow multiple protocol instances per VRF, which
+       does not make sense for PIM.
 
 module: ietf-pim-base
 augment /rt:routing/rt:routing-instance/rt:routing-protocols:
@@ -319,6 +331,13 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
             +--ro interface* [interface]
                +--ro interface    if:interface-ref
 
+
+
+Liu & McAllister        Expires December 31, 2015               [Page 6]
+
+Internet-Draft                  PIM YANG                       June 2015
+
+
 4.2.  PIM RP module
 
    The PIM RP module contains configuration information scoped to ranges
@@ -329,14 +348,6 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
    modes (for example, BSR is only relevant to ASM and BIDIR).  This is
    clarified in the module itself using "if-feature" and "when"
    statements.
-
-
-
-
-Liu & McAllister        Expires December 31, 2015               [Page 6]
-
-Internet-Draft                  PIM YANG                       June 2015
-
 
    module: ietf-pim-rp
    augment /rt:routing/rt:routing-instance/rt:routing-protocols/
@@ -368,17 +379,6 @@ Internet-Draft                  PIM YANG                       June 2015
 
    This module covers Sparse Mode configuration, including PIM-ASM and
    PIM-SSM.
-
-
-
-
-
-
-
-
-
-
-
 
 
 

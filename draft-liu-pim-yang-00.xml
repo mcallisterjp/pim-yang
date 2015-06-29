@@ -263,7 +263,25 @@
       <section title="PIM base module">
         <t>
           The PIM base module defines the router-wide configuration options not
-          specific to any PIM mode, and includes the other modules.
+          specific to any PIM mode, and is included by the other modules. There
+          are a couple of things worth mentioning here regarding where the PIM
+          model fits in the overall routing hierarchy:
+          <list style='numbers'>
+            <t>
+              Our current direction is to agree to a routing-instance-centric (VRF)
+              model as opposed to protocol-centric mainly because it fits well into
+              the routing-instance model, and it is easier to map from the VRF-centric
+              to the protocol-centric than the other way around due to forward
+              references.
+            </t>
+            <t>
+              The PIM base model will augment "/rt:routing/rt:routing-instance/
+              rt:routing-protocols:” as opposed to augmenting "/rt:routing/
+              rt:routing-instance/rt:routing-protocols:/rt:routing-protocol” as the
+              latter would allow multiple protocol instances per VRF, which does not
+              make sense for PIM.
+            </t>
+          </list>
         </t>
         <figure><artwork><![CDATA[
 module: ietf-pim-base
