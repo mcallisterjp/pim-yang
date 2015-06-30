@@ -1,0 +1,36 @@
+module: ietf-pim-base
+augment /rt:routing/rt:routing-instance/rt:routing-protocols:
+   +--rw pim
+      +--rw graceful-restart
+      |  +--rw enabled?    boolean
+      |  +--rw duration?   uint16
+      +--rw address-family* [address-family]
+         +--rw address-family      identityref
+         +--rw graceful-restart
+         |  +--rw enabled?    boolean
+         |  +--rw duration?   uint16
+         +--rw interfaces
+            +--rw interface* [interface]
+               +--rw interface            if:interface-ref
+               +--rw dr-priority?         uint32
+               +--rw hello-interval?      uint16
+               +--rw (hello-holdtime-or-multipler)?
+               |  +--:(holdtime) {intf-hello-holdtime}?
+               |  |  +--rw hello-holdtime?      uint16
+               |  +--:(multipler) {intf-hello-multipler}?
+               |     +--rw hello-multipler?     uint8
+               +--rw jp-interval?         uint16 {intf-jp-interval}?
+               +--rw (jp-holdtime-or-multipler)?
+               |  +--:(holdtime) {intf-jp-holdtime}?
+               |  |  +--rw jp-holdtime?         uint16
+               |  +--:(multipler) {intf-jp-multipler}?
+               |     +--rw jp-multipler?        uint8
+               +--rw propagation-delay?   uint16 {intf-propagation-delay}?
+               +--rw override-interval?   uint16 {intf-override-interval}?
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
+   +--ro pim
+      +--ro address-family* [address-family]
+         +--ro address-family    identityref
+         +--ro interfaces
+            +--ro interface* [interface]
+               +--ro interface    if:interface-ref

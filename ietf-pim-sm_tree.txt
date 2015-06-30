@@ -1,0 +1,24 @@
+module: ietf-pim-sm
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+   +--rw sm
+      +--rw asm
+      |  +--rw anycast-rp!
+      |  |  +--rw ipv4
+      |  |  |  +--rw ipv4-anycast-rp* [anycast-addr rp-addr]
+      |  |  |     +--rw anycast-addr    inet:ipv4-address
+      |  |  |     +--rw rp-addr         inet:ipv4-address
+      |  |  +--rw ipv6
+      |  |     +--rw ipv6-anycast-rip* [anycast-addr rp-addr]
+      |  |        +--rw anycast-addr    inet:ipv6-address
+      |  |        +--rw rp-addr         inet:ipv6-address
+      |  +--rw spt-switch
+      |     +--rw infinity?         boolean
+      |     +--rw spt-threshhold?   uint32
+      |     +--rw policy-name?      string
+      +--rw ssm!
+         +--rw range-poligy?   string
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family/pim-base:interfaces/pim-base:interface:
+   +--rw sm!
+      +--rw passive?   empty
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+   +--ro sm
