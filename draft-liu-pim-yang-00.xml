@@ -50,6 +50,12 @@
     <author fullname="Liu Xufeng" initials="X." surname="Liu">
       <organization>Ericsson</organization>
       <address>
+        <postal>
+          <street>1595 Spring Hill Road, Suite 500</street>
+          <city>Vienna</city>
+          <code>VA 22182</code>
+          <country>USA</country>
+        </postal>
         <email> xufeng.liu@ericsson.com </email>
       </address>
     </author>
@@ -343,6 +349,7 @@ pim-base:pim/pim-base:address-family:
       |  +--rw ipv4-rp* [ipv4-addr]
       |  |  +--rw ipv4-addr      inet:ipv4-address
       |  |  +--rw policy-name?   string
+      |  |  +--rw override?      boolean {static-rp-override}?
       |  |  +--rw mode?          identityref
       |  +--rw ipv6-rp* [ipv6-addr]
       |     +--rw ipv6-addr      inet:ipv6-address
@@ -350,13 +357,27 @@ pim-base:pim/pim-base:address-family:
       |     +--rw mode?          identityref
       +--rw bsr {bsr}?
          +--rw bsr-candidate!
-         |  +--rw interface           if:interface-ref
+         |  +--rw (interface-or-address)?
+         |  |  +--:(interface) {candidate-interface}?
+         |  |  |  +--rw interface           if:interface-ref
+         |  |  +--:(ipv4-address) {candidate-ipv4}?
+         |  |  |  +--rw ipv4-address        inet:ipv4-address
+         |  |  +--:(ipv6-address) {candidate-ipv6}?
+         |  |     +--rw ipv6-address        inet:ipv6-address
          |  +--rw hash-mask-length    uint8
          |  +--rw priority            uint8
-         +--rw rp-candidate* [interface]
-            +--rw interface    if:interface-ref
-            +--rw policy?      string
-            +--rw mode?        identityref
+         +--rw rp-candidate-interface* [interface] {candidate-interface}?
+         |  +--rw interface    if:interface-ref
+         |  +--rw policy?      string
+         |  +--rw mode?        identityref
+         +--rw rp-candidate-ipv4-address* [ipv4-address] {candidate-ipv4}?
+         |  +--rw ipv4-address    inet:ipv4-address
+         |  +--rw policy?         string
+         |  +--rw mode?           identityref
+         +--rw rp-candidate-ipv6-address* [ipv6-address] {candidate-ipv6}?
+            +--rw ipv6-address    inet:ipv6-address
+            +--rw policy?         string
+            +--rw mode?           identityref
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
 pim-base:pim/pim-base:address-family:
    +--ro rp
@@ -382,14 +403,12 @@ pim-base:pim/pim-base:address-family:
       |  |        +--rw anycast-addr    inet:ipv6-address
       |  |        +--rw rp-addr         inet:ipv6-address
       |  +--rw spt-switch
-      |     +--rw infinity?         boolean
-      |     +--rw spt-threshhold?   uint32
-      |     +--rw policy-name?      string
+      |     +--rw infinity?      boolean {spt-switch-infinity}?
+      |     +--rw policy-name?   string {spt-switch-policy}?
       +--rw ssm!
          +--rw range-poligy?   string
 augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family/pim-base:interfaces/
-pim-base:interface:
+pim-base:pim/pim-base:address-family/pim-base:interfaces/pim-base:interface:
    +--rw sm!
       +--rw passive?   empty
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
@@ -766,7 +785,7 @@ module ietf-pim-rp {
   description
     "The YANG module defines a PIM RP (Rendezvous Point) model.";
   
-  revision 2015-06-22 {
+  revision 2015-07-01 {
     description
       "Initial revision.";
     reference
@@ -779,6 +798,30 @@ module ietf-pim-rp {
   feature bsr {
     description
       "This feature indicates that the system supports BSR.";
+  }
+
+  feature static-rp-override {
+    description
+      "This feature indicates that the system supports configuration
+      of static RP override.";
+  }
+
+  feature candidate-interface {
+    description
+      "This feature indicates that the system supports using 
+      an interface to configure a BSR or RP candidate.";
+  }
+
+  feature candidate-ipv4 {
+    description
+      "This feature indicates that the system supports using 
+      an IPv4 address to configure a BSR or RP candidate.";
+  }
+
+  feature candidate-ipv6 {
+    description
+      "This feature indicates that the system supports using 
+      an IPv6 address to configure a BSR or RP candidate.";
   }
   
   /*
@@ -828,6 +871,14 @@ module ietf-pim-rp {
             description
               "Static RP policy.";
           }
+          leaf override {
+            if-feature static-rp-override;
+            type boolean;
+            description
+              "When there is a conflict between static RP and dynamic
+              RP, setting this attribute to 'true' will ask the
+              system to use static RP.";
+          }
           leaf mode {
             type identityref {
               base rp-mode;
@@ -875,13 +926,47 @@ module ietf-pim-rp {
             "Present to serve as a BSR candidate";
           description 
             "BSR candidate attributes.";
-          leaf interface {
-            type if:interface-ref;
-            mandatory true;
-            description 
-              "Interface to be used by BSR.";
+
+          choice interface-or-address {
+            description
+              "Use either interface or ip-address.";
+            case interface {
+              if-feature candidate-interface;
+              leaf interface {
+                type if:interface-ref;
+                mandatory true;
+                description 
+                  "Interface to be used by BSR.";
+              }
+            }          
+            case ipv4-address {
+              when "../../../../address-family = 'rt:ipv4'" {
+                description
+                  "Only applicable to ipv4 address family.";
+              }
+              if-feature candidate-ipv4;
+              leaf ipv4-address {
+                type inet:ipv4-address;
+                mandatory true;
+                description
+                  "IP address to be used by BSR.";
+              }
+            }
+            case ipv6-address {
+              when "../../../../address-family = 'rt:ipv6'" {
+                description
+                  "Only applicable to ipv6 address family.";
+              }
+              if-feature candidate-ipv6;
+              leaf ipv6-address {
+                type inet:ipv6-address;
+                mandatory true;
+                description
+                  "IP address to be used by BSR.";
+              }
+            }
           }
-          
+
           leaf hash-mask-length{
             type uint8 {
               range "0..32";
@@ -904,7 +989,8 @@ module ietf-pim-rp {
             }
         } // bsr-candidate
         
-        list rp-candidate {
+        list rp-candidate-interface {
+          if-feature candidate-interface;
           key "interface";
           description 
             "A list of RP candidates";
@@ -912,6 +998,64 @@ module ietf-pim-rp {
             type if:interface-ref;
             description 
               "Interface that the RP candidate uses.";
+          }
+          
+          leaf policy {
+            type string;
+            description 
+              "ACL policy used to filter group addresses.";
+          }
+          leaf mode {
+            type identityref {
+              base rp-mode;
+            }
+            description
+              "RP mode.";
+          }
+        }
+
+        list rp-candidate-ipv4-address {
+          when "../../../address-family = 'rt:ipv4'" {
+            description
+              "Only applicable to ipv4 address family.";
+          }
+          if-feature candidate-ipv4;
+          key "ipv4-address";
+          description 
+            "A list of RP candidates";
+          leaf ipv4-address {
+            type inet:ipv4-address;
+            description 
+              "IPv4 address that the RP candidate uses.";
+          }
+          
+          leaf policy {
+            type string;
+            description 
+              "ACL policy used to filter group addresses.";
+          }
+          leaf mode {
+            type identityref {
+              base rp-mode;
+            }
+            description
+              "RP mode.";
+          }
+        }
+
+        list rp-candidate-ipv6-address {
+          when "../../../address-family = 'rt:ipv6'" {
+            description
+              "Only applicable to ipv6 address family.";
+          }
+          if-feature candidate-ipv6;
+          key "ipv6-address";
+          description 
+            "A list of RP candidates";
+          leaf ipv6-address {
+            type inet:ipv6-address;
+            description 
+              "IPv6 address that the RP candidate uses.";
           }
           
           leaf policy {
@@ -1000,7 +1144,7 @@ module ietf-pim-sm {
   description
     "The YANG module defines a sparse mode PIM model.";
   
-  revision 2015-06-22 {
+  revision 2015-07-01 {
     description
       "Initial revision.";
     reference
@@ -1010,6 +1154,18 @@ module ietf-pim-sm {
   /*
    * Features
    */
+  feature spt-switch-infinity {
+    description
+      "This feature indicates that the system supports configuration
+      choice whether to trigger the switchover from the rpt to the 
+      spt.";
+  }
+
+  feature spt-switch-policy {
+    description
+      "This feature indicates that the system supports configuring
+      policy for the switchover from the rpt to the spt.";
+  }
   
   /*
    * Identities
@@ -1111,20 +1267,14 @@ module ietf-pim-sm {
           description
             "SPT (Shortest Path Tree) switching attributes.";
           leaf infinity {
+            if-feature spt-switch-infinity;
             type boolean;
             description
               "The receiver's dr never triggers the
               switchover from the rpt to the spt.";
           }
-          leaf spt-threshhold {
-            type uint32;
-            description
-              "Multicast packet rate threshold that
-              triggers the switchover from the rpt
-              to the spt. The value is an integer
-              in kbit/s. ";
-          }
           leaf policy-name {
+            if-feature spt-switch-policy;
             type string;
             description
               "Switch policy.";
