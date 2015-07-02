@@ -12,9 +12,8 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
       |  |        +--rw anycast-addr    inet:ipv6-address
       |  |        +--rw rp-addr         inet:ipv6-address
       |  +--rw spt-switch
-      |     +--rw infinity?         boolean
-      |     +--rw spt-threshhold?   uint32
-      |     +--rw policy-name?      string
+      |     +--rw infinity?      boolean {spt-switch-infinity}?
+      |     +--rw policy-name?   string {spt-switch-policy}?
       +--rw ssm!
          +--rw range-poligy?   string
 augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family/pim-base:interfaces/pim-base:interface:

@@ -37,7 +37,7 @@ module ietf-pim-sm {
   description
     "The YANG module defines a sparse mode PIM model.";
   
-  revision 2015-06-22 {
+  revision 2015-07-01 {
     description
       "Initial revision.";
     reference
@@ -47,6 +47,18 @@ module ietf-pim-sm {
   /*
    * Features
    */
+  feature spt-switch-infinity {
+    description
+      "This feature indicates that the system supports configuration
+      choice whether to trigger the switchover from the rpt to the 
+      spt.";
+  }
+
+  feature spt-switch-policy {
+    description
+      "This feature indicates that the system supports configuring
+      policy for the switchover from the rpt to the spt.";
+  }
   
   /*
    * Identities
@@ -148,20 +160,14 @@ module ietf-pim-sm {
           description
             "SPT (Shortest Path Tree) switching attributes.";
           leaf infinity {
+            if-feature spt-switch-infinity;
             type boolean;
             description
               "The receiver's dr never triggers the
               switchover from the rpt to the spt.";
           }
-          leaf spt-threshhold {
-            type uint32;
-            description
-              "Multicast packet rate threshold that
-              triggers the switchover from the rpt
-              to the spt. The value is an integer
-              in kbit/s. ";
-          }
           leaf policy-name {
+            if-feature spt-switch-policy;
             type string;
             description
               "Switch policy.";

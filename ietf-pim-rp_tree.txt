@@ -5,6 +5,7 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
       |  +--rw ipv4-rp* [ipv4-addr]
       |  |  +--rw ipv4-addr      inet:ipv4-address
       |  |  +--rw policy-name?   string
+      |  |  +--rw override?      boolean {static-rp-override}?
       |  |  +--rw mode?          identityref
       |  +--rw ipv6-rp* [ipv6-addr]
       |     +--rw ipv6-addr      inet:ipv6-address
@@ -12,12 +13,26 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
       |     +--rw mode?          identityref
       +--rw bsr {bsr}?
          +--rw bsr-candidate!
-         |  +--rw interface           if:interface-ref
+         |  +--rw (interface-or-address)?
+         |  |  +--:(interface) {candidate-interface}?
+         |  |  |  +--rw interface           if:interface-ref
+         |  |  +--:(ipv4-address) {candidate-ipv4}?
+         |  |  |  +--rw ipv4-address        inet:ipv4-address
+         |  |  +--:(ipv6-address) {candidate-ipv6}?
+         |  |     +--rw ipv6-address        inet:ipv6-address
          |  +--rw hash-mask-length    uint8
          |  +--rw priority            uint8
-         +--rw rp-candidate* [interface]
-            +--rw interface    if:interface-ref
-            +--rw policy?      string
-            +--rw mode?        identityref
+         +--rw rp-candidate-interface* [interface] {candidate-interface}?
+         |  +--rw interface    if:interface-ref
+         |  +--rw policy?      string
+         |  +--rw mode?        identityref
+         +--rw rp-candidate-ipv4-address* [ipv4-address] {candidate-ipv4}?
+         |  +--rw ipv4-address    inet:ipv4-address
+         |  +--rw policy?         string
+         |  +--rw mode?           identityref
+         +--rw rp-candidate-ipv6-address* [ipv6-address] {candidate-ipv6}?
+            +--rw ipv6-address    inet:ipv6-address
+            +--rw policy?         string
+            +--rw mode?           identityref
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--ro rp
