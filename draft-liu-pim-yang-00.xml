@@ -145,9 +145,10 @@
           current form for early oversight and review of the basic hierarchy.
         </t>
         <t>
-          This model does not cover other multicast protocols such as IGMP/MLD or
-          MSDP. It does not cover any configuration required to generate the MRIB.
-          These will be covered by future Internet Drafts.
+          This model does not cover other multicast protocols such as IGMP/MLD,
+          MSDP, mVPN, or m-LDP in-band signalling. It does not cover any configuration
+          required to generate the MRIB. These will be covered by future Internet
+          Drafts.
         </t>
       </section>
       <section title="Optional capabilities">
@@ -207,33 +208,42 @@
       </section>
       <section title="Position of address family in hierarchy">
         <t>
-          The current draft has an address-family container at a high level in
+          The current draft (1) has an address-family container at a high level in
           the hierarchy of the model, with an interface list as a child object.
           There is ongoing discussion about this decision in the design team, so
           this may be considered unresolved.
         </t>
         <t>
-          The advantages of the current position are that interface objects
-          effectively represent {interface, address-family} pairs, which is in 
-          line with several existing implementations. Expressing interface-scoped 
-          configuration that is also address family dependent is made much easier
-          using this model.
+          An alternative structure (2) would be for the address family to be a sub-
+          list of the interface object. We would then provide interface configuration
+          objects at both an address family-specific and a non-AF-specific level, 
+          exposing both options as mutually-exclusive features.
+        </t>
+        <t>
+          The advantages of (1) over (2) are that interface objects effectively
+          represent {interface, address-family} pairs, which is in line with several
+          existing implementations. Expressing interface-scoped configuration that
+          is also address family dependent is made much easier using this model.
         </t>
         <t>
           It also may be useful to be able to configure router-wide options on an 
-          address-family basis, which would be highly inconvenient if address
+          address-family basis, which would be more inconvenient if address
           family were a child object of the interface list. At least one deployed
           implementation allows configuration of basic router-scoped concepts on 
           an address family basis.
         </t>
         <t>
-          The main disadvantage is that implementations that configure interfaces
-          on an address-family-independent basis with one set of configuration
-          must express this restriction somehow. This can be done via a
-          vendor-specific augmentation, as above, or in other ways. This
-          modification is expected to be easier and simpler than the converse 
-          modification to the alternative mode, to create address-family-scoped
-          interface configuration.
+          The main disadvantage of (1) compared to (2) is that implementations that
+          configure interfaces on an address-family-independent basis with one set
+          of configuration must express this restriction somehow. This can be done in
+          various ways; perhaps the easiest is a constraint of a form similar to:
+        </t>
+        <t>
+          must “. = ../../address-family[address-family='ipv4']/
+            interface[interface=current()/sibling:interface]/dr-priority” {
+            error-app-tag dr-priority-mismatch;
+            error-message "Error: IPv6 DR priority must match IPv4 DR priority ";
+          }
         </t>
       </section>
       <section title="RP configuration tree">
@@ -257,10 +267,28 @@
         </t>
         <t>
           The current name of this module is pim-rp, as it is roughly analogous
-          to the pimStaticRPTable in the PIM MIB. However, as it is used for 
-          some group-range-scoped configuration not directly related to RPs, 
-          a better name might be something like pim-group-mapping. This is still
-          under discussion.
+          to the pimStaticRPTable in the PIM MIB, and it is currently indexed by
+          RP.
+        </t>
+        <t>
+          However, as it is used for some group-range-scoped configuration not
+          directly related to RPs, and because a single RP address might need two
+          rows in the table (for SM and BI-DIR), it might be better to call this
+          something like pim-group-mapping and index it on group range. This is
+          still under discussion.
+        </t>
+      </section>
+      <section title="Passive mode">
+        <t>
+          This draft contains an interface leaf 'passive', indicating that no PIM
+          protocol messages are to be sent on the interface.
+        </t>
+        <t>
+          For some implementations, there is a closely related concept, configurable
+          on a PIM-mode basis, that an interface is not used to run the PIM protocol
+          and also not used for multicast forwarding. This may be used to restrict
+          dense-mode flooding, for example. This will likely be included as a feature
+          in a future draft, but the details are under discussion.
         </t>
       </section>
     </section>
@@ -319,6 +347,7 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
                |     +--rw jp-multipler?        uint8
                +--rw propagation-delay?   uint16 {intf-propagation-delay}?
                +--rw override-interval?   uint16 {intf-override-interval}?
+               +--rw passive?   empty
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
    +--ro pim
       +--ro address-family* [address-family]
@@ -406,11 +435,7 @@ pim-base:pim/pim-base:address-family:
       |     +--rw infinity?      boolean {spt-switch-infinity}?
       |     +--rw policy-name?   string {spt-switch-policy}?
       +--rw ssm!
-         +--rw range-poligy?   string
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family/pim-base:interfaces/pim-base:interface:
-   +--rw sm!
-      +--rw passive?   empty
+         +--rw range-policy?   string
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
 pim-base:pim/pim-base:address-family:
    +--ro sm
@@ -502,8 +527,7 @@ module ietf-pim-base {
    */
   feature global-graceful-restart {
     description
-      "Global configuraiont for graceful restart support as per
-      RFC5306.";
+      "Global configuration for graceful restart support.";
   }
 
   feature intf-hello-holdtime {
@@ -543,8 +567,7 @@ module ietf-pim-base {
 
   feature per-af-graceful-restart {
     description
-      "Per AF configuraiont for graceful restart support as per
-      RFC5306.";
+      "Per AF configuration for graceful restart support.";
   }
   
   /*
@@ -643,6 +666,13 @@ module ietf-pim-base {
       type uint16;
       description "Override interval";
     }
+    leaf passive {
+      type empty;
+      description 
+          "Specifies that no PIM messages are sent out of the PIM
+          interface, but the interface can be included in a multicast
+          forwarding entry.";
+    }      
   }
 
   grouping per-af-attributes {
@@ -1288,33 +1318,12 @@ module ietf-pim-sm {
         description 
           "SSM (Source-Specific Multicast) attributes.";
         
-        leaf range-poligy {
+        leaf range-policy {
           type string;
           description 
             "Policy used to define SSM address range.";
         }
       } // ssm
-    } // sm
-  } // augment
-
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family/pim-base:interfaces/"
-    + "pim-base:interface" {
-    description "PIM SM augmentation.";
-
-    container sm {
-      presence "Present to enable sparse-mode.";
-      description
-        "PIM SM configuration data.";
-
-      leaf passive {
-        type empty;
-        description 
-          "Specifies that no PIM messages are sent out of the PIM
-          interface, but the interface can be included in a multicast
-          forwarding entry.";
-      }      
     } // sm
   } // augment
 
@@ -1588,6 +1597,9 @@ module ietf-pim-bidir {
           </t>
           <t>
             Neighbor configuration
+          </t>
+          <t>
+            Interaction with BFD protocol
           </t>
           <t>
             Constraints (constant ranges, validation)
