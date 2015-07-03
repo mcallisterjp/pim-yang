@@ -5,8 +5,10 @@
 PIM Working Group                                                 X. Liu
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                           P. McAllister
-Expires: December 3, 2015                            Metaswitch Networks
-                                                               June 2015
+Expires: January 4, 2016                             Metaswitch Networks
+                                                                A. Peter
+                                                        Juniper Networks
+                                                            July 3, 2015
 
 
        A YANG data model for Protocol-Independent Multicast (PIM)
@@ -32,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 3, 2015.
+   This Internet-Draft will expire on January 4, 2016.
 
 Copyright Notice
 
@@ -51,11 +53,9 @@ Copyright Notice
 
 
 
-
-
-Liu & McAllister        Expires December 3, 2015                [Page 1]
+Liu, et al.              Expires January 4, 2016                [Page 1]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
 Table of Contents
@@ -70,28 +70,28 @@ Table of Contents
    3.  Unresolved Issues . . . . . . . . . . . . . . . . . . . . . .   4
      3.1.  Current status of work in progress  . . . . . . . . . . .   4
      3.2.  Position of address family in hierarchy . . . . . . . . .   4
-     3.3.  RP configuration tree . . . . . . . . . . . . . . . . . .   5
+     3.3.  RP configuration tree . . . . . . . . . . . . . . . . . .   6
      3.4.  Passive mode  . . . . . . . . . . . . . . . . . . . . . .   6
-   4.  Module Structure  . . . . . . . . . . . . . . . . . . . . . .   6
-     4.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .   6
-     4.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .   7
-     4.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .   8
-     4.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .   9
-     4.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .   9
-   5.  PIM YANG Modules  . . . . . . . . . . . . . . . . . . . . . .  10
-     5.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .  10
-     5.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .  16
-     5.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .  23
-     5.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .  28
-     5.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .  30
-   6.  TODO list . . . . . . . . . . . . . . . . . . . . . . . . . .  33
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  33
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  33
-   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  33
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  33
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  33
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  34
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  35
+   4.  Module Structure  . . . . . . . . . . . . . . . . . . . . . .   7
+     4.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .   7
+     4.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .   8
+     4.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .   9
+     4.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .  10
+     4.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .  10
+   5.  PIM YANG Modules  . . . . . . . . . . . . . . . . . . . . . .  11
+     5.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .  11
+     5.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .  17
+     5.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .  24
+     5.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .  29
+     5.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .  31
+   6.  TODO list . . . . . . . . . . . . . . . . . . . . . . . . . .  34
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  34
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  34
+   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  34
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  34
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  35
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  35
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  36
 
 1.  Introduction
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Liu & McAllister        Expires December 3, 2015                [Page 2]
+Liu, et al.              Expires January 4, 2016                [Page 2]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
 1.1.  Requirements Language
@@ -165,9 +165,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015                [Page 3]
+Liu, et al.              Expires January 4, 2016                [Page 3]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
    For the same reason, wide constant ranges (for example, timer maxima
@@ -208,23 +208,29 @@ Internet-Draft                  PIM YANG                       June 2015
 
    The current draft (1) has an address-family container at a high level
    in the hierarchy of the model, with an interface list as a child
-   object.  There is ongoing discussion about this decision in the
-   design team, so this may be considered unresolved.
+   object.  This is a similar structure to the draft OSPF YANG model.
+   There is ongoing discussion about this decision in the design team,
+   so this may be considered unresolved.
 
    An alternative structure (2) would be for the address family to be a
    sub- list of the interface object.  We would then provide interface
    configuration objects at both an address family-specific and a non-
    AF-specific level, exposing both options as mutually-exclusive
-   features.
+   features.  This would be a similar structure to the IS-IS YANG draft.
 
 
 
 
-
-Liu & McAllister        Expires December 3, 2015                [Page 4]
+Liu, et al.              Expires January 4, 2016                [Page 4]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
+
+   Another option (3) would be to expose both sets of objects, address-
+   family specific and all-address-family, both exposed as features.
+   Vendors could then advertise support for one or other of the
+   features.  This is the approach taken in this draft for entity-scoped
+   parameters like graceful restart configuration.
 
    The advantages of (1) over (2) are that interface objects effectively
    represent {interface, address-family} pairs, which is in line with
@@ -238,16 +244,47 @@ Internet-Draft                  PIM YANG                       June 2015
    deployed implementation allows configuration of basic router-scoped
    concepts on an address family basis.
 
-   The main disadvantage of (1) compared to (2) is that implementations
+   The main disadvantage of (1) compared to (2) is for implementations
    that configure interfaces on an address-family-independent basis with
-   one set of configuration must express this restriction somehow.  This
-   can be done in various ways; perhaps the easiest is a constraint of a
-   form similar to:
+   one set of configuration.  This is true of some existing vendors'
+   implementations, as PIM has a single specification for IPv4 and IPv6
+   address families, and for these implementations the structure (2) is
+   more natural.  For some interface parameters there is no clear use-
+   case for address-family-specific configuration.
+
+   For these implementations, the restriction that interface
+   configuration must be address-family independent must be expressed
+   somehow.  This can be done in various ways; perhaps the easiest is a
+   constraint of a form similar to:
 
    must ". = ../../address-family[address-family='ipv4']/
    interface[interface=current()/sibling:interface]/dr-priority" {
    error-app-tag dr-priority-mismatch; error-message "Error: IPv6 DR
    priority must match IPv4 DR priority "; }
+
+   Conversely, if (2) were adopted, an implementation that allowed
+   address- family-specific configuration would have to make
+   augmentations to the base model in order to express that flexibility.
+   Those augmentations would not be particularly difficult to make,
+   however.
+
+   The advantage of (3) over (1) or (2) is that no such vendor
+   augmentations or constraints would be required.  It is likely that
+   vendors' requirements under models (1) or (2) would be similar enough
+   that option (3) would cover all needs in this area.
+
+
+
+
+
+Liu, et al.              Expires January 4, 2016                [Page 5]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
+   The advantage of (1) or (2) over (3) is just that the model is
+   simpler and leaner, and that feature negotiation is simpler and
+   easier to understand.
 
 3.3.  RP configuration tree
 
@@ -274,14 +311,6 @@ Internet-Draft                  PIM YANG                       June 2015
    However, as it is used for some group-range-scoped configuration not
    directly related to RPs, and because a single RP address might need
    two rows in the table (for SM and BI-DIR), it might be better to call
-
-
-
-Liu & McAllister        Expires December 3, 2015                [Page 5]
-
-Internet-Draft                  PIM YANG                       June 2015
-
-
    this something like pim-group-mapping and index it on group range.
    This is still under discussion.
 
@@ -296,6 +325,18 @@ Internet-Draft                  PIM YANG                       June 2015
    This may be used to restrict dense-mode flooding, for example.  This
    will likely be included as a feature in a future draft, but the
    details are under discussion.
+
+
+
+
+
+
+
+
+Liu, et al.              Expires January 4, 2016                [Page 6]
+
+Internet-Draft                  PIM YANG                       July 2015
+
 
 4.  Module Structure
 
@@ -333,9 +374,24 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015                [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Liu, et al.              Expires January 4, 2016                [Page 7]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
 module: ietf-pim-base
@@ -389,9 +445,9 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
 
 
 
-Liu & McAllister        Expires December 3, 2015                [Page 7]
+Liu, et al.              Expires January 4, 2016                [Page 8]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
 module: ietf-pim-rp
@@ -445,9 +501,9 @@ pim-base:pim/pim-base:address-family:
 
 
 
-Liu & McAllister        Expires December 3, 2015                [Page 8]
+Liu, et al.              Expires January 4, 2016                [Page 9]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
    module: ietf-pim-sm
@@ -501,9 +557,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015                [Page 9]
+Liu, et al.              Expires January 4, 2016               [Page 10]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
    module: ietf-pim-bidir
@@ -557,9 +613,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 10]
+Liu, et al.              Expires January 4, 2016               [Page 11]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
      revision 2015-06-22 {
@@ -613,9 +669,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 11]
+Liu, et al.              Expires January 4, 2016               [Page 12]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
      }
@@ -669,9 +725,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 12]
+Liu, et al.              Expires January 4, 2016               [Page 13]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
          description "DR priority";
@@ -725,9 +781,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 13]
+Liu, et al.              Expires January 4, 2016               [Page 14]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
          description "Propagation description";
@@ -781,9 +837,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 14]
+Liu, et al.              Expires January 4, 2016               [Page 15]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
                "Containing a list of interfaces.";
@@ -837,9 +893,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 15]
+Liu, et al.              Expires January 4, 2016               [Page 16]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
                }
@@ -893,9 +949,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 16]
+Liu, et al.              Expires January 4, 2016               [Page 17]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
         WG Chair: Stig Venaas
@@ -949,9 +1005,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 17]
+Liu, et al.              Expires January 4, 2016               [Page 18]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
      }
@@ -1005,9 +1061,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 18]
+Liu, et al.              Expires January 4, 2016               [Page 19]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
              }
@@ -1061,9 +1117,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 19]
+Liu, et al.              Expires January 4, 2016               [Page 20]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
            description
@@ -1117,9 +1173,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 20]
+Liu, et al.              Expires January 4, 2016               [Page 21]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
              leaf hash-mask-length{
@@ -1173,9 +1229,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 21]
+Liu, et al.              Expires January 4, 2016               [Page 22]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
              when "../../../address-family = 'rt:ipv4'" {
@@ -1229,9 +1285,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 22]
+Liu, et al.              Expires January 4, 2016               [Page 23]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
              leaf mode {
@@ -1285,9 +1341,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 23]
+Liu, et al.              Expires January 4, 2016               [Page 24]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
      }
@@ -1341,9 +1397,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 24]
+Liu, et al.              Expires January 4, 2016               [Page 25]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
      feature spt-switch-policy {
@@ -1397,9 +1453,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 25]
+Liu, et al.              Expires January 4, 2016               [Page 26]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
                  "IPv4 attributes. Only applicable when
@@ -1453,9 +1509,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 26]
+Liu, et al.              Expires January 4, 2016               [Page 27]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
                      messages are forwarded.";
@@ -1509,9 +1565,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 27]
+Liu, et al.              Expires January 4, 2016               [Page 28]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
          "PIM SM state.";
@@ -1565,9 +1621,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 28]
+Liu, et al.              Expires January 4, 2016               [Page 29]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
      description
@@ -1621,9 +1677,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 29]
+Liu, et al.              Expires January 4, 2016               [Page 30]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
        } // sm
@@ -1677,9 +1733,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 30]
+Liu, et al.              Expires January 4, 2016               [Page 31]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
      organization
@@ -1733,9 +1789,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 31]
+Liu, et al.              Expires January 4, 2016               [Page 32]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
        + "rt:routing-protocols/pim-base:pim/"
@@ -1789,9 +1845,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
 
 
-Liu & McAllister        Expires December 3, 2015               [Page 32]
+Liu, et al.              Expires January 4, 2016               [Page 33]
 
-Internet-Draft                  PIM YANG                       June 2015
+Internet-Draft                  PIM YANG                       July 2015
 
 
 6.  TODO list
@@ -1811,7 +1867,9 @@ Internet-Draft                  PIM YANG                       June 2015
 
    o  Constraints (constant ranges, validation)
 
-   o  State-limiting and policy.
+   o  State-limiting and policy
+
+   o  Statistics.
 
    For these subjects, we will employ the same design principles of
    expressing a highly general model; vendors may use features and add
@@ -1832,23 +1890,26 @@ Internet-Draft                  PIM YANG                       June 2015
 9.  Acknowledgements
 
    The authors would like to thank Steve Baillargeon, Guo Feng, Hu
-   Fangwei, Robert Kebler, Tanmoy Kundu, Liu Yisong, Anish Peter, Mahesh
-   Sivakumar, and Stig Venaas for their valuable contributions.
+   Fangwei, Robert Kebler, Tanmoy Kundu, Liu Yisong, Mahesh Sivakumar,
+   and Stig Venaas for their valuable contributions.
 
 10.  References
+
+
+
+
+
+
+
+Liu, et al.              Expires January 4, 2016               [Page 34]
+
+Internet-Draft                  PIM YANG                       July 2015
+
 
 10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119, March 1997.
-
-
-
-
-Liu & McAllister        Expires December 3, 2015               [Page 33]
-
-Internet-Draft                  PIM YANG                       June 2015
-
 
    [RFC6020]  Bjorklund, M., "YANG - A Data Modeling Language for the
               Network Configuration Protocol (NETCONF)", RFC 6020,
@@ -1890,21 +1951,21 @@ Internet-Draft                  PIM YANG                       June 2015
    [RFC6087]  Bierman, A., "Guidelines for Authors and Reviewers of YANG
               Data Model Documents", RFC 6087, January 2011.
 
+
+
+
+
+
+
+Liu, et al.              Expires January 4, 2016               [Page 35]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
    [I-D.ietf-netmod-routing-cfg]
               Lhotka, L. and A. Lindem, "A YANG Data Model for Routing
               Management", draft-ietf-netmod-routing-cfg-19 (work in
               progress), May 2015.
-
-
-
-
-
-
-
-Liu & McAllister        Expires December 3, 2015               [Page 34]
-
-Internet-Draft                  PIM YANG                       June 2015
-
 
 Authors' Addresses
 
@@ -1926,6 +1987,13 @@ Authors' Addresses
    EMail: pete.mcallister@metaswitch.com
 
 
+   Anish Peter
+   Juniper Networks
+   Electra, Exora Business Park
+   Bangalore, KA  560103
+   India
+
+   EMail: anishp@juniper.net
 
 
 
@@ -1945,16 +2013,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-Liu & McAllister        Expires December 3, 2015               [Page 35]
+Liu, et al.              Expires January 4, 2016               [Page 36]

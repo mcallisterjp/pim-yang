@@ -69,11 +69,11 @@
           <code>EN2 6BQ</code>
           <country>UK</country>
         </postal>
-        <email> pete.mcallister@metaswitch.com </email>
+        <email> pete.mcallister@metaswitch.com</email>
       </address>
     </author>
 
-    <author fullname="Anish Peter" initials="P." surname="Peter">
+    <author fullname="Anish Peter" initials="A." surname="Peter">
       <organization>Juniper Networks</organization>
       <address>
         <postal>
@@ -161,9 +161,7 @@
         <t>
           This model does not cover other multicast protocols such as IGMP/MLD,
           MSDP, mVPN, or m-LDP in-band signalling. It does not cover any configuration
-          required to generate the MRIB. The data model for covering other generic 
-          multicast parameters as routes, statistics, etc. too is not in the scope. 
-          These will be covered by future Internet Drafts.
+          required to generate the MRIB. These will be covered by future Internet Drafts.
         </t>
       </section>
       <section title="Optional capabilities">
@@ -224,23 +222,25 @@
       <section title="Position of address family in hierarchy">
         <t>
           The current draft (1) has an address-family container at a high level in
-          the hierarchy of the model, with an interface list as a child object.
-          There is ongoing discussion about this decision in the design team, so
-          this may be considered unresolved.
+          the hierarchy of the model, with an interface list as a child object. This
+          is a similar structure to the draft OSPF YANG model. There is ongoing
+          discussion about this decision in the design team, so this may be considered
+          unresolved.
         </t>
         <t>
           An alternative structure (2) would be for the address family to be a sub-
           list of the interface object. We would then provide interface configuration
           objects at both an address family-specific and a non-AF-specific level, 
-          exposing both options as mutually-exclusive features.
+          exposing both options as mutually-exclusive features. This would be a similar
+          structure to the IS-IS YANG draft.
         </t>
         <t>
-          PIM has a single specification for ipv4 and ipv6 address families. Hence 
-          vendors may have a combined or address-family differentiated implementation. 
-          In an implementation having the combined view, few configs may not be 
-          address family specific. Having a tree structured as (2) 
-          is natural, for such implementations. 
-        </t> 
+          Another option (3) would be to expose both sets of objects, address-family
+          specific and all-address-family, both exposed as features. Vendors could 
+          then advertise support for one or other of the features. This is the approach
+          taken in this draft for entity-scoped parameters like graceful restart
+          configuration.
+        </t>
         <t>
           The advantages of (1) over (2) are that interface objects effectively
           represent {interface, address-family} pairs, which is in line with several
@@ -254,30 +254,20 @@
           implementation allows configuration of basic router-scoped concepts on 
           an address family basis.
         </t>
-
-        <t>The main advantages for an implementation of (2) is that such a model 
-          is more extensible. Such a tree can incorporate an address-family generic 
-          config and address-family specific config. Where as an implementation of 
-          (1) does not allow such a tree to be augmented for address-family generic 
-          config. A config done outside address-family could
-          be interpreted as a config that applies to either of the address family which 
-          makes it compatible with any existing implementation. 
-        </t>  
         <t>
-          Protocols such as ISIS which supports dual-protocol on the same 
-          protocol instance has adopted the tree structure similar to (2). 
-          A config done with such a tree will appear leaner as replications could be 
-          avoided. Also an use-case for having different config values for 
-          address-family for each of the parameters seems unlikely. In the 
-          unlikely case that a different configuration value is needed for 
-          different address families, the tree can be augmented to allow such a 
-          configuration by supporting vendors
+          The main disadvantage of (1) compared to (2) is for implementations that
+          configure interfaces on an address-family-independent basis with one set
+          of configuration. This is true of some existing vendors' implementations,
+          as PIM has a single specification for IPv4 and IPv6 address families, and 
+          for these implementations the structure (2) is more natural. For some 
+          interface parameters there is no clear use-case for address-family-specific
+          configuration.
         </t>
         <t>
-          The main disadvantage of (1) compared to (2) is that implementations that
-          configure interfaces on an address-family-independent basis with one set
-          of configuration must express this restriction somehow. This can be done in
-          various ways; perhaps the easiest is a constraint of a form similar to:
+          For these implementations, the restriction that interface configuration 
+          must be address-family independent must be expressed somehow. This can be
+          done in various ways; perhaps the easiest is a constraint of a form similar
+          to:
         </t>
         <t>
           must “. = ../../address-family[address-family='ipv4']/
@@ -285,6 +275,22 @@
             error-app-tag dr-priority-mismatch;
             error-message "Error: IPv6 DR priority must match IPv4 DR priority ";
           }
+        </t>
+        <t>
+          Conversely, if (2) were adopted, an implementation that allowed address-
+          family-specific configuration would have to make augmentations to the base
+          model in order to express that flexibility. Those augmentations would not be
+          particularly difficult to make, however.
+        </t>  
+        <t>
+          The advantage of (3) over (1) or (2) is that no such vendor augmentations or 
+          constraints would be required. It is likely that vendors' requirements under 
+          models (1) or (2) would be similar enough that option (3) would cover all 
+          needs in this area.
+        </t>
+        <t>
+          The advantage of (1) or (2) over (3) is just that the model is simpler and 
+          leaner, and that feature negotiation is simpler and easier to understand.
         </t>
       </section>
       <section title="RP configuration tree">
@@ -1646,7 +1652,10 @@ module ietf-pim-bidir {
             Constraints (constant ranges, validation)
           </t>
           <t>
-            State-limiting and policy.
+            State-limiting and policy
+          </t>
+          <t>
+            Statistics.
           </t>
         </list>
       </t>
