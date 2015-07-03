@@ -12,7 +12,7 @@ Expires: January 4, 2016                             Metaswitch Networks
 
 
        A YANG data model for Protocol-Independent Multicast (PIM)
-                         draft-liu-pim-yang-00
+                      draft-mcallister-pim-yang-00
 
 Abstract
 
