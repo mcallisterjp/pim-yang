@@ -3,14 +3,9 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
    +--rw rp
       +--rw static-rp
       |  +--rw ipv4-rp* [ipv4-addr]
-      |  |  +--rw ipv4-addr      inet:ipv4-address
-      |  |  +--rw policy-name?   string
-      |  |  +--rw override?      boolean {static-rp-override}?
-      |  |  +--rw mode?          identityref
+      |  |  +--rw ipv4-addr    inet:ipv4-address
       |  +--rw ipv6-rp* [ipv6-addr]
-      |     +--rw ipv6-addr      inet:ipv6-address
-      |     +--rw policy-name?   string
-      |     +--rw mode?          identityref
+      |     +--rw ipv6-addr    inet:ipv6-address
       +--rw bsr {bsr}?
          +--rw bsr-candidate!
          |  +--rw (interface-or-address)?

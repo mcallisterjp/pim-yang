@@ -30,7 +30,7 @@ module ietf-pim-base {
     "The module defines a collection of YANG definitions common for
     all PIM modes.";
   
-  revision 2015-06-22 {
+  revision 2015-07-27 {
     description
       "Initial revision.";
     reference
@@ -46,9 +46,19 @@ module ietf-pim-base {
       RFC5306.";
   }
 
+  feature intf-dr-priority {
+    description 
+      "Support configuration of interface dr priority.";
+  }
+
   feature intf-hello-holdtime {
     description 
       "Support configuration of interface hello holdtime.";
+  }
+
+  feature intf-hello-interval {
+    description 
+      "Support configuration of interface hello interval.";
   }
 
   feature intf-hello-multipler {
@@ -127,10 +137,12 @@ module ietf-pim-base {
     description
       "A grouping defining interface attributes.";
     leaf dr-priority {
+      if-feature intf-dr-priority;
       type uint32;
       description "DR priority";
     }
     leaf hello-interval {
+      if-feature intf-hello-interval;
       type uint16;
       description "Hello interval";
     }
@@ -215,23 +227,30 @@ module ietf-pim-base {
         uses rt:address-family;
         uses per-af-attributes;
 
-        container interfaces {
-          description
-            "Containing a list of interfaces.";
-          list interface {
-            key "interface";
-            description
-              "List of pim interfaces.";
-            leaf interface {
-              type if:interface-ref;
-              description
-                "Reference to an entry in the global interface
-                list.";
-            }
-            uses interface-attributes;
-          } // interface
-        }
       } // address-family
+
+      container interfaces {
+        description
+          "Containing a list of interfaces.";
+        list interface {
+          key "interface";
+          description
+            "List of pim interfaces.";
+          leaf interface {
+            type if:interface-ref;
+            description
+              "Reference to an entry in the global interface
+              list.";
+          }
+          list address-family {
+            key "address-family";
+            description
+              "Each list entry for one address family.";
+            uses rt:address-family;
+            uses interface-attributes;
+          } // address-family
+        } // interface
+      } // interfaces
     } // pim
   } // augment
 
@@ -253,22 +272,30 @@ module ietf-pim-base {
           "Each list entry for one address family.";
         uses rt:address-family;
    
-        container interfaces {
-          description
-            "Containing a list of interfaces.";
-          list interface {
-            key "interface";
-            description
-              "List of pim interfaces.";
-            leaf interface {
-              type if:interface-ref;
-              description
-                "Reference to an entry in the global interface
-                list.";
-            }
-          } // interface
-        }
       } // address-family
+
+      container interfaces {
+        description
+          "Containing a list of interfaces.";
+        list interface {
+          key "interface";
+          description
+            "List of pim interfaces.";
+          leaf interface {
+            type if:interface-ref;
+            description
+              "Reference to an entry in the global interface
+              list.";
+          }
+          list address-family {
+            key "address-family";
+            description
+              "Each list entry for one address family.";
+            uses rt:address-family;
+            
+          } // address-family
+        } // interface
+      } // interfaces
     } // pim
   } // augment
 

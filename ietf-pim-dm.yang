@@ -29,7 +29,7 @@ module ietf-pim-dm {
   description
     "The YANG module defines a DM (Dense Mode) PIM model.";
   
-  revision 2015-06-22 {
+  revision 2015-07-27 {
     description
       "Initial revision.";
     reference
@@ -66,8 +66,8 @@ module ietf-pim-dm {
 
   augment "/rt:routing/rt:routing-instance/"
     + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family/pim-base:interfaces/"
-    + "pim-base:interface" {
+    + "pim-base:interfaces/pim-base:interface/"
+    + "pim-base:address-family" {
     description "PIM DM augmentation to PIM base interface.";
 
     container dm {

@@ -5,15 +5,17 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
       |  +--rw enabled?    boolean
       |  +--rw duration?   uint16
       +--rw address-family* [address-family]
-         +--rw address-family      identityref
-         +--rw graceful-restart
-         |  +--rw enabled?    boolean
-         |  +--rw duration?   uint16
-         +--rw interfaces
-            +--rw interface* [interface]
-               +--rw interface            if:interface-ref
-               +--rw dr-priority?         uint32
-               +--rw hello-interval?      uint16
+      |  +--rw address-family      identityref
+      |  +--rw graceful-restart
+      |     +--rw enabled?    boolean
+      |     +--rw duration?   uint16
+      +--rw interfaces
+         +--rw interface* [interface]
+            +--rw interface         if:interface-ref
+            +--rw address-family* [address-family]
+               +--rw address-family       identityref
+               +--rw dr-priority?         uint32 {intf-dr-priority}?
+               +--rw hello-interval?      uint16 {intf-hello-interval}?
                +--rw (hello-holdtime-or-multipler)?
                |  +--:(holdtime) {intf-hello-holdtime}?
                |  |  +--rw hello-holdtime?      uint16
@@ -30,7 +32,9 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
    +--ro pim
       +--ro address-family* [address-family]
-         +--ro address-family    identityref
-         +--ro interfaces
-            +--ro interface* [interface]
-               +--ro interface    if:interface-ref
+      |  +--ro address-family    identityref
+      +--ro interfaces
+         +--ro interface* [interface]
+            +--ro interface         if:interface-ref
+            +--ro address-family* [address-family]
+               +--ro address-family    identityref

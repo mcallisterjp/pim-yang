@@ -37,7 +37,7 @@ module ietf-pim-rp {
   description
     "The YANG module defines a PIM RP (Rendezvous Point) model.";
   
-  revision 2015-07-01 {
+  revision 2015-07-27 {
     description
       "Initial revision.";
     reference
@@ -88,6 +88,40 @@ module ietf-pim-rp {
   /*
    * Groupings
    */
+  grouping static-rp-attributes {
+    description
+      "Gouring of static RP attributes.";
+    leaf policy-name {
+      type string;
+      description
+        "Static RP policy.";
+    }
+    leaf override {
+      if-feature static-rp-override;
+      type boolean;
+      description
+        "When there is a conflict between static RP and dynamic
+        RP, setting this attribute to 'true' will ask the
+        system to use static RP.";
+    }
+  } // static-rp-attributes
+
+  grouping rp-candidate-attributes {
+    description
+      "Gouring of RP candidate attributes.";
+    leaf policy {
+      type string;
+      description 
+        "ACL policy used to filter group addresses.";
+    }
+    leaf mode {
+      type identityref {
+        base rp-mode;
+      }
+      description
+        "RP mode.";
+    }
+  } // rp-candidate-attributes
 
   /*
    * Configuration data nodes
@@ -118,26 +152,6 @@ module ietf-pim-rp {
             description 
               "Specifies a static RP address.";
           }
-          leaf policy-name {
-            type string;
-            description
-              "Static RP policy.";
-          }
-          leaf override {
-            if-feature static-rp-override;
-            type boolean;
-            description
-              "When there is a conflict between static RP and dynamic
-              RP, setting this attribute to 'true' will ask the
-              system to use static RP.";
-          }
-          leaf mode {
-            type identityref {
-              base rp-mode;
-            }
-            description
-              "RP mode.";
-          }
         }
         
         list ipv6-rp {
@@ -152,18 +166,6 @@ module ietf-pim-rp {
             type inet:ipv6-address;
             description 
               "Specifies a static RP address.";
-          }
-          leaf policy-name {
-            type string;
-            description
-              "Static RP policy.";
-          }
-          leaf mode {
-            type identityref {
-              base rp-mode;
-            }
-            description
-              "RP mode.";
           }
         }
       }
@@ -251,19 +253,7 @@ module ietf-pim-rp {
             description 
               "Interface that the RP candidate uses.";
           }
-          
-          leaf policy {
-            type string;
-            description 
-              "ACL policy used to filter group addresses.";
-          }
-          leaf mode {
-            type identityref {
-              base rp-mode;
-            }
-            description
-              "RP mode.";
-          }
+          uses rp-candidate-attributes;
         }
 
         list rp-candidate-ipv4-address {
@@ -280,19 +270,7 @@ module ietf-pim-rp {
             description 
               "IPv4 address that the RP candidate uses.";
           }
-          
-          leaf policy {
-            type string;
-            description 
-              "ACL policy used to filter group addresses.";
-          }
-          leaf mode {
-            type identityref {
-              base rp-mode;
-            }
-            description
-              "RP mode.";
-          }
+          uses rp-candidate-attributes;
         }
 
         list rp-candidate-ipv6-address {
@@ -309,19 +287,7 @@ module ietf-pim-rp {
             description 
               "IPv6 address that the RP candidate uses.";
           }
-          
-          leaf policy {
-            type string;
-            description 
-              "ACL policy used to filter group addresses.";
-          }
-          leaf mode {
-            type identityref {
-              base rp-mode;
-            }
-            description
-              "RP mode.";
-          }
+          uses rp-candidate-attributes;
         }
       } // bsr
     } // rp
