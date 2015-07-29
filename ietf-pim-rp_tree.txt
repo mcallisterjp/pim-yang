@@ -1,3 +1,4 @@
+<![CDATA[
 module: ietf-pim-rp
 augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--rw rp
@@ -31,3 +32,4 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
             +--rw mode?           identityref
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--ro rp
+]]>

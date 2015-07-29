@@ -1,3 +1,4 @@
+<![CDATA[
 module: ietf-pim-base
 augment /rt:routing/rt:routing-instance/rt:routing-protocols:
    +--rw pim
@@ -38,3 +39,4 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
             +--ro interface         if:interface-ref
             +--ro address-family* [address-family]
                +--ro address-family    identityref
+]]>
