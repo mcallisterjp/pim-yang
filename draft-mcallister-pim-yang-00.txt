@@ -5,10 +5,10 @@
 PIM Working Group                                                 X. Liu
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                           P. McAllister
-Expires: January 4, 2016                             Metaswitch Networks
+Expires: January 30, 2016                            Metaswitch Networks
                                                                 A. Peter
                                                         Juniper Networks
-                                                            July 3, 2015
+                                                           July 29, 2015
 
 
        A YANG data model for Protocol-Independent Multicast (PIM)
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 4, 2016.
+   This Internet-Draft will expire on January 30, 2016.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Liu, et al.              Expires January 4, 2016                [Page 1]
+Liu, et al.             Expires January 30, 2016                [Page 1]
 
 Internet-Draft                  PIM YANG                       July 2015
 
@@ -67,31 +67,32 @@ Table of Contents
      2.1.  Scope of model  . . . . . . . . . . . . . . . . . . . . .   3
      2.2.  Optional capabilities . . . . . . . . . . . . . . . . . .   3
      2.3.  Top-level structure . . . . . . . . . . . . . . . . . . .   4
-   3.  Unresolved Issues . . . . . . . . . . . . . . . . . . . . . .   4
-     3.1.  Current status of work in progress  . . . . . . . . . . .   4
-     3.2.  Position of address family in hierarchy . . . . . . . . .   4
-     3.3.  RP configuration tree . . . . . . . . . . . . . . . . . .   6
-     3.4.  Passive mode  . . . . . . . . . . . . . . . . . . . . . .   6
-   4.  Module Structure  . . . . . . . . . . . . . . . . . . . . . .   7
-     4.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .   7
-     4.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .   8
-     4.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .   9
-     4.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .  10
+     2.4.  Position of address family in hierarchy . . . . . . . . .   4
+   3.  Unresolved Issues . . . . . . . . . . . . . . . . . . . . . .   5
+     3.1.  Current status of work in progress  . . . . . . . . . . .   5
+     3.2.  RP configuration tree . . . . . . . . . . . . . . . . . .   5
+     3.3.  Passive mode  . . . . . . . . . . . . . . . . . . . . . .   5
+     3.4.  Issues blocked on other model designers . . . . . . . . .   6
+   4.  Module Structure  . . . . . . . . . . . . . . . . . . . . . .   6
+     4.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .   6
+     4.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .   7
+     4.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .   8
+     4.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .   9
      4.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .  10
-   5.  PIM YANG Modules  . . . . . . . . . . . . . . . . . . . . . .  11
-     5.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .  11
+   5.  PIM YANG Modules  . . . . . . . . . . . . . . . . . . . . . .  10
+     5.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .  10
      5.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .  17
      5.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .  24
      5.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .  29
-     5.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .  31
-   6.  TODO list . . . . . . . . . . . . . . . . . . . . . . . . . .  34
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  34
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  34
-   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  34
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  34
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  35
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  35
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  36
+     5.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .  32
+   6.  TODO list . . . . . . . . . . . . . . . . . . . . . . . . . .  35
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  35
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  35
+   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  35
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  36
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  36
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  36
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  37
 
 1.  Introduction
 
@@ -104,15 +105,17 @@ Table of Contents
    configure and manage Protocol-Independent Multicast (PIM) devices.
    Currently this model is incomplete, but it will support the core PIM
    protocol, as well as many other features mentioned in separate PIM
-   RFCs.  Non-core features are defined as optional in the provided data
-   model.
 
 
 
-Liu, et al.              Expires January 4, 2016                [Page 2]
+
+Liu, et al.             Expires January 30, 2016                [Page 2]
 
 Internet-Draft                  PIM YANG                       July 2015
 
+
+   RFCs.  Non-core features are defined as optional in the provided data
+   model.
 
 1.1.  Requirements Language
 
@@ -154,21 +157,28 @@ Internet-Draft                  PIM YANG                       July 2015
 
    This model is designed to represent the capabilities of PIM devices
    with various specifications, including some with basic subsets of the
-   PIM protocol.  Since a design goal of this draft is to define a data
-   model that is capable of representing all of these implementations,
-   these modules declare a number of features representing capabilities
-   that not all deployed devices support.
-
-   The extensive use of feature declarations should substantially
-   simplify the capability negotiation process for a vendor's PIM
-   implementation.
+   PIM protocol.  The main design goals of this draft are that any major
+   now-existing implementation may be said to support the base model,
+   and that the configuration of all implementations meeting the
+   specification is easy to express through some combination of the
+   features in the base model and simple vendor augmentations.
 
 
 
-Liu, et al.              Expires January 4, 2016                [Page 3]
+Liu, et al.             Expires January 30, 2016                [Page 3]
 
 Internet-Draft                  PIM YANG                       July 2015
 
+
+   There is also value in widely-supported features being standardized,
+   to save work for individual vendors, and so that mapping between
+   different vendors' configuration is not needlessly complicated.
+   Therefore these modules declare a number of features representing
+   capabilities that not all deployed devices support.
+
+   The extensive use of feature declarations should also substantially
+   simplify the capability negotiation process for a vendor's PIM
+   implementation.
 
    For the same reason, wide constant ranges (for example, timer maxima
    and minima) will be used in the model.  It is expected that vendors
@@ -192,6 +202,35 @@ Internet-Draft                  PIM YANG                       July 2015
    are marked as optional.  Some fields will be essential but have a
    default specified, so they need not be explicitly configured.
 
+2.4.  Position of address family in hierarchy
+
+   The current draft contains address-family as a node in the hierarchy
+   multiple times: both under the interface list, and under the PIM
+   instance.  This is similar to the IS-IS yang draft model.
+
+   The reasoning for this is to make it easier for implementations in
+   which configuration options are not supported for specific address
+   families.
+
+   For these implementations, the restriction that interface
+   configuration must be address-family independent must either be
+   expressed as a vendor augmentation of an address-family-independent
+   parameter above the address-family level, or by a constraint on the
+   base model objects of a form similar to:
+
+
+
+
+Liu, et al.             Expires January 30, 2016                [Page 4]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
+   must ". = ../../address-family[address-family='ipv4']/
+   interface[interface=current()/sibling:interface]/dr-priority" {
+   error-app-tag dr-priority-mismatch; error-message "Error: IPv6 DR
+   priority must match IPv4 DR priority "; }
+
 3.  Unresolved Issues
 
 3.1.  Current status of work in progress
@@ -204,117 +243,29 @@ Internet-Draft                  PIM YANG                       July 2015
    For a list of the most substantial areas still to cover, please see
    the "TODO list" section below.
 
-3.2.  Position of address family in hierarchy
-
-   The current draft (1) has an address-family container at a high level
-   in the hierarchy of the model, with an interface list as a child
-   object.  This is a similar structure to the draft OSPF YANG model.
-   There is ongoing discussion about this decision in the design team,
-   so this may be considered unresolved.
-
-   An alternative structure (2) would be for the address family to be a
-   sub- list of the interface object.  We would then provide interface
-   configuration objects at both an address family-specific and a non-
-   AF-specific level, exposing both options as mutually-exclusive
-   features.  This would be a similar structure to the IS-IS YANG draft.
-
-
-
-
-Liu, et al.              Expires January 4, 2016                [Page 4]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
-   Another option (3) would be to expose both sets of objects, address-
-   family specific and all-address-family, both exposed as features.
-   Vendors could then advertise support for one or other of the
-   features.  This is the approach taken in this draft for entity-scoped
-   parameters like graceful restart configuration.
-
-   The advantages of (1) over (2) are that interface objects effectively
-   represent {interface, address-family} pairs, which is in line with
-   several existing implementations.  Expressing interface-scoped
-   configuration that is also address family dependent is made much
-   easier using this model.
-
-   It also may be useful to be able to configure router-wide options on
-   an address-family basis, which would be more inconvenient if address
-   family were a child object of the interface list.  At least one
-   deployed implementation allows configuration of basic router-scoped
-   concepts on an address family basis.
-
-   The main disadvantage of (1) compared to (2) is for implementations
-   that configure interfaces on an address-family-independent basis with
-   one set of configuration.  This is true of some existing vendors'
-   implementations, as PIM has a single specification for IPv4 and IPv6
-   address families, and for these implementations the structure (2) is
-   more natural.  For some interface parameters there is no clear use-
-   case for address-family-specific configuration.
-
-   For these implementations, the restriction that interface
-   configuration must be address-family independent must be expressed
-   somehow.  This can be done in various ways; perhaps the easiest is a
-   constraint of a form similar to:
-
-   must ". = ../../address-family[address-family='ipv4']/
-   interface[interface=current()/sibling:interface]/dr-priority" {
-   error-app-tag dr-priority-mismatch; error-message "Error: IPv6 DR
-   priority must match IPv4 DR priority "; }
-
-   Conversely, if (2) were adopted, an implementation that allowed
-   address- family-specific configuration would have to make
-   augmentations to the base model in order to express that flexibility.
-   Those augmentations would not be particularly difficult to make,
-   however.
-
-   The advantage of (3) over (1) or (2) is that no such vendor
-   augmentations or constraints would be required.  It is likely that
-   vendors' requirements under models (1) or (2) would be similar enough
-   that option (3) would cover all needs in this area.
-
-
-
-
-
-Liu, et al.              Expires January 4, 2016                [Page 5]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
-   The advantage of (1) or (2) over (3) is just that the model is
-   simpler and leaner, and that feature negotiation is simpler and
-   easier to understand.
-
-3.3.  RP configuration tree
+3.2.  RP configuration tree
 
    This draft of the model provides a module (currently called pim-rp)
    which is used for group range mapping configuration.  Though some of
-   this configuration is only relevant for some PIM modes, the pim-rp
-   structure itself is independent of the PIM mode structures.
+   this configuration is defined in the modules for individual PIM
+   modes, the pim-rp structure itself is independent of the PIM mode
+   structures.
 
-   The main advantage of this structure is that it substantially
-   simplifies the representation of the mapping algorithm from a
-   specific group address to its PIM mode and configuration.  Validation
-   is also easier, as only the pim-rp module itself needs to be checked
-   if there is another entry with a conflicting or inconsistent group
-   prefix.
+   The main disadvantage of this structure is that it obscures the
+   mapping from group address to PIM mode, unlike a hypothetical indexed
+   by group range.  This also makes the process of validating whether a
+   group mapping policy contradicts another more complicated.
 
-   There are also some advantages to this approach in non-duplication of
-   configuration parameters that are specific to multiple PIM modes,
-   such as BSR.
+   However, as the thing that is mapped is defined in terms of a general
+   abstract policy object (which could be a policy, an ACL, or a group
+   range, according to implementation), it is not practical to index on
+   in the base model.
 
-   The current name of this module is pim-rp, as it is roughly analogous
-   to the pimStaticRPTable in the PIM MIB, and it is currently indexed
-   by RP.
+   Operational state reporting does not have this problem, as there a
+   mapping by group range is straightforward and helpful to network
+   operators.
 
-   However, as it is used for some group-range-scoped configuration not
-   directly related to RPs, and because a single RP address might need
-   two rows in the table (for SM and BI-DIR), it might be better to call
-   this something like pim-group-mapping and index it on group range.
-   This is still under discussion.
-
-3.4.  Passive mode
+3.3.  Passive mode
 
    This draft contains an interface leaf 'passive', indicating that no
    PIM protocol messages are to be sent on the interface.
@@ -323,20 +274,32 @@ Internet-Draft                  PIM YANG                       July 2015
    configurable on a PIM-mode basis, that an interface is not used to
    run the PIM protocol and also not used for multicast forwarding.
    This may be used to restrict dense-mode flooding, for example.  This
-   will likely be included as a feature in a future draft, but the
-   details are under discussion.
 
 
 
-
-
-
-
-
-Liu, et al.              Expires January 4, 2016                [Page 6]
+Liu, et al.             Expires January 30, 2016                [Page 5]
 
 Internet-Draft                  PIM YANG                       July 2015
 
+
+   will likely be included as a feature in a future draft, but the
+   details are under discussion.
+
+3.4.  Issues blocked on other model designers
+
+   Some questions must be resolved with reference to other yang models,
+   and so the resolution may be blocked on a decision from another body.
+   Currently these issues are:
+
+   1.  The position of BFD in the configuration; does the BFD model
+       augment various different protocols, or do the protocols have to
+       augment themselves individually to support BFD?
+
+   2.  The abstract concept of a "set of IP addresses", as represented
+       in implementations by prefixes, ACLs or policy statements, is a
+       general concept out of the scope of this document.  It will
+       presumably have a yang data-type the instantiation of which is
+       vendor-specific.
 
 4.  Module Structure
 
@@ -370,26 +333,7 @@ Internet-Draft                  PIM YANG                       July 2015
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Liu, et al.              Expires January 4, 2016                [Page 7]
+Liu, et al.             Expires January 30, 2016                [Page 6]
 
 Internet-Draft                  PIM YANG                       July 2015
 
@@ -401,15 +345,17 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
       |  +--rw enabled?    boolean
       |  +--rw duration?   uint16
       +--rw address-family* [address-family]
-         +--rw address-family      identityref
-         +--rw graceful-restart
-         |  +--rw enabled?    boolean
-         |  +--rw duration?   uint16
-         +--rw interfaces
-            +--rw interface* [interface]
-               +--rw interface            if:interface-ref
-               +--rw dr-priority?         uint32
-               +--rw hello-interval?      uint16
+      |  +--rw address-family      identityref
+      |  +--rw graceful-restart
+      |     +--rw enabled?    boolean
+      |     +--rw duration?   uint16
+      +--rw interfaces
+         +--rw interface* [interface]
+            +--rw interface         if:interface-ref
+            +--rw address-family* [address-family]
+               +--rw address-family       identityref
+               +--rw dr-priority?         uint32 {intf-dr-priority}?
+               +--rw hello-interval?      uint16 {intf-hello-interval}?
                +--rw (hello-holdtime-or-multipler)?
                |  +--:(holdtime) {intf-hello-holdtime}?
                |  |  +--rw hello-holdtime?      uint16
@@ -423,47 +369,43 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
                |     +--rw jp-multipler?        uint8
                +--rw propagation-delay?   uint16 {intf-propagation-delay}?
                +--rw override-interval?   uint16 {intf-override-interval}?
-               +--rw passive?   empty
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
    +--ro pim
       +--ro address-family* [address-family]
-         +--ro address-family    identityref
-         +--ro interfaces
-            +--ro interface* [interface]
-               +--ro interface    if:interface-ref
+      |  +--ro address-family    identityref
+      +--ro interfaces
+         +--ro interface* [interface]
+            +--ro interface         if:interface-ref
+            +--ro address-family* [address-family]
+               +--ro address-family    identityref
+
+
 
 4.2.  PIM RP module
 
-   The PIM RP module contains configuration information scoped to ranges
-   of group addresses.  This does not belong in the hierarchy under any
-   PIM mode, as it is how group ranges are assigned to PIM modes.
-
-   Some of the content of the module, however, is only relevant to some
-   modes (for example, BSR is only relevant to ASM and BIDIR).  This is
-   clarified in the module itself using "if-feature" and "when"
-   statements.
+   The PIM RP module contains configuration information scoped to RPs or
+   ranges of group addresses.  This does not belong in the hierarchy
 
 
 
-Liu, et al.              Expires January 4, 2016                [Page 8]
+
+Liu, et al.             Expires January 30, 2016                [Page 7]
 
 Internet-Draft                  PIM YANG                       July 2015
 
 
+   under any PIM mode, but is augmented by the individual mode-specific
+   modules as appropriate.
+
+
 module: ietf-pim-rp
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family:
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--rw rp
       +--rw static-rp
       |  +--rw ipv4-rp* [ipv4-addr]
-      |  |  +--rw ipv4-addr      inet:ipv4-address
-      |  |  +--rw policy-name?   string
-      |  |  +--rw override?      boolean {static-rp-override}?
-      |  |  +--rw mode?          identityref
+      |  |  +--rw ipv4-addr    inet:ipv4-address
       |  +--rw ipv6-rp* [ipv6-addr]
-      |     +--rw ipv6-addr      inet:ipv6-address
-      |     +--rw policy-name?   string
-      |     +--rw mode?          identityref
+      |     +--rw ipv6-addr    inet:ipv6-address
       +--rw bsr {bsr}?
          +--rw bsr-candidate!
          |  +--rw (interface-or-address)?
@@ -487,9 +429,10 @@ pim-base:pim/pim-base:address-family:
             +--rw ipv6-address    inet:ipv6-address
             +--rw policy?         string
             +--rw mode?           identityref
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family:
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--ro rp
+
+
 
 4.3.  PIM-SM module
 
@@ -501,82 +444,95 @@ pim-base:pim/pim-base:address-family:
 
 
 
-Liu, et al.              Expires January 4, 2016                [Page 9]
+
+Liu, et al.             Expires January 30, 2016                [Page 8]
 
 Internet-Draft                  PIM YANG                       July 2015
 
 
-   module: ietf-pim-sm
-   augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family:
-      +--rw sm
-         +--rw asm
-         |  +--rw anycast-rp!
-         |  |  +--rw ipv4
-         |  |  |  +--rw ipv4-anycast-rp* [anycast-addr rp-addr]
-         |  |  |     +--rw anycast-addr    inet:ipv4-address
-         |  |  |     +--rw rp-addr         inet:ipv4-address
-         |  |  +--rw ipv6
-         |  |     +--rw ipv6-anycast-rip* [anycast-addr rp-addr]
-         |  |        +--rw anycast-addr    inet:ipv6-address
-         |  |        +--rw rp-addr         inet:ipv6-address
-         |  +--rw spt-switch
-         |     +--rw infinity?      boolean {spt-switch-infinity}?
-         |     +--rw policy-name?   string {spt-switch-policy}?
-         +--rw ssm!
-            +--rw range-policy?   string
-   augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family:
-      +--ro sm
+module: ietf-pim-sm
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+   +--rw sm
+      +--rw asm
+      |  +--rw anycast-rp!
+      |  |  +--rw ipv4
+      |  |  |  +--rw ipv4-anycast-rp* [anycast-addr rp-addr]
+      |  |  |     +--rw anycast-addr    inet:ipv4-address
+      |  |  |     +--rw rp-addr         inet:ipv4-address
+      |  |  +--rw ipv6
+      |  |     +--rw ipv6-anycast-rip* [anycast-addr rp-addr]
+      |  |        +--rw anycast-addr    inet:ipv6-address
+      |  |        +--rw rp-addr         inet:ipv6-address
+      |  +--rw spt-switch
+      |     +--rw infinity?      boolean {spt-switch-infinity}?
+      |     +--rw policy-name?   string {spt-switch-policy}?
+      +--rw ssm!
+         +--rw range-poligy?   string
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:interfaces/pim-base:interface/pim-base:address-family:
+   +--rw sm!
+      +--rw passive?   empty
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv4-rp:
+   +--rw sm!
+      +--rw policy-name?   string
+      +--rw override?      boolean {static-rp-override}?
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv6-rp:
+   +--rw sm!
+      +--rw policy-name?   string
+      +--rw override?      boolean {static-rp-override}?
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+   +--ro sm
+
+
 
 4.4.  PIM-DM module
 
    This module will cover Dense Mode configuration.
 
-   module: ietf-pim-dm
-   augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family:
-      +--rw dm!
-   augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family/pim-base:interfaces/
-   pim-base:interface:
-      +--rw dm!
-   augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family:
-      +--ro dm
+
+module: ietf-pim-dm
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+   +--rw dm!
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:interfaces/pim-base:interface/pim-base:address-family:
+   +--rw dm!
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+   +--ro dm
+
+
+
+
+
+Liu, et al.             Expires January 30, 2016                [Page 9]
+
+Internet-Draft                  PIM YANG                       July 2015
+
 
 4.5.  PIM-BIDIR module
 
    This module will cover Bidirectional PIM configuration.
 
 
+module: ietf-pim-bidir
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+   +--rw bidir
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:interfaces/pim-base:interface/pim-base:address-family:
+   +--rw bidir!
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv4-rp:
+   +--rw bidir!
+      +--rw policy-name?   string
+      +--rw override?      boolean {static-rp-override}?
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv6-rp:
+   +--rw bidir!
+      +--rw policy-name?   string
+      +--rw override?      boolean {static-rp-override}?
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+   +--ro bidir
 
 
-
-
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 10]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
-   module: ietf-pim-bidir
-   augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family:
-      +--rw bidir
-   augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family/pim-base:interfaces/
-   pim-base:interface:
-      +--rw bidir!
-   augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family:
-      +--ro bidir
 
 5.  PIM YANG Modules
 
 5.1.  PIM base module
+
 
    <CODE BEGINS>
    module ietf-pim-base {
@@ -599,6 +555,13 @@ Internet-Draft                  PIM YANG                       July 2015
        "WG Web:   <http://tools.ietf.org/wg/pim/>
         WG List:  <mailto:pim@ietf.org>
 
+
+
+Liu, et al.             Expires January 30, 2016               [Page 10]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
         WG Chair: Stig Venaas
                   <mailto:stig@venaas.com>
 
@@ -611,14 +574,7 @@ Internet-Draft                  PIM YANG                       July 2015
        "The module defines a collection of YANG definitions common for
        all PIM modes.";
 
-
-
-Liu, et al.              Expires January 4, 2016               [Page 11]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
-     revision 2015-06-22 {
+     revision 2015-07-27 {
        description
          "Initial revision.";
        reference
@@ -630,7 +586,13 @@ Internet-Draft                  PIM YANG                       July 2015
       */
      feature global-graceful-restart {
        description
-         "Global configuration for graceful restart support.";
+         "Global configuraiont for graceful restart support as per
+         RFC5306.";
+     }
+
+     feature intf-dr-priority {
+       description
+         "Support configuration of interface dr priority.";
      }
 
      feature intf-hello-holdtime {
@@ -638,10 +600,23 @@ Internet-Draft                  PIM YANG                       July 2015
          "Support configuration of interface hello holdtime.";
      }
 
+     feature intf-hello-interval {
+       description
+         "Support configuration of interface hello interval.";
+     }
+
      feature intf-hello-multipler {
        description
          "Support configuration of interface hello multipler.";
      }
+
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 11]
+
+Internet-Draft                  PIM YANG                       July 2015
+
 
      feature intf-jp-interval {
        description
@@ -666,19 +641,12 @@ Internet-Draft                  PIM YANG                       July 2015
      feature intf-override-interval {
        description
          "Support configuration of interface override interval.";
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 12]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
      }
 
      feature per-af-graceful-restart {
        description
-         "Per AF configuration for graceful restart support.";
+         "Per AF configuraiont for graceful restart support as per
+         RFC5306.";
      }
 
      /*
@@ -698,6 +666,14 @@ Internet-Draft                  PIM YANG                       July 2015
 
      grouping graceful-restart-container {
        description
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 12]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
          "A grouping defining a container of graceful restart
          attributes.";
        container graceful-restart {
@@ -721,18 +697,12 @@ Internet-Draft                  PIM YANG                       July 2015
        description
          "A grouping defining interface attributes.";
        leaf dr-priority {
+         if-feature intf-dr-priority;
          type uint32;
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 13]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
          description "DR priority";
        }
        leaf hello-interval {
+         if-feature intf-hello-interval;
          type uint16;
          description "Hello interval";
        }
@@ -752,6 +722,14 @@ Internet-Draft                  PIM YANG                       July 2015
              description "Hello multipler";
            }
          }
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 13]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
        }
        leaf jp-interval {
          if-feature intf-jp-interval;
@@ -778,27 +756,12 @@ Internet-Draft                  PIM YANG                       July 2015
        leaf propagation-delay {
          if-feature intf-propagation-delay;
          type uint16;
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 14]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
          description "Propagation description";
        }
        leaf override-interval {
          if-feature intf-override-interval;
          type uint16;
          description "Override interval";
-       }
-       leaf passive {
-         type empty;
-         description
-             "Specifies that no PIM messages are sent out of the PIM
-             interface, but the interface can be included in a multicast
-             forwarding entry.";
        }
      }
 
@@ -815,6 +778,14 @@ Internet-Draft                  PIM YANG                       July 2015
       */
 
      augment "/rt:routing/rt:routing-instance/"
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 14]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
        + "rt:routing-protocols" {
        description
          "PIM augmentation to routing instance configuration.";
@@ -832,37 +803,44 @@ Internet-Draft                  PIM YANG                       July 2015
            uses rt:address-family;
            uses per-af-attributes;
 
-           container interfaces {
-             description
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 15]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
-               "Containing a list of interfaces.";
-             list interface {
-               key "interface";
-               description
-                 "List of pim interfaces.";
-               leaf interface {
-                 type if:interface-ref;
-                 description
-                   "Reference to an entry in the global interface
-                   list.";
-               }
-               uses interface-attributes;
-             } // interface
-           }
          } // address-family
+
+         container interfaces {
+           description
+             "Containing a list of interfaces.";
+           list interface {
+             key "interface";
+             description
+               "List of pim interfaces.";
+             leaf interface {
+               type if:interface-ref;
+               description
+                 "Reference to an entry in the global interface
+                 list.";
+             }
+             list address-family {
+               key "address-family";
+               description
+                 "Each list entry for one address family.";
+               uses rt:address-family;
+               uses interface-attributes;
+             } // address-family
+           } // interface
+         } // interfaces
        } // pim
      } // augment
 
      /*
       * Operational state data nodes
       */
+
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 15]
+
+Internet-Draft                  PIM YANG                       July 2015
+
 
      augment "/rt:routing-state/rt:routing-instance/"
        + "rt:routing-protocols" {
@@ -878,30 +856,30 @@ Internet-Draft                  PIM YANG                       July 2015
              "Each list entry for one address family.";
            uses rt:address-family;
 
-           container interfaces {
-             description
-               "Containing a list of interfaces.";
-             list interface {
-               key "interface";
-               description
-                 "List of pim interfaces.";
-               leaf interface {
-                 type if:interface-ref;
-                 description
-                   "Reference to an entry in the global interface
-                   list.";
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 16]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
-               }
-             } // interface
-           }
          } // address-family
+
+         container interfaces {
+           description
+             "Containing a list of interfaces.";
+           list interface {
+             key "interface";
+             description
+               "List of pim interfaces.";
+             leaf interface {
+               type if:interface-ref;
+               description
+                 "Reference to an entry in the global interface
+                 list.";
+             }
+             list address-family {
+               key "address-family";
+               description
+                 "Each list entry for one address family.";
+               uses rt:address-family;
+
+             } // address-family
+           } // interface
+         } // interfaces
        } // pim
      } // augment
 
@@ -912,10 +890,21 @@ Internet-Draft                  PIM YANG                       July 2015
      /*
       * Notifications
       */
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 16]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
    }
    <CODE ENDS>
 
+
+
 5.2.  PIM RP module
+
 
    <CODE BEGINS>
    module ietf-pim-rp {
@@ -946,14 +935,6 @@ Internet-Draft                  PIM YANG                       July 2015
        "WG Web:   <http://tools.ietf.org/wg/pim/>
         WG List:  <mailto:pim@ietf.org>
 
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 17]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
         WG Chair: Stig Venaas
                   <mailto:stig@venaas.com>
 
@@ -965,7 +946,15 @@ Internet-Draft                  PIM YANG                       July 2015
      description
        "The YANG module defines a PIM RP (Rendezvous Point) model.";
 
-     revision 2015-07-01 {
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 17]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
+     revision 2015-07-27 {
        description
          "Initial revision.";
        reference
@@ -1002,14 +991,6 @@ Internet-Draft                  PIM YANG                       July 2015
        description
          "This feature indicates that the system supports using
          an IPv6 address to configure a BSR or RP candidate.";
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 18]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
      }
 
      /*
@@ -1021,9 +1002,51 @@ Internet-Draft                  PIM YANG                       July 2015
          BIDIR (bi-directional).";
      }
 
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 18]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
      /*
       * Groupings
       */
+     grouping static-rp-attributes {
+       description
+         "Gouring of static RP attributes.";
+       leaf policy-name {
+         type string;
+         description
+           "Static RP policy.";
+       }
+       leaf override {
+         if-feature static-rp-override;
+         type boolean;
+         description
+           "When there is a conflict between static RP and dynamic
+           RP, setting this attribute to 'true' will ask the
+           system to use static RP.";
+       }
+     } // static-rp-attributes
+
+     grouping rp-candidate-attributes {
+       description
+         "Gouring of RP candidate attributes.";
+       leaf policy {
+         type string;
+         description
+           "ACL policy used to filter group addresses.";
+       }
+       leaf mode {
+         type identityref {
+           base rp-mode;
+         }
+         description
+           "RP mode.";
+       }
+     } // rp-candidate-attributes
 
      /*
       * Configuration data nodes
@@ -1035,6 +1058,14 @@ Internet-Draft                  PIM YANG                       July 2015
        description "PIM RP augmentation.";
 
        container rp {
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 19]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
          description
            "PIM RP configuration data.";
 
@@ -1054,34 +1085,6 @@ Internet-Draft                  PIM YANG                       July 2015
                description
                  "Specifies a static RP address.";
              }
-             leaf policy-name {
-               type string;
-               description
-                 "Static RP policy.";
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 19]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
-             }
-             leaf override {
-               if-feature static-rp-override;
-               type boolean;
-               description
-                 "When there is a conflict between static RP and dynamic
-                 RP, setting this attribute to 'true' will ask the
-                 system to use static RP.";
-             }
-             leaf mode {
-               type identityref {
-                 base rp-mode;
-               }
-               description
-                 "RP mode.";
-             }
            }
 
            list ipv6-rp {
@@ -1097,31 +1100,11 @@ Internet-Draft                  PIM YANG                       July 2015
                description
                  "Specifies a static RP address.";
              }
-             leaf policy-name {
-               type string;
-               description
-                 "Static RP policy.";
-             }
-             leaf mode {
-               type identityref {
-                 base rp-mode;
-               }
-               description
-                 "RP mode.";
-             }
            }
          }
 
          container bsr {
            if-feature bsr;
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 20]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
            description
              "Containing BSR (BootStrap Router) attributes.";
 
@@ -1130,6 +1113,14 @@ Internet-Draft                  PIM YANG                       July 2015
                "Present to serve as a BSR candidate";
              description
                "BSR candidate attributes.";
+
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 20]
+
+Internet-Draft                  PIM YANG                       July 2015
+
 
              choice interface-or-address {
                description
@@ -1171,13 +1162,6 @@ Internet-Draft                  PIM YANG                       July 2015
                }
              }
 
-
-
-Liu, et al.              Expires January 4, 2016               [Page 21]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
              leaf hash-mask-length{
                type uint8 {
                  range "0..32";
@@ -1186,6 +1170,14 @@ Internet-Draft                  PIM YANG                       July 2015
                description
                  "Value contained in BSR messages used by all routers to
                  hash (map) to an RP.";
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 21]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
              }
 
              leaf priority {
@@ -1210,30 +1202,10 @@ Internet-Draft                  PIM YANG                       July 2015
                description
                  "Interface that the RP candidate uses.";
              }
-
-             leaf policy {
-               type string;
-               description
-                 "ACL policy used to filter group addresses.";
-             }
-             leaf mode {
-               type identityref {
-                 base rp-mode;
-               }
-               description
-                 "RP mode.";
-             }
+             uses rp-candidate-attributes;
            }
 
            list rp-candidate-ipv4-address {
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 22]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
              when "../../../address-family = 'rt:ipv4'" {
                description
                  "Only applicable to ipv4 address family.";
@@ -1247,25 +1219,21 @@ Internet-Draft                  PIM YANG                       July 2015
                description
                  "IPv4 address that the RP candidate uses.";
              }
-
-             leaf policy {
-               type string;
-               description
-                 "ACL policy used to filter group addresses.";
-             }
-             leaf mode {
-               type identityref {
-                 base rp-mode;
-               }
-               description
-                 "RP mode.";
-             }
+             uses rp-candidate-attributes;
            }
 
            list rp-candidate-ipv6-address {
              when "../../../address-family = 'rt:ipv6'" {
                description
                  "Only applicable to ipv6 address family.";
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 22]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
              }
              if-feature candidate-ipv6;
              key "ipv6-address";
@@ -1276,27 +1244,7 @@ Internet-Draft                  PIM YANG                       July 2015
                description
                  "IPv6 address that the RP candidate uses.";
              }
-
-             leaf policy {
-               type string;
-               description
-                 "ACL policy used to filter group addresses.";
-             }
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 23]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
-             leaf mode {
-               type identityref {
-                 base rp-mode;
-               }
-               description
-                 "RP mode.";
-             }
+             uses rp-candidate-attributes;
            }
          } // bsr
        } // rp
@@ -1328,7 +1276,22 @@ Internet-Draft                  PIM YANG                       July 2015
    }
    <CODE ENDS>
 
+
+
+
+
+
+
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 23]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
 5.3.  PIM-SM module
+
 
    <CODE BEGINS>
    module ietf-pim-sm {
@@ -1338,14 +1301,6 @@ Internet-Draft                  PIM YANG                       July 2015
 
      import ietf-inet-types {
        prefix "inet";
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 24]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
      }
 
      import ietf-routing {
@@ -1378,11 +1333,19 @@ Internet-Draft                  PIM YANG                       July 2015
      description
        "The YANG module defines a sparse mode PIM model.";
 
-     revision 2015-07-01 {
+     revision 2015-07-27 {
        description
          "Initial revision.";
        reference
          "RFC XXXX: A YANG Data Model for PIM";
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 24]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
      }
 
      /*
@@ -1394,13 +1357,6 @@ Internet-Draft                  PIM YANG                       July 2015
          choice whether to trigger the switchover from the rpt to the
          spt.";
      }
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 25]
-
-Internet-Draft                  PIM YANG                       July 2015
-
 
      feature spt-switch-policy {
        description
@@ -1420,12 +1376,32 @@ Internet-Draft                  PIM YANG                       July 2015
      /*
       * Groupings
       */
+     grouping static-rp-sm-container {
+       description
+         "Gouping that contains SM attributes for static RP.";
+       container sm {
+         presence
+           "Indicate the support of sparse mode.";
+         description
+           "PIM SM configuration data.";
+
+         uses pim-rp:static-rp-attributes;
+       } // sm
+     } // static-rp-sm-container
 
      /*
       * Configuration data nodes
       */
 
      augment "/rt:routing/rt:routing-instance/"
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 25]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
        + "rt:routing-protocols/pim-base:pim/"
        + "pim-base:address-family" {
        description "PIM SM augmentation.";
@@ -1450,14 +1426,6 @@ Internet-Draft                  PIM YANG                       July 2015
                    "Only applicable to ipv4 address family.";
                }
                description
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 26]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
                  "IPv4 attributes. Only applicable when
                  pim-base:address-family is ipv4.";
                list ipv4-anycast-rp {
@@ -1482,6 +1450,14 @@ Internet-Draft                  PIM YANG                       July 2015
                }
              }
              container ipv6 {
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 26]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
                when "../../../../address-family = 'rt:ipv6'" {
                  description
                    "Only applicable to ipv6 address family.";
@@ -1506,14 +1482,6 @@ Internet-Draft                  PIM YANG                       July 2015
                    description
                      "IP address of the router configured with anycast
                      RP. This is the IP address where the Register
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 27]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
                      messages are forwarded.";
                  }
                }
@@ -1539,19 +1507,73 @@ Internet-Draft                  PIM YANG                       July 2015
            }
          } // asm
 
+
+
+Liu, et al.             Expires January 30, 2016               [Page 27]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
          container ssm {
            presence
              "Present to enable SSM (Source-Specific Multicast).";
            description
              "SSM (Source-Specific Multicast) attributes.";
 
-           leaf range-policy {
+           leaf range-poligy {
              type string;
              description
                "Policy used to define SSM address range.";
            }
          } // ssm
        } // sm
+     } // augment
+
+     augment "/rt:routing/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:interfaces/pim-base:interface/"
+       + "pim-base:address-family" {
+       description "PIM SM augmentation.";
+
+       container sm {
+         presence "Present to enable sparse-mode.";
+         description
+           "PIM SM configuration data.";
+
+         leaf passive {
+           type empty;
+           description
+             "Specifies that no PIM messages are sent out of the PIM
+             interface, but the interface can be included in a multicast
+             forwarding entry.";
+         }
+       } // sm
+     } // augment
+
+     augment "/rt:routing/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:address-family/pim-rp:rp/"
+       + "pim-rp:static-rp/pim-rp:ipv4-rp" {
+       description "PIM SM augmentation.";
+
+       uses static-rp-sm-container;
+     } // augment
+
+     augment "/rt:routing/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:address-family/pim-rp:rp/"
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 28]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
+       + "pim-rp:static-rp/pim-rp:ipv6-rp" {
+       description "PIM SM augmentation.";
+
+       uses static-rp-sm-container;
      } // augment
 
      /*
@@ -1562,14 +1584,6 @@ Internet-Draft                  PIM YANG                       July 2015
        + "rt:routing-protocols/pim-base:pim/"
        + "pim-base:address-family" {
        description
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 28]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
          "PIM SM state.";
 
        container sm {
@@ -1588,7 +1602,10 @@ Internet-Draft                  PIM YANG                       July 2015
    }
    <CODE ENDS>
 
+
+
 5.4.  PIM-DM module
+
 
    <CODE BEGINS>
    module ietf-pim-dm {
@@ -1601,6 +1618,14 @@ Internet-Draft                  PIM YANG                       July 2015
      }
 
      import ietf-pim-base {
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 29]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
        prefix "pim-base";
      }
 
@@ -1619,17 +1644,10 @@ Internet-Draft                  PIM YANG                       July 2015
 
         Editors:   ";
 
-
-
-Liu, et al.              Expires January 4, 2016               [Page 29]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
      description
        "The YANG module defines a DM (Dense Mode) PIM model.";
 
-     revision 2015-06-22 {
+     revision 2015-07-27 {
        description
          "Initial revision.";
        reference
@@ -1657,6 +1675,13 @@ Internet-Draft                  PIM YANG                       July 2015
        + "pim-base:address-family" {
        description "PIM DM augmentation.";
 
+
+
+Liu, et al.             Expires January 30, 2016               [Page 30]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
        container dm {
          presence "Present to enable dense-mode.";
          description
@@ -1666,22 +1691,14 @@ Internet-Draft                  PIM YANG                       July 2015
 
      augment "/rt:routing/rt:routing-instance/"
        + "rt:routing-protocols/pim-base:pim/"
-       + "pim-base:address-family/pim-base:interfaces/"
-       + "pim-base:interface" {
+       + "pim-base:interfaces/pim-base:interface/"
+       + "pim-base:address-family" {
        description "PIM DM augmentation to PIM base interface.";
 
        container dm {
          presence "Present to enable dense-mode.";
          description
            "PIM DM configuration data.";
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 30]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
        } // sm
      } // augment
 
@@ -1710,7 +1727,19 @@ Internet-Draft                  PIM YANG                       July 2015
    }
    <CODE ENDS>
 
+
+
+
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 31]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
 5.5.  PIM-BIDIR module
+
 
    <CODE BEGINS>
    module ietf-pim-bidir {
@@ -1729,14 +1758,6 @@ Internet-Draft                  PIM YANG                       July 2015
      import ietf-pim-rp {
        prefix "pim-rp";
      }
-
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 31]
-
-Internet-Draft                  PIM YANG                       July 2015
-
 
      organization
        "IETF PIM Working Group";
@@ -1757,7 +1778,7 @@ Internet-Draft                  PIM YANG                       July 2015
        "The YANG module defines a BIDIR (Bidirectional) mode PIM
        model.";
 
-     revision 2015-06-22 {
+     revision 2015-07-27 {
        description
          "Initial revision.";
        reference
@@ -1765,6 +1786,14 @@ Internet-Draft                  PIM YANG                       July 2015
      }
 
      /*
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 32]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
       * Features
       */
 
@@ -1780,20 +1809,24 @@ Internet-Draft                  PIM YANG                       July 2015
      /*
       * Groupings
       */
+     grouping static-rp-bidir-container {
+       description
+         "Gouping that contains BIDIR attributes for static RP.";
+       container bidir {
+         presence
+           "Indicate the support of BIDIR mode.";
+         description
+           "PIM BIDIR configuration data.";
+
+         uses pim-rp:static-rp-attributes;
+       } // bidir
+     } // static-rp-bidir-container
 
      /*
       * Configuration data nodes
       */
 
      augment "/rt:routing/rt:routing-instance/"
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 32]
-
-Internet-Draft                  PIM YANG                       July 2015
-
-
        + "rt:routing-protocols/pim-base:pim/"
        + "pim-base:address-family" {
        description "PIM BIDIR augmentation.";
@@ -1806,15 +1839,40 @@ Internet-Draft                  PIM YANG                       July 2015
 
      augment "/rt:routing/rt:routing-instance/"
        + "rt:routing-protocols/pim-base:pim/"
-       + "pim-base:address-family/pim-base:interfaces/"
-       + "pim-base:interface" {
+       + "pim-base:interfaces/pim-base:interface/"
+       + "pim-base:address-family" {
        description "PIM BIDIR augmentation.";
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 33]
+
+Internet-Draft                  PIM YANG                       July 2015
+
 
        container bidir {
          presence "Present to enable BIDIR mode.";
          description
            "PIM BIDIR configuration data.";
        } // bidir
+     } // augment
+
+     augment "/rt:routing/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:address-family/pim-rp:rp/"
+       + "pim-rp:static-rp/pim-rp:ipv4-rp" {
+       description "PIM BIDIR augmentation.";
+
+       uses static-rp-bidir-container;
+     } // augment
+
+     augment "/rt:routing/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:address-family/pim-rp:rp/"
+       + "pim-rp:static-rp/pim-rp:ipv6-rp" {
+       description "PIM BIDIR augmentation.";
+
+       uses static-rp-bidir-container;
      } // augment
 
      /*
@@ -1840,14 +1898,17 @@ Internet-Draft                  PIM YANG                       July 2015
      /*
       * Notifications
       */
+
+
+
+Liu, et al.             Expires January 30, 2016               [Page 34]
+
+Internet-Draft                  PIM YANG                       July 2015
+
+
    }
    <CODE ENDS>
 
-
-
-Liu, et al.              Expires January 4, 2016               [Page 33]
-
-Internet-Draft                  PIM YANG                       July 2015
 
 
 6.  TODO list
@@ -1893,74 +1954,83 @@ Internet-Draft                  PIM YANG                       July 2015
    Fangwei, Robert Kebler, Tanmoy Kundu, Liu Yisong, Mahesh Sivakumar,
    and Stig Venaas for their valuable contributions.
 
-10.  References
 
 
 
-
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 34]
+Liu, et al.             Expires January 30, 2016               [Page 35]
 
 Internet-Draft                  PIM YANG                       July 2015
 
+
+10.  References
 
 10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119, March 1997.
+              Requirement Levels", BCP 14, RFC 2119, DOI 10.17487/
+              RFC2119, March 1997,
+              <http://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC6020]  Bjorklund, M., "YANG - A Data Modeling Language for the
-              Network Configuration Protocol (NETCONF)", RFC 6020,
-              October 2010.
+   [RFC6020]  Bjorklund, M., Ed., "YANG - A Data Modeling Language for
+              the Network Configuration Protocol (NETCONF)", RFC 6020,
+              DOI 10.17487/RFC6020, October 2010,
+              <http://www.rfc-editor.org/info/rfc6020>.
 
-   [RFC6241]  Enns, R., Bjorklund, M., Schoenwaelder, J., and A.
-              Bierman, "Network Configuration Protocol (NETCONF)", RFC
-              6241, June 2011.
+   [RFC6241]  Enns, R., Ed., Bjorklund, M., Ed., Schoenwaelder, J., Ed.,
+              and A. Bierman, Ed., "Network Configuration Protocol
+              (NETCONF)", RFC 6241, DOI 10.17487/RFC6241, June 2011,
+              <http://www.rfc-editor.org/info/rfc6241>.
 
    [I-D.ietf-netmod-rfc6087bis]
               Bierman, A., "Guidelines for Authors and Reviewers of YANG
-              Data Model Documents", draft-ietf-netmod-rfc6087bis-03
-              (work in progress), June 2015.
+              Data Model Documents", draft-ietf-netmod-rfc6087bis-04
+              (work in progress), July 2015.
 
 10.2.  Informative References
 
-   [RFC3569]  Bhattacharyya, S., "An Overview of Source-Specific
-              Multicast (SSM)", RFC 3569, July 2003.
+   [RFC3569]  Bhattacharyya, S., Ed., "An Overview of Source-Specific
+              Multicast (SSM)", RFC 3569, DOI 10.17487/RFC3569, July
+              2003, <http://www.rfc-editor.org/info/rfc3569>.
 
    [RFC3973]  Adams, A., Nicholas, J., and W. Siadak, "Protocol
               Independent Multicast - Dense Mode (PIM-DM): Protocol
-              Specification (Revised)", RFC 3973, January 2005.
+              Specification (Revised)", RFC 3973, DOI 10.17487/RFC3973,
+              January 2005, <http://www.rfc-editor.org/info/rfc3973>.
 
    [RFC4601]  Fenner, B., Handley, M., Holbrook, H., and I. Kouvelas,
               "Protocol Independent Multicast - Sparse Mode (PIM-SM):
-              Protocol Specification (Revised)", RFC 4601, August 2006.
+              Protocol Specification (Revised)", RFC 4601, DOI 10.17487/
+              RFC4601, August 2006,
+              <http://www.rfc-editor.org/info/rfc4601>.
 
    [RFC4610]  Farinacci, D. and Y. Cai, "Anycast-RP Using Protocol
-              Independent Multicast (PIM)", RFC 4610, August 2006.
-
-   [RFC5015]  Handley, M., Kouvelas, I., Speakman, T., and L. Vicisano,
-              "Bidirectional Protocol Independent Multicast (BIDIR-
-              PIM)", RFC 5015, October 2007.
-
-   [RFC5059]  Bhaskar, N., Gall, A., Lingard, J., and S. Venaas,
-              "Bootstrap Router (BSR) Mechanism for Protocol Independent
-              Multicast (PIM)", RFC 5059, January 2008.
-
-   [RFC6087]  Bierman, A., "Guidelines for Authors and Reviewers of YANG
-              Data Model Documents", RFC 6087, January 2011.
+              Independent Multicast (PIM)", RFC 4610, DOI 10.17487/
+              RFC4610, August 2006,
+              <http://www.rfc-editor.org/info/rfc4610>.
 
 
 
 
 
 
-
-Liu, et al.              Expires January 4, 2016               [Page 35]
+Liu, et al.             Expires January 30, 2016               [Page 36]
 
 Internet-Draft                  PIM YANG                       July 2015
 
+
+   [RFC5015]  Handley, M., Kouvelas, I., Speakman, T., and L. Vicisano,
+              "Bidirectional Protocol Independent Multicast (BIDIR-
+              PIM)", RFC 5015, DOI 10.17487/RFC5015, October 2007,
+              <http://www.rfc-editor.org/info/rfc5015>.
+
+   [RFC5059]  Bhaskar, N., Gall, A., Lingard, J., and S. Venaas,
+              "Bootstrap Router (BSR) Mechanism for Protocol Independent
+              Multicast (PIM)", RFC 5059, DOI 10.17487/RFC5059, January
+              2008, <http://www.rfc-editor.org/info/rfc5059>.
+
+   [RFC6087]  Bierman, A., "Guidelines for Authors and Reviewers of YANG
+              Data Model Documents", RFC 6087, DOI 10.17487/RFC6087,
+              January 2011, <http://www.rfc-editor.org/info/rfc6087>.
 
    [I-D.ietf-netmod-routing-cfg]
               Lhotka, L. and A. Lindem, "A YANG Data Model for Routing
@@ -1999,18 +2069,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Liu, et al.              Expires January 4, 2016               [Page 36]
+Liu, et al.             Expires January 30, 2016               [Page 37]

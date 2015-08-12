@@ -24,6 +24,16 @@
       "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-netmod-rfc6087bis.xml">
     <!ENTITY I-D.ietf-netmod-routing-cfg SYSTEM
       "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-netmod-routing-cfg.xml">
+    <!ENTITY pim-base-tree SYSTEM "ietf-pim-base_tree.txt">
+    <!ENTITY pim-base-yang SYSTEM "ietf-pim-base.yang">
+    <!ENTITY pim-rp-tree SYSTEM "ietf-pim-rp_tree.txt">
+    <!ENTITY pim-rp-yang SYSTEM "ietf-pim-rp.yang">
+    <!ENTITY pim-sm-tree SYSTEM "ietf-pim-sm_tree.txt">
+    <!ENTITY pim-sm-yang SYSTEM "ietf-pim-sm.yang">
+    <!ENTITY pim-dm-tree SYSTEM "ietf-pim-dm_tree.txt">
+    <!ENTITY pim-dm-yang SYSTEM "ietf-pim-dm.yang">
+    <!ENTITY pim-bidir-tree SYSTEM "ietf-pim-bidir_tree.txt">
+    <!ENTITY pim-bidir-yang SYSTEM "ietf-pim-bidir.yang">
 ]>
 
 <!-- may be omitted for very short documents -->
@@ -168,13 +178,21 @@
         <t>
           This model is designed to represent the capabilities of PIM devices
           with various specifications, including some with basic subsets of the
-          PIM protocol. Since a design goal of this draft is to define a data
-          model that is capable of representing all of these implementations,
-          these modules declare a number of features representing capabilities
-          that not all deployed devices support.
+          PIM protocol. The main design goals of this draft are that any major
+          now-existing implementation may be said to support the base model, and 
+          that the configuration of all implementations meeting the specification
+          is easy to express through some combination of the features in the base
+          model and simple vendor augmentations. 
         </t>
         <t>
-          The extensive use of feature declarations should substantially
+          There is also value in widely-supported features being standardized, to 
+          save work for individual vendors, and so that mapping between different 
+          vendors' configuration is not needlessly complicated. Therefore these
+          modules declare a number of features representing capabilities that
+          not all deployed devices support.
+        </t>
+        <t>
+          The extensive use of feature declarations should also substantially
           simplify the capability negotiation process for a vendor's PIM 
           implementation.
         </t>
@@ -205,6 +223,31 @@
           default specified, so they need not be explicitly configured.
         </t>
       </section>
+      <section title="Position of address family in hierarchy">
+        <t>
+          The current draft contains address-family as a node in the hierarchy
+          multiple times: both under the interface list, and under the PIM instance.
+          This is similar to the IS-IS yang draft model.
+        </t>
+        <t>
+          The reasoning for this is to make it easier for implementations in which 
+          configuration options are not supported for specific address families.
+        </t>
+        <t>
+          For these implementations, the restriction that interface configuration 
+          must be address-family independent must either be expressed as a vendor
+          augmentation of an address-family-independent parameter above the
+          address-family level, or by a constraint on the base model objects of a
+          form similar to:
+        </t>
+        <t>
+          must “. = ../../address-family[address-family='ipv4']/
+            interface[interface=current()/sibling:interface]/dr-priority” {
+            error-app-tag dr-priority-mismatch;
+            error-message "Error: IPv6 DR priority must match IPv4 DR priority ";
+          }
+        </t>
+      </section>
     </section>
 
     <section title="Unresolved Issues">
@@ -219,110 +262,28 @@
           "TODO list" section below.
         </t>
       </section>
-      <section title="Position of address family in hierarchy">
-        <t>
-          The current draft (1) has an address-family container at a high level in
-          the hierarchy of the model, with an interface list as a child object. This
-          is a similar structure to the draft OSPF YANG model. There is ongoing
-          discussion about this decision in the design team, so this may be considered
-          unresolved.
-        </t>
-        <t>
-          An alternative structure (2) would be for the address family to be a sub-
-          list of the interface object. We would then provide interface configuration
-          objects at both an address family-specific and a non-AF-specific level, 
-          exposing both options as mutually-exclusive features. This would be a similar
-          structure to the IS-IS YANG draft.
-        </t>
-        <t>
-          Another option (3) would be to expose both sets of objects, address-family
-          specific and all-address-family, both exposed as features. Vendors could 
-          then advertise support for one or other of the features. This is the approach
-          taken in this draft for entity-scoped parameters like graceful restart
-          configuration.
-        </t>
-        <t>
-          The advantages of (1) over (2) are that interface objects effectively
-          represent {interface, address-family} pairs, which is in line with several
-          existing implementations. Expressing interface-scoped configuration that
-          is also address family dependent is made much easier using this model.
-        </t>
-        <t>
-          It also may be useful to be able to configure router-wide options on an 
-          address-family basis, which would be more inconvenient if address
-          family were a child object of the interface list. At least one deployed
-          implementation allows configuration of basic router-scoped concepts on 
-          an address family basis.
-        </t>
-        <t>
-          The main disadvantage of (1) compared to (2) is for implementations that
-          configure interfaces on an address-family-independent basis with one set
-          of configuration. This is true of some existing vendors' implementations,
-          as PIM has a single specification for IPv4 and IPv6 address families, and 
-          for these implementations the structure (2) is more natural. For some 
-          interface parameters there is no clear use-case for address-family-specific
-          configuration.
-        </t>
-        <t>
-          For these implementations, the restriction that interface configuration 
-          must be address-family independent must be expressed somehow. This can be
-          done in various ways; perhaps the easiest is a constraint of a form similar
-          to:
-        </t>
-        <t>
-          must “. = ../../address-family[address-family='ipv4']/
-            interface[interface=current()/sibling:interface]/dr-priority” {
-            error-app-tag dr-priority-mismatch;
-            error-message "Error: IPv6 DR priority must match IPv4 DR priority ";
-          }
-        </t>
-        <t>
-          Conversely, if (2) were adopted, an implementation that allowed address-
-          family-specific configuration would have to make augmentations to the base
-          model in order to express that flexibility. Those augmentations would not be
-          particularly difficult to make, however.
-        </t>  
-        <t>
-          The advantage of (3) over (1) or (2) is that no such vendor augmentations or 
-          constraints would be required. It is likely that vendors' requirements under 
-          models (1) or (2) would be similar enough that option (3) would cover all 
-          needs in this area.
-        </t>
-        <t>
-          The advantage of (1) or (2) over (3) is just that the model is simpler and 
-          leaner, and that feature negotiation is simpler and easier to understand.
-        </t>
-      </section>
       <section title="RP configuration tree">
         <t>
           This draft of the model provides a module (currently called pim-rp)
           which is used for group range mapping configuration. Though some of 
-          this configuration is only relevant for some PIM modes, the pim-rp
-          structure itself is independent of the PIM mode structures. 
+          this configuration is defined in the modules for individual PIM modes,
+          the pim-rp structure itself is independent of the PIM mode structures. 
         </t>
         <t>
-          The main advantage of this structure is that it substantially 
-          simplifies the representation of the mapping algorithm from a specific
-          group address to its PIM mode and configuration. Validation is also 
-          easier, as only the pim-rp module itself needs to be checked if there
-          is another entry with a conflicting or inconsistent group prefix.
+          The main disadvantage of this structure is that it obscures the mapping
+          from group address to PIM mode, unlike a hypothetical indexed by group
+          range. This also makes the process of validating whether a group mapping
+          policy contradicts another more complicated.
         </t>
         <t>
-          There are also some advantages to this approach in non-duplication of
-          configuration parameters that are specific to multiple PIM modes, such 
-          as BSR.
+          However, as the thing that is mapped is defined in terms of a general
+          abstract policy object (which could be a policy, an ACL, or a group
+          range, according to implementation), it is not practical to index on in
+          the base model.
         </t>
         <t>
-          The current name of this module is pim-rp, as it is roughly analogous
-          to the pimStaticRPTable in the PIM MIB, and it is currently indexed by
-          RP.
-        </t>
-        <t>
-          However, as it is used for some group-range-scoped configuration not
-          directly related to RPs, and because a single RP address might need two
-          rows in the table (for SM and BI-DIR), it might be better to call this
-          something like pim-group-mapping and index it on group range. This is
-          still under discussion.
+          Operational state reporting does not have this problem, as there a mapping
+          by group range is straightforward and helpful to network operators.
         </t>
       </section>
       <section title="Passive mode">
@@ -336,6 +297,26 @@
           and also not used for multicast forwarding. This may be used to restrict
           dense-mode flooding, for example. This will likely be included as a feature
           in a future draft, but the details are under discussion.
+        </t>
+      </section>
+      <section title="Issues blocked on other model designers">
+        <t>
+          Some questions must be resolved with reference to other yang models, and so
+          the resolution may be blocked on a decision from another body. Currently 
+          these issues are:
+          <list style='numbers'>
+            <t>
+              The position of BFD in the configuration; does the BFD model augment
+              various different protocols, or do the protocols have to augment 
+              themselves individually to support BFD?
+            </t>
+            <t>
+              The abstract concept of a "set of IP addresses", as represented in 
+              implementations by prefixes, ACLs or policy statements, is a general
+              concept out of the scope of this document. It will presumably have a 
+              yang data-type the instantiation of which is vendor-specific.
+            </t>
+          </list>
         </t>
       </section>
     </section>
@@ -364,1268 +345,72 @@
             </t>
           </list>
         </t>
-        <figure><artwork><![CDATA[
-module: ietf-pim-base
-augment /rt:routing/rt:routing-instance/rt:routing-protocols:
-   +--rw pim
-      +--rw graceful-restart
-      |  +--rw enabled?    boolean
-      |  +--rw duration?   uint16
-      +--rw address-family* [address-family]
-         +--rw address-family      identityref
-         +--rw graceful-restart
-         |  +--rw enabled?    boolean
-         |  +--rw duration?   uint16
-         +--rw interfaces
-            +--rw interface* [interface]
-               +--rw interface            if:interface-ref
-               +--rw dr-priority?         uint32
-               +--rw hello-interval?      uint16
-               +--rw (hello-holdtime-or-multipler)?
-               |  +--:(holdtime) {intf-hello-holdtime}?
-               |  |  +--rw hello-holdtime?      uint16
-               |  +--:(multipler) {intf-hello-multipler}?
-               |     +--rw hello-multipler?     uint8
-               +--rw jp-interval?         uint16 {intf-jp-interval}?
-               +--rw (jp-holdtime-or-multipler)?
-               |  +--:(holdtime) {intf-jp-holdtime}?
-               |  |  +--rw jp-holdtime?         uint16
-               |  +--:(multipler) {intf-jp-multipler}?
-               |     +--rw jp-multipler?        uint8
-               +--rw propagation-delay?   uint16 {intf-propagation-delay}?
-               +--rw override-interval?   uint16 {intf-override-interval}?
-               +--rw passive?   empty
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
-   +--ro pim
-      +--ro address-family* [address-family]
-         +--ro address-family    identityref
-         +--ro interfaces
-            +--ro interface* [interface]
-               +--ro interface    if:interface-ref
-        ]]></artwork></figure>
+        <figure><artwork>
+          &pim-base-tree;
+        </artwork></figure>
       </section>
       <section title="PIM RP module">
         <t>
-          The PIM RP module contains configuration information scoped to 
+          The PIM RP module contains configuration information scoped to RPs or 
           ranges of group addresses. This does not belong in the hierarchy
-          under any PIM mode, as it is how group ranges are assigned to PIM
-          modes.
+          under any PIM mode, but is augmented by the individual mode-specific 
+          modules as appropriate.
         </t>
-        <t>
-          Some of the content of the module, however, is only relevant to some
-          modes (for example, BSR is only relevant to ASM and BIDIR). This is 
-          clarified in the module itself using "if-feature" and "when" statements.
-        </t>
-        <figure><artwork><![CDATA[
-module: ietf-pim-rp
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family:
-   +--rw rp
-      +--rw static-rp
-      |  +--rw ipv4-rp* [ipv4-addr]
-      |  |  +--rw ipv4-addr      inet:ipv4-address
-      |  |  +--rw policy-name?   string
-      |  |  +--rw override?      boolean {static-rp-override}?
-      |  |  +--rw mode?          identityref
-      |  +--rw ipv6-rp* [ipv6-addr]
-      |     +--rw ipv6-addr      inet:ipv6-address
-      |     +--rw policy-name?   string
-      |     +--rw mode?          identityref
-      +--rw bsr {bsr}?
-         +--rw bsr-candidate!
-         |  +--rw (interface-or-address)?
-         |  |  +--:(interface) {candidate-interface}?
-         |  |  |  +--rw interface           if:interface-ref
-         |  |  +--:(ipv4-address) {candidate-ipv4}?
-         |  |  |  +--rw ipv4-address        inet:ipv4-address
-         |  |  +--:(ipv6-address) {candidate-ipv6}?
-         |  |     +--rw ipv6-address        inet:ipv6-address
-         |  +--rw hash-mask-length    uint8
-         |  +--rw priority            uint8
-         +--rw rp-candidate-interface* [interface] {candidate-interface}?
-         |  +--rw interface    if:interface-ref
-         |  +--rw policy?      string
-         |  +--rw mode?        identityref
-         +--rw rp-candidate-ipv4-address* [ipv4-address] {candidate-ipv4}?
-         |  +--rw ipv4-address    inet:ipv4-address
-         |  +--rw policy?         string
-         |  +--rw mode?           identityref
-         +--rw rp-candidate-ipv6-address* [ipv6-address] {candidate-ipv6}?
-            +--rw ipv6-address    inet:ipv6-address
-            +--rw policy?         string
-            +--rw mode?           identityref
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family:
-   +--ro rp
-        ]]></artwork></figure>
+        <figure><artwork>
+          &pim-rp-tree;
+        </artwork></figure>
       </section>
       <section title="PIM-SM module">
         <t>
           This module covers Sparse Mode configuration, including PIM-ASM and PIM-SSM.
         </t>
-        <figure><artwork><![CDATA[
-module: ietf-pim-sm
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family:
-   +--rw sm
-      +--rw asm
-      |  +--rw anycast-rp!
-      |  |  +--rw ipv4
-      |  |  |  +--rw ipv4-anycast-rp* [anycast-addr rp-addr]
-      |  |  |     +--rw anycast-addr    inet:ipv4-address
-      |  |  |     +--rw rp-addr         inet:ipv4-address
-      |  |  +--rw ipv6
-      |  |     +--rw ipv6-anycast-rip* [anycast-addr rp-addr]
-      |  |        +--rw anycast-addr    inet:ipv6-address
-      |  |        +--rw rp-addr         inet:ipv6-address
-      |  +--rw spt-switch
-      |     +--rw infinity?      boolean {spt-switch-infinity}?
-      |     +--rw policy-name?   string {spt-switch-policy}?
-      +--rw ssm!
-         +--rw range-policy?   string
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family:
-   +--ro sm
-        ]]></artwork></figure>
+        <figure><artwork>
+          &pim-sm-tree;
+        </artwork></figure>
       </section>
       <section title="PIM-DM module">
         <t>
           This module will cover Dense Mode configuration.
         </t>
-        <figure><artwork><![CDATA[
-module: ietf-pim-dm
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family:
-   +--rw dm!
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family/pim-base:interfaces/
-pim-base:interface:
-   +--rw dm!
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family:
-   +--ro dm
-        ]]></artwork></figure>
+        <figure><artwork>
+          &pim-dm-tree;
+        </artwork></figure>
       </section>
       <section title="PIM-BIDIR module">
         <t>
           This module will cover Bidirectional PIM configuration.
         </t>
-        <figure><artwork><![CDATA[
-module: ietf-pim-bidir
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family:
-   +--rw bidir
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family/pim-base:interfaces/
-pim-base:interface:
-   +--rw bidir!
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family:
-   +--ro bidir
-        ]]></artwork></figure>
+        <figure><artwork>
+          &pim-bidir-tree;
+        </artwork></figure>
       </section>
     </section>
 
     <section title="PIM YANG Modules">
       <section title="PIM base module">
-        <figure><artwork><![CDATA[
-<CODE BEGINS>
-module ietf-pim-base {
-  namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
-  // replace with IANA namespace when assigned
-  prefix pim-base;
-
-  import ietf-interfaces {
-    prefix "if";
-  }
-  
-  import ietf-routing {
-    prefix "rt";
-  }
-  
-  organization
-    "IETF PIM Working Group";
-
-  contact
-    "WG Web:   <http://tools.ietf.org/wg/pim/>
-     WG List:  <mailto:pim@ietf.org>
-
-     WG Chair: Stig Venaas
-               <mailto:stig@venaas.com>
-
-     WG Chair: Mike McBride
-               <mailto:mmcbride7@gmail.com>
- 
-     Editors:   ";
-
-  description
-    "The module defines a collection of YANG definitions common for
-    all PIM modes.";
-  
-  revision 2015-06-22 {
-    description
-      "Initial revision.";
-    reference
-      "RFC XXXX: A YANG Data Model for PIM";
-  }
-
-  /*
-   * Features
-   */
-  feature global-graceful-restart {
-    description
-      "Global configuration for graceful restart support.";
-  }
-
-  feature intf-hello-holdtime {
-    description 
-      "Support configuration of interface hello holdtime.";
-  }
-
-  feature intf-hello-multipler {
-    description 
-      "Support configuration of interface hello multipler.";
-  }
-
-  feature intf-jp-interval {
-    description 
-      "Support configuration of interface join prune interval.";
-  }
-
-  feature intf-jp-holdtime {
-    description 
-      "Support configuration of interface join prune holdtime.";
-  }
-
-  feature intf-jp-multipler {
-    description 
-      "Support configuration of interface join prune multipler.";
-  }
-
-  feature intf-propagation-delay {
-    description 
-      "Support configuration of interface propagation delay.";
-  }
-  
-  feature intf-override-interval {
-    description 
-      "Support configuration of interface override interval.";
-  }
-
-  feature per-af-graceful-restart {
-    description
-      "Per AF configuration for graceful restart support.";
-  }
-  
-  /*
-   * Identities
-   */
-
-  /*
-   * Groupings
-   */
-  grouping global-attributes {
-    description
-      "A Grouping defining global configuration attributes.";
-    uses graceful-restart-container {
-      if-feature global-graceful-restart;
-    }
-  }
-
-  grouping graceful-restart-container {
-    description
-      "A grouping defining a container of graceful restart 
-      attributes.";
-    container graceful-restart {
-      leaf enabled {
-        type boolean;
-        description
-          "Enable or disable graceful restart.";
-      }
-      leaf duration {
-        type uint16;
-        units "seconds";
-        description
-          "Maximum time for graceful restart to finish.";
-      }
-      description
-        "Container of graceful restart attributes.";
-    }
-  }
-
-  grouping interface-attributes {
-    description
-      "A grouping defining interface attributes.";
-    leaf dr-priority {
-      type uint32;
-      description "DR priority";
-    }
-    leaf hello-interval {
-      type uint16;
-      description "Hello interval";
-    }
-    choice hello-holdtime-or-multipler {
-      description "Use holdtime or multipler";
-      case holdtime {
-        if-feature intf-hello-holdtime;
-        leaf hello-holdtime {
-          type uint16;
-          description "Hello holdtime";
-        }
-      }
-      case multipler {
-        if-feature intf-hello-multipler;
-        leaf hello-multipler {
-          type uint8;
-          description "Hello multipler";
-        }
-      }
-    }
-    leaf jp-interval {
-      if-feature intf-jp-interval;
-      type uint16;
-      description "Join prune interval";
-    }
-    choice jp-holdtime-or-multipler {
-      description "Use holdtime or multipler";
-      case holdtime {
-        if-feature intf-jp-holdtime;
-        leaf jp-holdtime {
-          type uint16;
-          description "Join prune holdtime";
-        }
-      }
-      case multipler {
-        if-feature intf-jp-multipler;
-        leaf jp-multipler {
-          type uint8;
-          description "Join prune multipler";
-        }
-      }
-    }
-    leaf propagation-delay {
-      if-feature intf-propagation-delay;
-      type uint16;
-      description "Propagation description";
-    }
-    leaf override-interval {
-      if-feature intf-override-interval;
-      type uint16;
-      description "Override interval";
-    }
-    leaf passive {
-      type empty;
-      description 
-          "Specifies that no PIM messages are sent out of the PIM
-          interface, but the interface can be included in a multicast
-          forwarding entry.";
-    }      
-  }
-
-  grouping per-af-attributes {
-    description
-      "A grouping defining per address family attributes.";
-    uses graceful-restart-container {
-      if-feature per-af-graceful-restart;
-    }
-  }
-
-  /*
-   * Configuration data nodes
-   */
-
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols" {
-    description 
-      "PIM augmentation to routing instance configuration.";
-
-    container pim {
-      description
-        "PIM configuration data.";
-
-      uses global-attributes;
-
-      list address-family {
-        key "address-family";
-        description
-          "Each list entry for one address family.";
-        uses rt:address-family;
-        uses per-af-attributes;
-
-        container interfaces {
-          description
-            "Containing a list of interfaces.";
-          list interface {
-            key "interface";
-            description
-              "List of pim interfaces.";
-            leaf interface {
-              type if:interface-ref;
-              description
-                "Reference to an entry in the global interface
-                list.";
-            }
-            uses interface-attributes;
-          } // interface
-        }
-      } // address-family
-    } // pim
-  } // augment
-
-  /*
-   * Operational state data nodes
-   */
-
-  augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols" {
-    description
-      "PIM augmentation to routing instance state.";
-    container pim {
-      description
-        "PIM state data.";
-
-      list address-family {
-        key "address-family";
-        description
-          "Each list entry for one address family.";
-        uses rt:address-family;
-   
-        container interfaces {
-          description
-            "Containing a list of interfaces.";
-          list interface {
-            key "interface";
-            description
-              "List of pim interfaces.";
-            leaf interface {
-              type if:interface-ref;
-              description
-                "Reference to an entry in the global interface
-                list.";
-            }
-          } // interface
-        }
-      } // address-family
-    } // pim
-  } // augment
-
-  /*
-   * RPCs
-   */
-
-  /*
-   * Notifications
-   */
-}
-<CODE ENDS>
-        ]]></artwork></figure>
+        <figure><artwork>
+          &pim-base-yang;
+        </artwork></figure>
       </section>
       <section title="PIM RP module">
-        <figure><artwork><![CDATA[
-<CODE BEGINS>
-module ietf-pim-rp {
-  namespace "urn:ietf:params:xml:ns:yang:ietf-pim-rp";
-  // replace with IANA namespace when assigned
-  prefix pim-rp;
-
-  import ietf-inet-types {
-    prefix "inet";
-  }
-  
-  import ietf-interfaces {
-    prefix "if";
-  }
-  
-  import ietf-routing {
-    prefix "rt";
-  }
-  
-  import ietf-pim-base {
-    prefix "pim-base";
-  }
-
-  organization
-    "IETF PIM Working Group";
-
-  contact
-    "WG Web:   <http://tools.ietf.org/wg/pim/>
-     WG List:  <mailto:pim@ietf.org>
-
-     WG Chair: Stig Venaas
-               <mailto:stig@venaas.com>
-
-     WG Chair: Mike McBride
-               <mailto:mmcbride7@gmail.com>
- 
-     Editors:   ";
-
-  description
-    "The YANG module defines a PIM RP (Rendezvous Point) model.";
-  
-  revision 2015-07-01 {
-    description
-      "Initial revision.";
-    reference
-      "RFC XXXX: A YANG Data Model for PIM";
-  }
-
-  /*
-   * Features
-   */
-  feature bsr {
-    description
-      "This feature indicates that the system supports BSR.";
-  }
-
-  feature static-rp-override {
-    description
-      "This feature indicates that the system supports configuration
-      of static RP override.";
-  }
-
-  feature candidate-interface {
-    description
-      "This feature indicates that the system supports using 
-      an interface to configure a BSR or RP candidate.";
-  }
-
-  feature candidate-ipv4 {
-    description
-      "This feature indicates that the system supports using 
-      an IPv4 address to configure a BSR or RP candidate.";
-  }
-
-  feature candidate-ipv6 {
-    description
-      "This feature indicates that the system supports using 
-      an IPv6 address to configure a BSR or RP candidate.";
-  }
-  
-  /*
-   * Identities
-   */
-  identity rp-mode {
-    description
-      "The mode of an RP, which can be SM (Sparse Mode) or
-      BIDIR (bi-directional).";
-  }
-
-  /*
-   * Groupings
-   */
-
-  /*
-   * Configuration data nodes
-   */
-
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
-    description "PIM RP augmentation.";
-
-    container rp {
-      description
-        "PIM RP configuration data.";
-
-      container static-rp {
-        description
-          "Containing static RP attributes.";
-        list ipv4-rp {
-          when "../../../address-family = 'rt:ipv4'" {
-            description
-              "Only applicable to ipv4 address family.";
-          }
-          key "ipv4-addr";
-          description 
-            "A list of IPv4 RP addresses.";
-          leaf ipv4-addr {
-            type inet:ipv4-address;
-            description 
-              "Specifies a static RP address.";
-          }
-          leaf policy-name {
-            type string;
-            description
-              "Static RP policy.";
-          }
-          leaf override {
-            if-feature static-rp-override;
-            type boolean;
-            description
-              "When there is a conflict between static RP and dynamic
-              RP, setting this attribute to 'true' will ask the
-              system to use static RP.";
-          }
-          leaf mode {
-            type identityref {
-              base rp-mode;
-            }
-            description
-              "RP mode.";
-          }
-        }
-        
-        list ipv6-rp {
-          when "../../../address-family = 'rt:ipv6'" {
-            description
-              "Only applicable to ipv6 address family.";
-          }
-          key "ipv6-addr";
-          description 
-            "A list of IPv6 RP addresses.";
-          leaf ipv6-addr {
-            type inet:ipv6-address;
-            description 
-              "Specifies a static RP address.";
-          }
-          leaf policy-name {
-            type string;
-            description
-              "Static RP policy.";
-          }
-          leaf mode {
-            type identityref {
-              base rp-mode;
-            }
-            description
-              "RP mode.";
-          }
-        }
-      }
-
-      container bsr {
-        if-feature bsr;
-        description 
-          "Containing BSR (BootStrap Router) attributes.";
-        
-        container bsr-candidate {
-          presence 
-            "Present to serve as a BSR candidate";
-          description 
-            "BSR candidate attributes.";
-
-          choice interface-or-address {
-            description
-              "Use either interface or ip-address.";
-            case interface {
-              if-feature candidate-interface;
-              leaf interface {
-                type if:interface-ref;
-                mandatory true;
-                description 
-                  "Interface to be used by BSR.";
-              }
-            }          
-            case ipv4-address {
-              when "../../../../address-family = 'rt:ipv4'" {
-                description
-                  "Only applicable to ipv4 address family.";
-              }
-              if-feature candidate-ipv4;
-              leaf ipv4-address {
-                type inet:ipv4-address;
-                mandatory true;
-                description
-                  "IP address to be used by BSR.";
-              }
-            }
-            case ipv6-address {
-              when "../../../../address-family = 'rt:ipv6'" {
-                description
-                  "Only applicable to ipv6 address family.";
-              }
-              if-feature candidate-ipv6;
-              leaf ipv6-address {
-                type inet:ipv6-address;
-                mandatory true;
-                description
-                  "IP address to be used by BSR.";
-              }
-            }
-          }
-
-          leaf hash-mask-length{
-            type uint8 {
-              range "0..32";
-            }
-            mandatory true;
-            description 
-              "Value contained in BSR messages used by all routers to
-              hash (map) to an RP.";
-          }
-          
-          leaf priority {
-            type uint8 {
-              range "0..255";
-            }
-            mandatory true;
-            description 
-              "BSR election priority among different candidate BSRs.
-              A larger value has a higher priority over a smaller
-              value.";
-            }
-        } // bsr-candidate
-        
-        list rp-candidate-interface {
-          if-feature candidate-interface;
-          key "interface";
-          description 
-            "A list of RP candidates";
-          leaf interface {
-            type if:interface-ref;
-            description 
-              "Interface that the RP candidate uses.";
-          }
-          
-          leaf policy {
-            type string;
-            description 
-              "ACL policy used to filter group addresses.";
-          }
-          leaf mode {
-            type identityref {
-              base rp-mode;
-            }
-            description
-              "RP mode.";
-          }
-        }
-
-        list rp-candidate-ipv4-address {
-          when "../../../address-family = 'rt:ipv4'" {
-            description
-              "Only applicable to ipv4 address family.";
-          }
-          if-feature candidate-ipv4;
-          key "ipv4-address";
-          description 
-            "A list of RP candidates";
-          leaf ipv4-address {
-            type inet:ipv4-address;
-            description 
-              "IPv4 address that the RP candidate uses.";
-          }
-          
-          leaf policy {
-            type string;
-            description 
-              "ACL policy used to filter group addresses.";
-          }
-          leaf mode {
-            type identityref {
-              base rp-mode;
-            }
-            description
-              "RP mode.";
-          }
-        }
-
-        list rp-candidate-ipv6-address {
-          when "../../../address-family = 'rt:ipv6'" {
-            description
-              "Only applicable to ipv6 address family.";
-          }
-          if-feature candidate-ipv6;
-          key "ipv6-address";
-          description 
-            "A list of RP candidates";
-          leaf ipv6-address {
-            type inet:ipv6-address;
-            description 
-              "IPv6 address that the RP candidate uses.";
-          }
-          
-          leaf policy {
-            type string;
-            description 
-              "ACL policy used to filter group addresses.";
-          }
-          leaf mode {
-            type identityref {
-              base rp-mode;
-            }
-            description
-              "RP mode.";
-          }
-        }
-      } // bsr
-    } // rp
-  } // augment
-
-  /*
-   * Operational state data nodes
-   */
-
-  augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
-    description
-      "PIM SM state.";
-
-    container rp {
-      description
-        "PIM RP state data.";
-    } // rp
-  } // augment
-
-  /*
-   * RPCs
-   */
-
-  /*
-   * Notifications
-   */
-}
-<CODE ENDS>
-        ]]></artwork></figure>
+        <figure><artwork>
+          &pim-rp-yang;
+        </artwork></figure>
       </section>
       <section title="PIM-SM module">
-        <figure><artwork><![CDATA[
-<CODE BEGINS>
-module ietf-pim-sm {
-  namespace "urn:ietf:params:xml:ns:yang:ietf-pim-sm";
-  // replace with IANA namespace when assigned
-  prefix pim-sm;
-
-  import ietf-inet-types {
-    prefix "inet";
-  }
-  
-  import ietf-routing {
-    prefix "rt";
-  }
-  
-  import ietf-pim-base {
-    prefix "pim-base";
-  }
-
-  import ietf-pim-rp {
-    prefix "pim-rp";
-  }
-
-  organization
-    "IETF PIM Working Group";
-
-  contact
-    "WG Web:   <http://tools.ietf.org/wg/pim/>
-     WG List:  <mailto:pim@ietf.org>
-
-     WG Chair: Stig Venaas
-               <mailto:stig@venaas.com>
-
-     WG Chair: Mike McBride
-               <mailto:mmcbride7@gmail.com>
- 
-     Editors:   ";
-
-  description
-    "The YANG module defines a sparse mode PIM model.";
-  
-  revision 2015-07-01 {
-    description
-      "Initial revision.";
-    reference
-      "RFC XXXX: A YANG Data Model for PIM";
-  }
-
-  /*
-   * Features
-   */
-  feature spt-switch-infinity {
-    description
-      "This feature indicates that the system supports configuration
-      choice whether to trigger the switchover from the rpt to the 
-      spt.";
-  }
-
-  feature spt-switch-policy {
-    description
-      "This feature indicates that the system supports configuring
-      policy for the switchover from the rpt to the spt.";
-  }
-  
-  /*
-   * Identities
-   */
-  identity sm {
-    base pim-rp:rp-mode;
-    description
-      "SM (Spars Mode).";
-  }
-
-  /*
-   * Groupings
-   */
-
-  /*
-   * Configuration data nodes
-   */
-
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
-    description "PIM SM augmentation.";
-
-    container sm {
-      description
-        "PIM SM configuration data.";
-
-      container asm {
-        description 
-          "ASM (Any Source Multicast) attributes.";
-
-        container anycast-rp {
-          presence 
-            "Present to enable anycast RP.";
-          description 
-            "Anycast RP attributes.";
-          
-          container ipv4 {
-            when "../../../../address-family = 'rt:ipv4'" {
-              description
-                "Only applicable to ipv4 address family.";
-            }
-            description 
-              "IPv4 attributes. Only applicable when 
-              pim-base:address-family is ipv4.";
-            list ipv4-anycast-rp {
-              key "anycast-addr rp-addr";
-              description 
-                "A list of anycast RP setttings.";
-              leaf anycast-addr {
-                type inet:ipv4-address;
-                description 
-                  "IP address of the anycast RP set. This IP address
-                  is used by the multicast groups or sources to join
-                  or register.";
-              }
-              
-              leaf rp-addr {
-                type inet:ipv4-address;
-                description 
-                  "IP address of the router configured with anycast
-                  RP. This is the IP address where the Register
-                  messages are forwarded.";
-              }
-            }
-          }
-          container ipv6 {
-            when "../../../../address-family = 'rt:ipv6'" {
-              description
-                "Only applicable to ipv6 address family.";
-            }
-            description 
-              "IPv6 attributes. Only applicable when 
-              pim-base:address-family is ipv6.";
-            list ipv6-anycast-rip {
-              key "anycast-addr rp-addr";
-              description 
-                "A list of anycast RP setttings.";
-              leaf anycast-addr {
-                type inet:ipv6-address;
-                description 
-                  "IP address of the anycast RP set. This IP address
-                  is used by the multicast groups or sources to join
-                  or register.";
-              }
-            
-              leaf rp-addr {
-                type inet:ipv6-address;
-                description
-                  "IP address of the router configured with anycast
-                  RP. This is the IP address where the Register
-                  messages are forwarded.";
-              }
-            }
-          }
-        }
-        
-        container spt-switch {
-          description
-            "SPT (Shortest Path Tree) switching attributes.";
-          leaf infinity {
-            if-feature spt-switch-infinity;
-            type boolean;
-            description
-              "The receiver's dr never triggers the
-              switchover from the rpt to the spt.";
-          }
-          leaf policy-name {
-            if-feature spt-switch-policy;
-            type string;
-            description
-              "Switch policy.";
-          }
-        }        
-      } // asm
-
-      container ssm {
-        presence 
-          "Present to enable SSM (Source-Specific Multicast).";
-        description 
-          "SSM (Source-Specific Multicast) attributes.";
-        
-        leaf range-policy {
-          type string;
-          description 
-            "Policy used to define SSM address range.";
-        }
-      } // ssm
-    } // sm
-  } // augment
-
-  /*
-   * Operational state data nodes
-   */
-
-  augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
-    description
-      "PIM SM state.";
-
-    container sm {
-      description
-        "PIM SM state data.";
-    } // sm
-  } // augment
-
-  /*
-   * RPCs
-   */
-
-  /*
-   * Notifications
-   */
-}
-<CODE ENDS>
-        ]]></artwork></figure>
+        <figure><artwork>
+          &pim-sm-yang;
+        </artwork></figure>
       </section>
       <section title="PIM-DM module">
-        <figure><artwork><![CDATA[
-<CODE BEGINS>
-module ietf-pim-dm {
-  namespace "urn:ietf:params:xml:ns:yang:ietf-pim-dm";
-  // replace with IANA namespace when assigned
-  prefix pim-dm;
-
-  import ietf-routing {
-    prefix "rt";
-  }
-  
-  import ietf-pim-base {
-    prefix "pim-base";
-  }
-
-  organization
-    "IETF PIM Working Group";
-
-  contact
-    "WG Web:   <http://tools.ietf.org/wg/pim/>
-     WG List:  <mailto:pim@ietf.org>
-
-     WG Chair: Stig Venaas
-               <mailto:stig@venaas.com>
-
-     WG Chair: Mike McBride
-               <mailto:mmcbride7@gmail.com>
- 
-     Editors:   ";
-
-  description
-    "The YANG module defines a DM (Dense Mode) PIM model.";
-  
-  revision 2015-06-22 {
-    description
-      "Initial revision.";
-    reference
-      "RFC XXXX: A YANG Data Model for PIM";
-  }
-
-  /*
-   * Features
-   */
-  
-  /*
-   * Identities
-   */
-
-  /*
-   * Groupings
-   */
-
-  /*
-   * Configuration data nodes
-   */
-
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
-    description "PIM DM augmentation.";
-
-    container dm {
-      presence "Present to enable dense-mode.";
-      description
-        "PIM DM configuration data.";
-    } // Dm
-  } // augment
-
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family/pim-base:interfaces/"
-    + "pim-base:interface" {
-    description "PIM DM augmentation to PIM base interface.";
-
-    container dm {
-      presence "Present to enable dense-mode.";
-      description
-        "PIM DM configuration data.";
-    } // sm
-  } // augment
-
-  /*
-   * Operational state data nodes
-   */
-
-  augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
-    description
-      "PIM DM state.";
-    container dm {
-      description
-        "PIM DM state data.";
-    } // dm
-  } // augment
-
-  /*
-   * RPCs
-   */
-
-  /*
-   * Notifications
-   */
-}
-<CODE ENDS>
-        ]]></artwork></figure>
+        <figure><artwork>
+          &pim-dm-yang;
+        </artwork></figure>
       </section>
       <section title="PIM-BIDIR module">
-        <figure><artwork><![CDATA[
-<CODE BEGINS>
-module ietf-pim-bidir {
-  namespace "urn:ietf:params:xml:ns:yang:ietf-pim-bidir";
-  // replace with IANA namespace when assigned
-  prefix pim-bidir;
-
-  import ietf-routing {
-    prefix "rt";
-  }
-  
-  import ietf-pim-base {
-    prefix "pim-base";
-  }
-
-  import ietf-pim-rp {
-    prefix "pim-rp";
-  }
-
-  organization
-    "IETF PIM Working Group";
-
-  contact
-    "WG Web:   <http://tools.ietf.org/wg/pim/>
-     WG List:  <mailto:pim@ietf.org>
-
-     WG Chair: Stig Venaas
-               <mailto:stig@venaas.com>
-
-     WG Chair: Mike McBride
-               <mailto:mmcbride7@gmail.com>
- 
-     Editors:   ";
-
-  description
-    "The YANG module defines a BIDIR (Bidirectional) mode PIM
-    model.";
-  
-  revision 2015-06-22 {
-    description
-      "Initial revision.";
-    reference
-      "RFC XXXX: A YANG Data Model for PIM";
-  }
-
-  /*
-   * Features
-   */
-  
-  /*
-   * Identities
-   */
-  identity bidir {
-    base pim-rp:rp-mode;
-    description
-      "BIDIR (Bidirectional) mode.";
-  }
-
-  /*
-   * Groupings
-   */
-
-  /*
-   * Configuration data nodes
-   */
-
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
-    description "PIM BIDIR augmentation.";
-
-    container bidir {
-      description
-        "PIM BIDIR configuration data.";
-    } // bidir
-  } // augment
-
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family/pim-base:interfaces/"
-    + "pim-base:interface" {
-    description "PIM BIDIR augmentation.";
-
-    container bidir {
-      presence "Present to enable BIDIR mode.";
-      description
-        "PIM BIDIR configuration data.";
-    } // bidir
-  } // augment
-
-  /*
-   * Operational state data nodes
-   */
-
-  augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
-    description
-      "PIM BIDIR state.";
-
-    container bidir {
-      description
-        "PIM BIDIR state data.";
-    } // bidir
-  } // augment
-
-  /*
-   * RPCs
-   */
-
-  /*
-   * Notifications
-   */
-}
-<CODE ENDS>
-        ]]></artwork></figure>
+        <figure><artwork>
+          &pim-bidir-yang;
+        </artwork></figure>
       </section>
     </section>
 

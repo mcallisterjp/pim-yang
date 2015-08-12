@@ -1,3 +1,4 @@
+<![CDATA[
 module: ietf-pim-bidir
 augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--rw bidir
@@ -13,3 +14,4 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
       +--rw override?      boolean {static-rp-override}?
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--ro bidir
+]]>

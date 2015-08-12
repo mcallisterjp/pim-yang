@@ -1,3 +1,4 @@
+<![CDATA[
 module: ietf-pim-base
 augment /rt:routing/rt:routing-instance/rt:routing-protocols:
    +--rw pim
@@ -177,3 +178,4 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
                      +--ro expire?          uint16
                      +--ro dr-priority?     uint32
                      +--ro bfd-status?      enumeration
+]]>

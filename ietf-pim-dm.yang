@@ -1,3 +1,5 @@
+<![CDATA[
+<CODE BEGINS>     
 module ietf-pim-dm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-dm";
   // replace with IANA namespace when assigned
@@ -100,3 +102,5 @@ module ietf-pim-dm {
    * Notifications
    */
 }
+<CODE ENDS>
+]]>
