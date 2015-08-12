@@ -3,6 +3,14 @@ module ietf-pim-base {
   // replace with IANA namespace when assigned
   prefix pim-base;
 
+  import ietf-inet-types {
+    prefix "inet";
+  }
+  
+  import ietf-yang-types {
+    prefix "yang";
+  }
+  
   import ietf-interfaces {
     prefix "if";
   }
@@ -30,7 +38,7 @@ module ietf-pim-base {
     "The module defines a collection of YANG definitions common for
     all PIM modes.";
   
-  revision 2015-07-27 {
+  revision 2015-08-10 {
     description
       "Initial revision.";
     reference
@@ -110,7 +118,7 @@ module ietf-pim-base {
     uses graceful-restart-container {
       if-feature global-graceful-restart;
     }
-  }
+  } // global-attributes 
 
   grouping graceful-restart-container {
     description
@@ -131,9 +139,9 @@ module ietf-pim-base {
       description
         "Container of graceful restart attributes.";
     }
-  }
+  } // graceful-restart-container
 
-  grouping interface-attributes {
+  grouping interface-config-attributes {
     description
       "A grouping defining interface attributes.";
     leaf dr-priority {
@@ -195,7 +203,290 @@ module ietf-pim-base {
       type uint16;
       description "Override interval";
     }
-  }
+  } // interface-config-attributes
+
+  grouping interface-state-attributes {
+    description
+      "A grouping defining interface attributes.";
+    list ipv4-address {
+      when "../../../address-family = 'rt:ipv4'" {
+        description
+          "Only applicable to ipv4 address family.";
+      }
+      key "ipv4-addr";
+      description "";
+      leaf ipv4-addr {
+        type inet:ipv4-address;
+        description "";
+      }
+      leaf dr-addr {
+        type inet:ipv4-address;
+        description "";
+      }
+      uses interface-state-ipv4-addr-attributes;
+    }
+    list ipv6-address {
+      when "../../../address-family = 'rt:ipv6'" {
+        description
+          "Only applicable to ipv6 address family.";
+      }
+      key "ipv6-addr";
+      description "";
+      leaf ipv6-addr {
+        type inet:ipv6-address;
+        description "";
+      }
+      leaf dr-addr {
+        type inet:ipv6-address;
+        description "";
+      }
+      uses interface-state-ipv6-addr-attributes;
+    }
+  } // interface-state-attributes
+
+  grouping interface-state-ipv4-addr-attributes {
+    description
+      "A grouping defining interface per addr attributes.";
+
+    leaf oper-status {
+      type enumeration {
+        enum up {
+          description
+          "Ready to pass packets.";
+        }
+        enum down {
+          description
+          "The interface does not pass any packets.";
+        }
+      }
+      description "";
+    }
+
+    leaf hello-expire {
+      if-feature intf-hello-interval;
+      type uint16;
+      units seconds;
+      description "Hello interval exiration time.";
+    }
+
+    list neighbor {
+      key "neighbor-addr";
+      description "";
+      leaf neighbor-addr {
+        type inet:ipv4-address;
+        description "";
+      }
+      leaf up-time {
+        type uint32;
+        units seconds;
+        description "";
+      }
+      leaf expire {
+        type uint16;
+        units seconds;
+        description "";
+      }
+      leaf dr-priority {
+        type uint32;
+        description "DR priority";
+      }
+      leaf bfd-status {
+        type enumeration {
+          enum up {
+            description
+            "";
+          }
+          enum down {
+            description
+            "";
+          }
+        }
+        description "";
+      }
+    }
+  } // interface-state-ipv4-addr-attributes
+
+  grouping interface-state-ipv6-addr-attributes {
+    description
+      "A grouping defining interface per addr attributes.";
+
+    leaf oper-status {
+      type enumeration {
+        enum up {
+          description
+          "Ready to pass packets.";
+        }
+        enum down {
+          description
+          "The interface does not pass any packets.";
+        }
+      }
+      description "";
+    }
+
+    leaf neighbor-count {
+      type uint16;
+      description "";
+    }
+
+    leaf hello-expire {
+      if-feature intf-hello-interval;
+      type uint16;
+      units seconds;
+      description "Hello interval exiration time.";
+    }
+
+    list neighbor {
+      key "neighbor-addr";
+      description "";
+      leaf neighbor-addr {
+        type inet:ipv6-address;
+        description "";
+      }
+      leaf up-time {
+        type uint32;
+        units seconds;
+        description "";
+      }
+      leaf expire {
+        type uint16;
+        units seconds;
+        description "";
+      }
+      leaf dr-priority {
+        type uint32;
+        description "DR priority";
+      }
+      leaf bfd-status {
+        type enumeration {
+          enum up {
+            description
+            "";
+          }
+          enum down {
+            description
+            "";
+          }
+        }
+        description "";
+      }
+    }
+  } // interface-state-ipv6-addr-attributes
+
+  grouping multicast-route-attributes {
+    description
+      "A grouping defining multicast route attributes.";
+    
+    leaf up-time {
+      type uint32;
+      units seconds;
+      description "";
+    }
+    leaf expire {
+      type uint16;
+      units seconds;
+      description "";
+    }
+    leaf next-join {
+      type uint16;
+      units seconds;
+      description "";
+    }
+    leaf rp-address {
+      type inet:ip-address;
+      description "";
+    }
+    container rpf {
+      description
+        "RPF related attributes.";
+      leaf neighbor {
+        type inet:ip-address;
+        description "";
+      }
+      leaf monitor {
+        type boolean;
+        description "";
+      }
+    }
+    leaf assert-winner {
+      type boolean;
+      description "";
+    }
+    leaf connected {
+      type boolean;
+      description "";
+    }
+    leaf join-spt {
+      type boolean;
+      description "";
+    }
+    leaf local {
+      type boolean;
+      description "";
+    }
+    container mode {
+      description "";
+      leaf bidir {
+        type boolean;
+        description "";
+      }
+      leaf dense {
+        type boolean;
+        description "";
+      }
+      leaf sparse {
+        type boolean;
+        description "";
+      }
+    }
+    leaf ssm-mdt {
+      type boolean;
+      description "";
+    }
+    leaf registered {
+      type boolean;
+      description "";
+    }
+    leaf msdp-learned {
+      type boolean;
+      description "";
+    }
+    leaf pruned {
+      type boolean;
+      description "";
+    }
+    leaf rp-bit {
+      type boolean;
+      description "";
+    }
+    leaf spt-bit {
+      type boolean;
+      description "";
+    }
+    leaf static-join-upstream {
+      type boolean;
+      description "";
+    }
+    leaf forwarding {
+      type boolean;
+      description "";
+    }
+    leaf invalid-incoming-interface {
+      type boolean;
+      description "";
+    }
+    leaf incoming-interface {
+      type if:interface-ref;
+      description
+        "Reference to an entry in the global interface
+        list.";
+    }
+    leaf-list outgoing-interface {
+      type if:interface-ref;
+      description
+        "A list of outgoing interfaces.";
+    }
+  } // multicast-route-attributes
 
   grouping per-af-attributes {
     description
@@ -203,7 +494,140 @@ module ietf-pim-base {
     uses graceful-restart-container {
       if-feature per-af-graceful-restart;
     }
-  }
+  } // per-af-attributes
+
+  grouping statistics-container {
+    description
+      "A container defining statistics attributes.";
+    container statistics {
+      description "";
+      leaf discontinuity-time {
+        type yang:date-and-time;
+        description
+          "The time on the most recent occasion at which any one
+          or more of the statistic counters suffered a
+          discontinuity. If no such discontinuities have occurred
+          since the last re-initialization of the local
+          management subsystem, then this node contains the time
+          the local management subsystem re-initialized itself.";
+      }
+      container error {
+        description "";
+        uses statistics-error;
+      }
+      container queue {
+        description "";
+        uses statistics-queue;
+      }
+      container received {
+        description "";
+        uses statistics-sent-received;
+      }
+      container sent {
+        description "";
+        uses statistics-sent-received;
+      }
+    }
+  } // statistics-container
+
+  grouping statistics-error {
+    description
+      "A grouping defining error statistics
+      attributes.";
+    uses statistics-sent-received;
+    leaf checksum {
+      type yang:counter32;
+      description
+        "The number of checksum errors.";
+    }    
+    leaf input-output {
+      type yang:counter32;
+      description
+        "The number of I/O errors.";
+    }    
+    leaf length {
+      type yang:counter32;
+      description
+        "The number of length errors.";
+    }    
+    leaf unknown {
+      type yang:counter32;
+      description
+        "The number of unknown errors.";
+    }    
+  } // statistics-error
+
+  grouping statistics-queue {
+    description
+      "A grouping defining queue statistics
+      attributes.";
+    leaf size {
+      type uint32;
+      description
+        "The size of the input queue.";
+    }    
+    leaf overflow {
+      type yang:counter32;
+      description
+        "The number of the input queue overflows.";
+    }    
+  } // statistics-queue
+
+  grouping statistics-sent-received {
+    description
+      "A grouping defining sent and received statistics
+      attributes.";
+    leaf assert {
+      type yang:counter32;
+      description
+        "The number of assert messages.";
+    }
+    leaf bsr {
+      type yang:counter32;
+      description
+        "The number of bsr messages.";
+    }
+    leaf candidate-rp-advertisement {
+      type yang:counter32;
+      description
+        "The number of Candidate-RP-advertisement messages.";
+    }
+    leaf graft {
+      type yang:counter32;
+      description
+        "The number of graft messages.";
+    }
+    leaf graft-ack {
+      type yang:counter32;
+      description
+        "The number of graft ack messages.";
+    }
+    leaf hello {
+      type yang:counter32;
+      description
+        "The number of hello messages.";
+    }
+    leaf join-prune {
+      type yang:counter32;
+      description
+        "The number of join/prune messages.";
+    }
+    leaf register {
+      type yang:counter32;
+      description
+        "The number of register messages.";
+    }
+    leaf register-stop {
+      type yang:counter32;
+      description
+        "The number of register stop messages.";
+    }
+    leaf state-refresh {
+      type yang:counter32;
+      description
+        "The number of state refresh messages.";
+    }
+  } // statistics-sent-received
 
   /*
    * Configuration data nodes
@@ -247,7 +671,7 @@ module ietf-pim-base {
             description
               "Each list entry for one address family.";
             uses rt:address-family;
-            uses interface-attributes;
+            uses interface-config-attributes;
           } // address-family
         } // interface
       } // interfaces
@@ -272,6 +696,48 @@ module ietf-pim-base {
           "Each list entry for one address family.";
         uses rt:address-family;
    
+        uses statistics-container;
+
+        container routes {
+          description "";
+          list ipv4-route {
+            when "../../../address-family = 'rt:ipv4'" {
+              description
+                "Only applicable to ipv4 address family.";
+            }
+            key "ipv4-prefix source-addr";
+            description "";
+            leaf ipv4-prefix {
+              type inet:ipv4-prefix;
+              description "";
+            }
+            leaf source-addr {
+              type inet:ipv4-address;
+              description "";
+            }
+
+            uses multicast-route-attributes;
+          } // ipv4-route
+
+          list ipv6-route {
+            when "../../../address-family = 'rt:ipv6'" {
+              description
+                "Only applicable to ipv4 address family.";
+            }
+            key "ipv6-prefix source-addr";
+            description "";
+            leaf ipv6-prefix {
+              type inet:ipv6-prefix;
+              description "";
+            }
+            leaf source-addr {
+              type inet:ipv6-address;
+              description "";
+            }
+
+            uses multicast-route-attributes;
+          } // ipv6-route
+        } // routes
       } // address-family
 
       container interfaces {
@@ -292,7 +758,8 @@ module ietf-pim-base {
             description
               "Each list entry for one address family.";
             uses rt:address-family;
-            
+            uses interface-config-attributes;
+            uses interface-state-attributes;            
           } // address-family
         } // interface
       } // interfaces

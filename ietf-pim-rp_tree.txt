@@ -31,3 +31,60 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
             +--rw mode?           identityref
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--ro rp
+      +--ro bsr {bsr}?
+      |  +--ro bsr-candidate!
+      |  |  +--ro (interface-or-address)?
+      |  |  |  +--:(interface) {candidate-interface}?
+      |  |  |  |  +--ro interface           if:interface-ref
+      |  |  |  +--:(ipv4-address) {candidate-ipv4}?
+      |  |  |  |  +--ro ipv4-address        inet:ipv4-address
+      |  |  |  +--:(ipv6-address) {candidate-ipv6}?
+      |  |  |     +--ro ipv6-address        inet:ipv6-address
+      |  |  +--ro hash-mask-length    uint8
+      |  |  +--ro priority            uint8
+      |  +--ro rp-candidate-interface* [interface] {candidate-interface}?
+      |  |  +--ro interface    if:interface-ref
+      |  |  +--ro policy?      string
+      |  |  +--ro mode?        identityref
+      |  +--ro rp-candidate-ipv4-address* [ipv4-address] {candidate-ipv4}?
+      |  |  +--ro ipv4-address    inet:ipv4-address
+      |  |  +--ro policy?         string
+      |  |  +--ro mode?           identityref
+      |  +--ro rp-candidate-ipv6-address* [ipv6-address] {candidate-ipv6}?
+      |  |  +--ro ipv6-address    inet:ipv6-address
+      |  |  +--ro policy?         string
+      |  |  +--ro mode?           identityref
+      |  +--ro bsr-addr?                          inet:ip-address
+      |  +--ro up-time?                           uint32
+      |  +--ro next-bootstrap?                    uint16
+      |  +--ro next-candidate-rp-advertisement?   uint16
+      |  +--ro rp-address?                        inet:ip-address
+      |  +--ro group-policy?                      string
+      +--ro rp-list
+      |  +--ro ipv4-rp* [ipv4-addr]
+      |  |  +--ro ipv4-addr           inet:ipv4-address
+      |  |  +--ro info-source-addr?   inet:ipv4-address
+      |  |  +--ro info-source-type?   enumeration
+      |  |  +--ro up-time?            uint32
+      |  |  +--ro expire?             uint16
+      |  +--ro ipv6-rp* [ipv6-addr]
+      |     +--ro ipv6-addr           inet:ipv6-address
+      |     +--ro info-source-addr?   inet:ipv6-address
+      |     +--ro info-source-type?   enumeration
+      |     +--ro up-time?            uint32
+      |     +--ro expire?             uint16
+      +--ro rp-mappings
+         +--ro ipv4-rp* [group rp-addr]
+         |  +--ro group               inet:ipv4-prefix
+         |  +--ro rp-addr             inet:ipv4-address
+         |  +--ro info-source-addr?   inet:ipv4-address
+         |  +--ro info-source-type?   enumeration
+         |  +--ro up-time?            uint32
+         |  +--ro expire?             uint16
+         +--ro ipv6-rp* [group rp-addr]
+            +--ro group               inet:ipv6-prefix
+            +--ro rp-addr             inet:ipv6-address
+            +--ro info-source-addr?   inet:ipv6-address
+            +--ro info-source-type?   enumeration
+            +--ro up-time?            uint32
+            +--ro expire?             uint16
