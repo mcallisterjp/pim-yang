@@ -1,4 +1,3 @@
-<![CDATA[
 module: ietf-pim-base
 augment /rt:routing/rt:routing-instance/rt:routing-protocols:
    +--rw pim
@@ -77,9 +76,10 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |  |     +--ro register-stop?                yang:counter32
       |  |     +--ro state-refresh?                yang:counter32
       |  +--ro routes
-      |     +--ro ipv4-route* [ipv4-prefix source-addr]
-      |     |  +--ro ipv4-prefix                   inet:ipv4-prefix
-      |     |  +--ro source-addr                   inet:ipv4-address
+      |     +--ro ipv4-route* [group source-addr is-rpt]
+      |     |  +--ro group                         inet:ipv4-prefix
+      |     |  +--ro source-addr                   union
+      |     |  +--ro is-rpt                        boolean
       |     |  +--ro up-time?                      uint32
       |     |  +--ro expire?                       uint16
       |     |  +--ro next-join?                    uint16
@@ -106,9 +106,10 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |     |  +--ro invalid-incoming-interface?   boolean
       |     |  +--ro incoming-interface?           if:interface-ref
       |     |  +--ro outgoing-interface*           if:interface-ref
-      |     +--ro ipv6-route* [ipv6-prefix source-addr]
+      |     +--ro ipv6-route* [ipv6-prefix source-addr is-rpt]
       |        +--ro ipv6-prefix                   inet:ipv6-prefix
-      |        +--ro source-addr                   inet:ipv6-address
+      |        +--ro source-addr                   union
+      |        +--ro is-rpt                        boolean
       |        +--ro up-time?                      uint32
       |        +--ro expire?                       uint16
       |        +--ro next-join?                    uint16
@@ -155,27 +156,17 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
                |     +--ro jp-multipler?        uint8
                +--ro propagation-delay?   uint16 {intf-propagation-delay}?
                +--ro override-interval?   uint16 {intf-override-interval}?
-               +--ro ipv4-address* [ipv4-addr]
-               |  +--ro ipv4-addr       inet:ipv4-address
-               |  +--ro dr-addr?        inet:ipv4-address
-               |  +--ro oper-status?    enumeration
-               |  +--ro hello-expire?   uint16 {intf-hello-interval}?
-               |  +--ro neighbor* [neighbor-addr]
-               |     +--ro neighbor-addr    inet:ipv4-address
-               |     +--ro up-time?         uint32
-               |     +--ro expire?          uint16
-               |     +--ro dr-priority?     uint32
-               |     +--ro bfd-status?      enumeration
-               +--ro ipv6-address* [ipv6-addr]
-                  +--ro ipv6-addr         inet:ipv6-address
-                  +--ro dr-addr?          inet:ipv6-address
-                  +--ro oper-status?      enumeration
-                  +--ro neighbor-count?   uint16
-                  +--ro hello-expire?     uint16 {intf-hello-interval}?
-                  +--ro neighbor* [neighbor-addr]
-                     +--ro neighbor-addr    inet:ipv6-address
-                     +--ro up-time?         uint32
-                     +--ro expire?          uint16
-                     +--ro dr-priority?     uint32
-                     +--ro bfd-status?      enumeration
-]]>
+               +--ro ipv4
+               |  +--ro address*   inet:ipv4-address
+               |  +--ro dr-addr?   inet:ipv4-address
+               +--ro ipv6
+               |  +--ro address*   inet:ipv6-address
+               |  +--ro dr-addr?   inet:ipv6-address
+               +--ro oper-status?         enumeration
+               +--ro hello-expire?        uint16 {intf-hello-interval}?
+               +--ro neighbor* [neighbor-addr]
+                  +--ro neighbor-addr    inet:ipv4-address
+                  +--ro up-time?         uint32
+                  +--ro expire?          uint16
+                  +--ro dr-priority?     uint32
+                  +--ro bfd-status?      enumeration
