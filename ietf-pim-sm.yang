@@ -1,5 +1,3 @@
-<![CDATA[
-<CODE BEGINS>    
 module ietf-pim-sm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-sm";
   // replace with IANA namespace when assigned
@@ -39,7 +37,7 @@ module ietf-pim-sm {
   description
     "The YANG module defines a sparse mode PIM model.";
   
-  revision 2015-07-27 {
+  revision 2015-09-07 {
     description
       "Initial revision.";
     reference
@@ -54,6 +52,13 @@ module ietf-pim-sm {
       "This feature indicates that the system supports configuration
       choice whether to trigger the switchover from the rpt to the 
       spt.";
+  }
+
+  feature spt-switch-threshold {
+    description
+      "This feature indicates that the system supports configuration
+      of a threshold of triggerring the switchover from the rpt to 
+      the spt.";
   }
 
   feature spt-switch-policy {
@@ -92,115 +97,137 @@ module ietf-pim-sm {
    */
 
   augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
+    + "rt:routing-protocols/pim-base:pim" {
     description "PIM SM augmentation.";
 
     container sm {
       description
         "PIM SM configuration data.";
 
-      container asm {
-        description 
-          "ASM (Any Source Multicast) attributes.";
+      list address-family {
+        key "address-family";
+        description
+          "Each list entry for one address family.";
 
-        container anycast-rp {
-          presence 
-            "Present to enable anycast RP.";
+        uses rt:address-family;
+        container asm {
           description 
-            "Anycast RP attributes.";
-          
-          container ipv4 {
-            when "../../../../address-family = 'rt:ipv4'" {
-              description
-                "Only applicable to ipv4 address family.";
-            }
+            "ASM (Any Source Multicast) attributes.";
+
+          container anycast-rp {
+            presence 
+              "Present to enable anycast RP.";
             description 
-              "IPv4 attributes. Only applicable when 
-              pim-base:address-family is ipv4.";
-            list ipv4-anycast-rp {
-              key "anycast-addr rp-addr";
-              description 
-                "A list of anycast RP setttings.";
-              leaf anycast-addr {
-                type inet:ipv4-address;
-                description 
-                  "IP address of the anycast RP set. This IP address
-                  is used by the multicast groups or sources to join
-                  or register.";
-              }
-              
-              leaf rp-addr {
-                type inet:ipv4-address;
-                description 
-                  "IP address of the router configured with anycast
-                  RP. This is the IP address where the Register
-                  messages are forwarded.";
-              }
-            }
-          }
-          container ipv6 {
-            when "../../../../address-family = 'rt:ipv6'" {
-              description
-                "Only applicable to ipv6 address family.";
-            }
-            description 
-              "IPv6 attributes. Only applicable when 
-              pim-base:address-family is ipv6.";
-            list ipv6-anycast-rip {
-              key "anycast-addr rp-addr";
-              description 
-                "A list of anycast RP setttings.";
-              leaf anycast-addr {
-                type inet:ipv6-address;
-                description 
-                  "IP address of the anycast RP set. This IP address
-                  is used by the multicast groups or sources to join
-                  or register.";
-              }
+              "Anycast RP attributes.";
             
-              leaf rp-addr {
-                type inet:ipv6-address;
+            container ipv4 {
+              when "../../../../address-family = 'rt:ipv4'" {
                 description
-                  "IP address of the router configured with anycast
-                  RP. This is the IP address where the Register
-                  messages are forwarded.";
+                  "Only applicable to ipv4 address family.";
+              }
+              description 
+                "IPv4 attributes. Only applicable when 
+                pim-base:address-family is ipv4.";
+              list ipv4-anycast-rp {
+                key "anycast-addr rp-addr";
+                description 
+                  "A list of anycast RP setttings.";
+                leaf anycast-addr {
+                  type inet:ipv4-address;
+                  description 
+                    "IP address of the anycast RP set. This IP
+                    address is used by the multicast groups or
+                    sources to join or register.";
+                }
+
+                leaf rp-addr {
+                  type inet:ipv4-address;
+                  description 
+                    "IP address of the router configured with anycast
+                    RP. This is the IP address where the Register
+                    messages are forwarded.";
+                }
+              }
+            }
+            container ipv6 {
+              when "../../../../address-family = 'rt:ipv6'" {
+                description
+                  "Only applicable to ipv6 address family.";
+              }
+              description 
+                "IPv6 attributes. Only applicable when 
+                pim-base:address-family is ipv6.";
+              list ipv6-anycast-rip {
+                key "anycast-addr rp-addr";
+                description 
+                  "A list of anycast RP setttings.";
+                leaf anycast-addr {
+                  type inet:ipv6-address;
+                  description 
+                    "IP address of the anycast RP set. This IP
+                    address is used by the multicast groups or
+                    sources to join or register.";
+                }
+                
+                leaf rp-addr {
+                  type inet:ipv6-address;
+                  description
+                    "IP address of the router configured with anycast
+                    RP. This is the IP address where the Register
+                    messages are forwarded.";
+                }
               }
             }
           }
-        }
-        
-        container spt-switch {
-          description
-            "SPT (Shortest Path Tree) switching attributes.";
-          leaf infinity {
-            if-feature spt-switch-infinity;
-            type boolean;
+          
+          container spt-switch {
             description
-              "The receiver's dr never triggers the
-              switchover from the rpt to the spt.";
-          }
-          leaf policy-name {
-            if-feature spt-switch-policy;
-            type string;
-            description
-              "Switch policy.";
-          }
-        }        
-      } // asm
-
-      container ssm {
-        presence 
-          "Present to enable SSM (Source-Specific Multicast).";
-        description 
-          "SSM (Source-Specific Multicast) attributes.";
+              "SPT (Shortest Path Tree) switching attributes.";
+            choice trigger {
+              description
+                "Options to trigger switchover from the rpt to the
+                spt.";
+              case infinity {
+                leaf infinity {
+                  if-feature spt-switch-infinity;
+                  type boolean;
+                  description
+                    "The receiver's dr never triggers the
+                    switchover from the rpt to the spt.";
+                }
+              }
+              case threshold {
+                leaf threshold {
+                  if-feature spt-switch-threshold;
+                  type uint32;
+                  description
+                    "After this threshold, the receiver's dr triggers
+                    the switchover from the rpt to the spt.";
+                }
+              }
+            }
+            leaf policy-name {
+              if-feature spt-switch-policy;
+              type string;
+              description
+                "Switch policy.";
+            }
+          }        
+        } // asm
         
-        leaf range-poligy {
-          type string;
+        container ssm {
+          presence 
+            "Present to enable SSM (Source-Specific Multicast).";
           description 
-            "Policy used to define SSM address range.";
-        }
-      } // ssm
+            "SSM (Source-Specific Multicast) attributes.";
+          
+          leaf range-poligy {
+            type string;
+            description 
+              "Policy used to define SSM address range.";
+          }
+        } // ssm
+      } // list address-family
     } // sm
   } // augment
 
@@ -248,14 +275,21 @@ module ietf-pim-sm {
    */
 
   augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
+    + "rt:routing-protocols/pim-base:pim" {
     description
       "PIM SM state.";
 
     container sm {
       description
         "PIM SM state data.";
+
+      list address-family {
+        key "address-family";
+        description
+          "Each list entry for one address family.";
+        
+        uses rt:address-family;
+      } // list address-family
     } // sm
   } // augment
 
@@ -267,5 +301,3 @@ module ietf-pim-sm {
    * Notifications
    */
 }
-<CODE ENDS>
-]]>

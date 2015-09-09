@@ -38,7 +38,7 @@ module ietf-pim-base {
     "The module defines a collection of YANG definitions common for
     all PIM modes.";
   
-  revision 2015-08-25 {
+  revision 2015-09-07 {
     description
       "Initial revision.";
     reference
@@ -105,6 +105,25 @@ module ietf-pim-base {
       RFC5306.";
   }
   
+  /*
+   * Typedefs
+   */
+  typedef timer-value {
+    type union {
+      type uint16;
+      type enumeration {
+        enum "infinity" {
+          description "The timer is set to infinity.";
+        }
+        enum "no-expiry" {
+          description "The timer is not set.";
+        }
+      }
+    }
+    units seconds;
+    description "Timer value type.";
+  } // timer-value
+
   /*
    * Identities
    */
@@ -261,8 +280,7 @@ module ietf-pim-base {
 
     leaf hello-expire {
       if-feature intf-hello-interval;
-      type uint16;
-      units seconds;
+      type timer-value;
       description "Hello interval exiration time.";
     }
 
@@ -279,9 +297,8 @@ module ietf-pim-base {
         description "";
       }
       leaf expire {
-        type uint16;
-        units seconds;
-        description "";
+        type timer-value;
+        description "Neighbor expiring information.";
       }
       leaf dr-priority {
         type uint32;
@@ -313,8 +330,7 @@ module ietf-pim-base {
       description "";
     }
     leaf expire {
-      type uint16;
-      units seconds;
+      type timer-value;
       description "";
     }
     leaf next-join {
@@ -628,7 +644,7 @@ module ietf-pim-base {
    
         uses statistics-container;
 
-        container routes {
+        container topology-tree-info {
           description "";
           list ipv4-route {
             when "../../../address-family = 'rt:ipv4'" {

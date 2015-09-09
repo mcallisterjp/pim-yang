@@ -32,7 +32,7 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
    +--ro pim
       +--ro address-family* [address-family]
-      |  +--ro address-family    identityref
+      |  +--ro address-family        identityref
       |  +--ro statistics
       |  |  +--ro discontinuity-time?   yang:date-and-time
       |  |  +--ro error
@@ -75,13 +75,13 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |  |     +--ro register?                     yang:counter32
       |  |     +--ro register-stop?                yang:counter32
       |  |     +--ro state-refresh?                yang:counter32
-      |  +--ro routes
+      |  +--ro topology-tree-info
       |     +--ro ipv4-route* [group source-addr is-rpt]
       |     |  +--ro group                         inet:ipv4-prefix
       |     |  +--ro source-addr                   union
       |     |  +--ro is-rpt                        boolean
       |     |  +--ro up-time?                      uint32
-      |     |  +--ro expire?                       uint16
+      |     |  +--ro expire?                       timer-value
       |     |  +--ro next-join?                    uint16
       |     |  +--ro rp-address?                   inet:ip-address
       |     |  +--ro rpf
@@ -111,7 +111,7 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |        +--ro source-addr                   union
       |        +--ro is-rpt                        boolean
       |        +--ro up-time?                      uint32
-      |        +--ro expire?                       uint16
+      |        +--ro expire?                       timer-value
       |        +--ro next-join?                    uint16
       |        +--ro rp-address?                   inet:ip-address
       |        +--ro rpf
@@ -163,10 +163,10 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
                |  +--ro address*   inet:ipv6-address
                |  +--ro dr-addr?   inet:ipv6-address
                +--ro oper-status?         enumeration
-               +--ro hello-expire?        uint16 {intf-hello-interval}?
+               +--ro hello-expire?        timer-value {intf-hello-interval}?
                +--ro neighbor* [neighbor-addr]
                   +--ro neighbor-addr    inet:ipv4-address
                   +--ro up-time?         uint32
-                  +--ro expire?          uint16
+                  +--ro expire?          timer-value
                   +--ro dr-priority?     uint32
                   +--ro bfd-status?      enumeration

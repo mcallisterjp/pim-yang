@@ -1,22 +1,27 @@
-<![CDATA[
 module: ietf-pim-sm
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim:
    +--rw sm
-      +--rw asm
-      |  +--rw anycast-rp!
-      |  |  +--rw ipv4
-      |  |  |  +--rw ipv4-anycast-rp* [anycast-addr rp-addr]
-      |  |  |     +--rw anycast-addr    inet:ipv4-address
-      |  |  |     +--rw rp-addr         inet:ipv4-address
-      |  |  +--rw ipv6
-      |  |     +--rw ipv6-anycast-rip* [anycast-addr rp-addr]
-      |  |        +--rw anycast-addr    inet:ipv6-address
-      |  |        +--rw rp-addr         inet:ipv6-address
-      |  +--rw spt-switch
-      |     +--rw infinity?      boolean {spt-switch-infinity}?
-      |     +--rw policy-name?   string {spt-switch-policy}?
-      +--rw ssm!
-         +--rw range-poligy?   string
+      +--rw address-family* [address-family]
+         +--rw address-family    identityref
+         +--rw asm
+         |  +--rw anycast-rp!
+         |  |  +--rw ipv4
+         |  |  |  +--rw ipv4-anycast-rp* [anycast-addr rp-addr]
+         |  |  |     +--rw anycast-addr    inet:ipv4-address
+         |  |  |     +--rw rp-addr         inet:ipv4-address
+         |  |  +--rw ipv6
+         |  |     +--rw ipv6-anycast-rip* [anycast-addr rp-addr]
+         |  |        +--rw anycast-addr    inet:ipv6-address
+         |  |        +--rw rp-addr         inet:ipv6-address
+         |  +--rw spt-switch
+         |     +--rw (trigger)?
+         |     |  +--:(infinity)
+         |     |  |  +--rw infinity?      boolean {spt-switch-infinity}?
+         |     |  +--:(threshold)
+         |     |     +--rw threshold?     uint32 {spt-switch-threshold}?
+         |     +--rw policy-name?   string {spt-switch-policy}?
+         +--rw ssm!
+            +--rw range-poligy?   string
 augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:interfaces/pim-base:interface/pim-base:address-family:
    +--rw sm!
       +--rw passive?   empty
@@ -28,6 +33,7 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
    +--rw sm!
       +--rw policy-name?   string
       +--rw override?      boolean {static-rp-override}?
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim:
    +--ro sm
-]]>
+      +--ro address-family* [address-family]
+         +--ro address-family    identityref
