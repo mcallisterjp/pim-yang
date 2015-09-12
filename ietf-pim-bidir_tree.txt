@@ -1,8 +1,6 @@
 module: ietf-pim-bidir
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim:
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--rw bidir
-      +--rw address-family* [address-family]
-         +--rw address-family    identityref
 augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:interfaces/pim-base:interface/pim-base:address-family:
    +--rw bidir!
       +--rw df-election {intf-df-election}?
@@ -17,7 +15,5 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
    +--rw bidir!
       +--rw policy-name?   string
       +--rw override?      boolean {static-rp-override}?
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim:
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--ro bidir
-      +--ro address-family* [address-family]
-         +--ro address-family    identityref

@@ -34,7 +34,7 @@ module ietf-pim-bidir {
     "The YANG module defines a BIDIR (Bidirectional) mode PIM
     model.";
   
-  revision 2015-09-07 {
+  revision 2015-09-10 {
     description
       "Initial revision.";
     reference
@@ -79,19 +79,13 @@ module ietf-pim-bidir {
    */
 
   augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim" {
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:address-family" {
     description "PIM BIDIR augmentation.";
 
     container bidir {
       description
         "PIM BIDIR configuration data.";
-      list address-family {
-        key "address-family";
-        description
-          "Each list entry for one address family.";
-        
-        uses rt:address-family;
-      } // list address-family
     } // bidir
   } // augment
 
@@ -149,21 +143,14 @@ module ietf-pim-bidir {
    */
 
   augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim" {
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:address-family" {
     description
       "PIM BIDIR state.";
 
     container bidir {
       description
         "PIM BIDIR state data.";
-
-      list address-family {
-        key "address-family";
-        description
-          "Each list entry for one address family.";
-        
-        uses rt:address-family;
-      } // list address-family
     } // bidir
   } // augment
 

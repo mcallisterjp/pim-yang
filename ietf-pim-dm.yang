@@ -29,7 +29,7 @@ module ietf-pim-dm {
   description
     "The YANG module defines a DM (Dense Mode) PIM model.";
   
-  revision 2015-09-07 {
+  revision 2015-09-10 {
     description
       "Initial revision.";
     reference
@@ -53,20 +53,14 @@ module ietf-pim-dm {
    */
 
   augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim" {
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:address-family" {
     description "PIM DM augmentation.";
 
     container dm {
+      presence "Present to enable dense-mode.";
       description
         "PIM DM configuration data.";
-
-      list address-family {
-        key "address-family";
-        description
-          "Each list entry for one address family.";
-
-        uses rt:address-family;
-      } // list address-family
     } // Dm
   } // augment
 
@@ -88,21 +82,13 @@ module ietf-pim-dm {
    */
 
   augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim" {
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:address-family" {
     description
       "PIM DM state.";
-
     container dm {
       description
         "PIM DM state data.";
-
-      list address-family {
-        key "address-family";
-        description
-          "Each list entry for one address family.";
-
-        uses rt:address-family;
-      } // list address-family
     } // dm
   } // augment
 
