@@ -37,7 +37,7 @@ module ietf-pim-sm {
   description
     "The YANG module defines a sparse mode PIM model.";
   
-  revision 2015-09-10 {
+  revision 2015-10-08 {
     description
       "Initial revision.";
     reference

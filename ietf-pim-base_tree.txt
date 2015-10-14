@@ -39,17 +39,11 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |  |  |  +--ro assert?                       yang:counter32
       |  |  |  +--ro bsr?                          yang:counter32
       |  |  |  +--ro candidate-rp-advertisement?   yang:counter32
-      |  |  |  +--ro graft?                        yang:counter32
-      |  |  |  +--ro graft-ack?                    yang:counter32
       |  |  |  +--ro hello?                        yang:counter32
       |  |  |  +--ro join-prune?                   yang:counter32
       |  |  |  +--ro register?                     yang:counter32
       |  |  |  +--ro register-stop?                yang:counter32
       |  |  |  +--ro state-refresh?                yang:counter32
-      |  |  |  +--ro checksum?                     yang:counter32
-      |  |  |  +--ro input-output?                 yang:counter32
-      |  |  |  +--ro length?                       yang:counter32
-      |  |  |  +--ro unknown?                      yang:counter32
       |  |  +--ro queue
       |  |  |  +--ro size?       uint32
       |  |  |  +--ro overflow?   yang:counter32
@@ -57,8 +51,6 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |  |  |  +--ro assert?                       yang:counter32
       |  |  |  +--ro bsr?                          yang:counter32
       |  |  |  +--ro candidate-rp-advertisement?   yang:counter32
-      |  |  |  +--ro graft?                        yang:counter32
-      |  |  |  +--ro graft-ack?                    yang:counter32
       |  |  |  +--ro hello?                        yang:counter32
       |  |  |  +--ro join-prune?                   yang:counter32
       |  |  |  +--ro register?                     yang:counter32
@@ -68,8 +60,6 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |  |     +--ro assert?                       yang:counter32
       |  |     +--ro bsr?                          yang:counter32
       |  |     +--ro candidate-rp-advertisement?   yang:counter32
-      |  |     +--ro graft?                        yang:counter32
-      |  |     +--ro graft-ack?                    yang:counter32
       |  |     +--ro hello?                        yang:counter32
       |  |     +--ro join-prune?                   yang:counter32
       |  |     +--ro register?                     yang:counter32
@@ -77,65 +67,39 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |  |     +--ro state-refresh?                yang:counter32
       |  +--ro topology-tree-info
       |     +--ro ipv4-route* [group source-addr is-rpt]
-      |     |  +--ro group                         inet:ipv4-prefix
-      |     |  +--ro source-addr                   union
-      |     |  +--ro is-rpt                        boolean
-      |     |  +--ro up-time?                      uint32
-      |     |  +--ro expire?                       timer-value
-      |     |  +--ro next-join?                    uint16
-      |     |  +--ro rp-address?                   inet:ip-address
-      |     |  +--ro rpf
-      |     |  |  +--ro neighbor?   inet:ip-address
-      |     |  |  +--ro monitor?    boolean
-      |     |  +--ro assert-winner?                boolean
-      |     |  +--ro connected?                    boolean
-      |     |  +--ro join-spt?                     boolean
-      |     |  +--ro local?                        boolean
-      |     |  +--ro mode
-      |     |  |  +--ro bidir?    boolean
-      |     |  |  +--ro dense?    boolean
-      |     |  |  +--ro sparse?   boolean
-      |     |  +--ro ssm-mdt?                      boolean
-      |     |  +--ro registered?                   boolean
-      |     |  +--ro msdp-learned?                 boolean
-      |     |  +--ro pruned?                       boolean
-      |     |  +--ro rp-bit?                       boolean
-      |     |  +--ro spt-bit?                      boolean
-      |     |  +--ro static-join-upstream?         boolean
-      |     |  +--ro forwarding?                   boolean
-      |     |  +--ro invalid-incoming-interface?   boolean
-      |     |  +--ro incoming-interface?           if:interface-ref
-      |     |  +--ro outgoing-interface*           if:interface-ref
-      |     +--ro ipv6-route* [ipv6-prefix source-addr is-rpt]
-      |        +--ro ipv6-prefix                   inet:ipv6-prefix
-      |        +--ro source-addr                   union
-      |        +--ro is-rpt                        boolean
-      |        +--ro up-time?                      uint32
-      |        +--ro expire?                       timer-value
-      |        +--ro next-join?                    uint16
-      |        +--ro rp-address?                   inet:ip-address
-      |        +--ro rpf
-      |        |  +--ro neighbor?   inet:ip-address
-      |        |  +--ro monitor?    boolean
-      |        +--ro assert-winner?                boolean
-      |        +--ro connected?                    boolean
-      |        +--ro join-spt?                     boolean
-      |        +--ro local?                        boolean
-      |        +--ro mode
-      |        |  +--ro bidir?    boolean
-      |        |  +--ro dense?    boolean
-      |        |  +--ro sparse?   boolean
-      |        +--ro ssm-mdt?                      boolean
-      |        +--ro registered?                   boolean
-      |        +--ro msdp-learned?                 boolean
-      |        +--ro pruned?                       boolean
-      |        +--ro rp-bit?                       boolean
-      |        +--ro spt-bit?                      boolean
-      |        +--ro static-join-upstream?         boolean
-      |        +--ro forwarding?                   boolean
-      |        +--ro invalid-incoming-interface?   boolean
-      |        +--ro incoming-interface?           if:interface-ref
-      |        +--ro outgoing-interface*           if:interface-ref
+      |     |  +--ro group                 inet:ipv4-address
+      |     |  +--ro source-addr           union
+      |     |  +--ro is-rpt                boolean
+      |     |  +--ro expire?               uint32
+      |     |  +--ro incoming-interface?   if:interface-ref
+      |     |  +--ro mode?                 pim-mode
+      |     |  +--ro msdp-learned?         boolean
+      |     |  +--ro rp-address?           inet:ip-address
+      |     |  +--ro rpf-neighbor?         inet:ip-address
+      |     |  +--ro spt-bit?              boolean
+      |     |  +--ro up-time?              uint32
+      |     |  +--ro outgoing-interface* [name]
+      |     |     +--ro name        if:interface-ref
+      |     |     +--ro expire?     yang:timeticks
+      |     |     +--ro up-time?    yang:timeticks
+      |     |     +--ro jp-state?   enumeration
+      |     +--ro ipv6-route* [group source-addr is-rpt]
+      |        +--ro group                 inet:ipv6-address
+      |        +--ro source-addr           union
+      |        +--ro is-rpt                boolean
+      |        +--ro expire?               uint32
+      |        +--ro incoming-interface?   if:interface-ref
+      |        +--ro mode?                 pim-mode
+      |        +--ro msdp-learned?         boolean
+      |        +--ro rp-address?           inet:ip-address
+      |        +--ro rpf-neighbor?         inet:ip-address
+      |        +--ro spt-bit?              boolean
+      |        +--ro up-time?              uint32
+      |        +--ro outgoing-interface* [name]
+      |           +--ro name        if:interface-ref
+      |           +--ro expire?     yang:timeticks
+      |           +--ro up-time?    yang:timeticks
+      |           +--ro jp-state?   enumeration
       +--ro interfaces
          +--ro interface* [interface]
             +--ro interface         if:interface-ref
@@ -163,10 +127,37 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
                |  +--ro address*   inet:ipv6-address
                |  +--ro dr-addr?   inet:ipv6-address
                +--ro oper-status?         enumeration
-               +--ro hello-expire?        timer-value {intf-hello-interval}?
-               +--ro neighbor* [neighbor-addr]
-                  +--ro neighbor-addr    inet:ipv4-address
-                  +--ro up-time?         uint32
-                  +--ro expire?          timer-value
-                  +--ro dr-priority?     uint32
-                  +--ro bfd-status?      enumeration
+               +--ro hello-expire?        uint32
+               +--ro neighbor-ipv4* [address]
+               |  +--ro address        inet:ipv4-address
+               |  +--ro bfd-status?    enumeration
+               |  +--ro expire?        uint32
+               |  +--ro dr-priority?   uint32
+               |  +--ro gen-id?        uint32
+               |  +--ro up-time?       uint32
+               +--ro neighbor-ipv6* [address]
+                  +--ro address        inet:ipv6-address
+                  +--ro bfd-status?    enumeration
+                  +--ro expire?        uint32
+                  +--ro dr-priority?   uint32
+                  +--ro gen-id?        uint32
+                  +--ro up-time?       uint32
+notifications:
+   +---n pim-neighbor-event     
+   |  +--ro event-type?                   neighbor-event-type
+   |  +--ro routing-instance-state-ref?   rt:routing-instance-state-ref
+   |  +--ro interface-state-ref?          leafref
+   |  +--ro interface-af-state-ref?       leafref
+   |  +--ro neighbor-ipv4-state-ref?      leafref
+   |  +--ro neighbor-ipv6-state-ref?      leafref
+   |  +--ro up-time?                      uint32
+   +---n pim-interface-event    
+      +--ro event-type?                   interface-event-type
+      +--ro routing-instance-state-ref?   rt:routing-instance-state-ref
+      +--ro interface-state-ref?          leafref
+      +--ro ipv4
+      |  +--ro address*   inet:ipv4-address
+      |  +--ro dr-addr?   inet:ipv4-address
+      +--ro ipv6
+         +--ro address*   inet:ipv6-address
+         +--ro dr-addr?   inet:ipv6-address

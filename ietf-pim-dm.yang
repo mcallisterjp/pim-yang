@@ -29,7 +29,7 @@ module ietf-pim-dm {
   description
     "The YANG module defines a DM (Dense Mode) PIM model.";
   
-  revision 2015-09-10 {
+  revision 2015-10-08 {
     description
       "Initial revision.";
     reference

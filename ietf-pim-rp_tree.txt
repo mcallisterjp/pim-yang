@@ -1,4 +1,3 @@
-<![CDATA[
 module: ietf-pim-rp
 augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--rw rp
@@ -55,12 +54,22 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/
       |  |  +--ro ipv6-address    inet:ipv6-address
       |  |  +--ro policy?         string
       |  |  +--ro mode?           identityref
-      |  +--ro bsr-addr?                          inet:ip-address
-      |  +--ro up-time?                           uint32
-      |  +--ro next-bootstrap?                    uint16
-      |  +--ro next-candidate-rp-advertisement?   uint16
-      |  +--ro rp-address?                        inet:ip-address
-      |  +--ro group-policy?                      string
+      |  +--ro bsr
+      |  |  +--ro addr?               inet:ip-address
+      |  |  +--ro hash-mask-length?   uint8
+      |  |  +--ro priority?           uint8
+      |  |  +--ro up-time?            uint32
+      |  +--ro (election-state)? {bsr-election-state}?
+      |  |  +--:(candidate)
+      |  |  |  +--ro candidate-bsr-state?               enumeration
+      |  |  +--:(non-candidate)
+      |  |     +--ro non-candidate-bsr-state?           enumeration
+      |  +--ro bsr-next-bootstrap?                uint16
+      |  +--ro rp
+      |  |  +--ro rp-address?     inet:ip-address
+      |  |  +--ro group-policy?   string
+      |  |  +--ro up-time?        uint32
+      |  +--ro rp-candidate-next-advertisement?   uint16
       +--ro rp-list
       |  +--ro ipv4-rp* [ipv4-addr]
       |  |  +--ro ipv4-addr           inet:ipv4-address
@@ -89,4 +98,13 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/
             +--ro info-source-type?   enumeration
             +--ro up-time?            uint32
             +--ro expire?             uint16
-]]>
+notifications:
+   +---n pim-rp-event    
+      +--ro event-type?                   rp-event-type
+      +--ro routing-instance-state-ref?   rt:routing-instance-state-ref
+      +--ro instance-af-state-ref?        leafref
+      +--ro group?                        inet:ip-address
+      +--ro rp-address?                   inet:ip-address
+      +--ro is-rpt?                       boolean
+      +--ro mode?                         pim-base:pim-mode
+      +--ro message-origin?               inet:ip-address

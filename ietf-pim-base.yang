@@ -38,7 +38,7 @@ module ietf-pim-base {
     "The module defines a collection of YANG definitions common for
     all PIM modes.";
   
-  revision 2015-09-07 {
+  revision 2015-10-08 {
     description
       "Initial revision.";
     reference
@@ -108,6 +108,73 @@ module ietf-pim-base {
   /*
    * Typedefs
    */
+  typedef interface-event-type {
+    type enumeration {
+      enum up {
+        description
+          "Neighbor status changed to up.";
+      }
+      enum down {
+        description
+          "Neighbor status changed to down.";
+      }
+      enum new-dr {
+        description
+          "A new DR was elected on the connected network.";
+      }
+      enum new-df {
+        description
+          "A new DF was elected on the connected network.";
+      }
+    }
+    description "Operational status event type for notifications.";
+  }
+
+  typedef neighbor-event-type {
+    type enumeration {
+      enum up {
+        description
+          "Neighbor status changed to up.";
+      }
+      enum down {
+        description
+          "Neighbor status changed to down.";
+      }
+    }
+    description "Operational status event type for notifications.";
+  }
+
+  typedef pim-mode {
+    type enumeration {
+      enum none {
+        description
+          "PIM is not operating.";
+      }
+      enum ssm {
+        description
+          "Source-Specific Multicast (SSM) with PIM Sparse Mode.";
+      }
+      enum asm {
+        description
+          "Any Source Multicast (ASM) with PIM Sparse Mode.";
+      }
+      enum bidir {
+        description
+        "Bidirectional PIM.";
+      }
+      enum dm {
+        description
+          "PIM Dense Mode.";
+      }
+      enum other {
+        description
+          "Any other PIM mode.";
+      }
+    }
+    description 
+      "The PIM mode in which a group is operating.";
+  }
+
   typedef timer-value {
     type union {
       type uint16;
@@ -279,160 +346,159 @@ module ietf-pim-base {
     }
 
     leaf hello-expire {
-      if-feature intf-hello-interval;
-      type timer-value;
+      type uint32;
       description "Hello interval exiration time.";
     }
 
-    list neighbor {
-      key "neighbor-addr";
+    list neighbor-ipv4 {
+      when "../../../address-family = 'rt:ipv4'" {
+        description
+          "Only applicable to ipv4 address family.";
+      }
+      key "address";
       description "";
-      leaf neighbor-addr {
+      leaf address {
         type inet:ipv4-address;
         description "";
       }
-      leaf up-time {
-        type uint32;
-        units seconds;
+      uses neighbor-state-af-attributes;
+    } // list neighbor-ipv4
+
+    list neighbor-ipv6 {
+      when "../../../address-family = 'rt:ipv6'" {
+        description
+          "Only applicable to ipv6 address family.";
+      }
+      key "address";
+      description "";
+      leaf address {
+        type inet:ipv6-address;
         description "";
       }
-      leaf expire {
-        type timer-value;
-        description "Neighbor expiring information.";
-      }
-      leaf dr-priority {
-        type uint32;
-        description "DR priority";
-      }
-      leaf bfd-status {
-        type enumeration {
-          enum up {
-            description
-            "";
-          }
-          enum down {
-            description
-            "";
-          }
-        }
-        description "";
-      }
-    }
+      uses neighbor-state-af-attributes;
+    } // list neighbor-ipv4
   } // interface-state-af-attributes
 
   grouping multicast-route-attributes {
     description
       "A grouping defining multicast route attributes.";
     
-    leaf up-time {
+    leaf expire {
       type uint32;
       units seconds;
-      description "";
-    }
-    leaf expire {
-      type timer-value;
-      description "";
-    }
-    leaf next-join {
-      type uint16;
-      units seconds;
-      description "";
-    }
-    leaf rp-address {
-      type inet:ip-address;
-      description "";
-    }
-    container rpf {
-      description
-        "RPF related attributes.";
-      leaf neighbor {
-        type inet:ip-address;
-        description "";
-      }
-      leaf monitor {
-        type boolean;
-        description "";
-      }
-    }
-    leaf assert-winner {
-      type boolean;
-      description "";
-    }
-    leaf connected {
-      type boolean;
-      description "";
-    }
-    leaf join-spt {
-      type boolean;
-      description "";
-    }
-    leaf local {
-      type boolean;
-      description "";
-    }
-    container mode {
-      description "";
-      leaf bidir {
-        type boolean;
-        description "";
-      }
-      leaf dense {
-        type boolean;
-        description "";
-      }
-      leaf sparse {
-        type boolean;
-        description "";
-      }
-    }
-    leaf ssm-mdt {
-      type boolean;
-      description "";
-    }
-    leaf registered {
-      type boolean;
-      description "";
-    }
-    leaf msdp-learned {
-      type boolean;
-      description "";
-    }
-    leaf pruned {
-      type boolean;
-      description "";
-    }
-    leaf rp-bit {
-      type boolean;
-      description "";
-    }
-    leaf spt-bit {
-      type boolean;
-      description "";
-    }
-    leaf static-join-upstream {
-      type boolean;
-      description "";
-    }
-    leaf forwarding {
-      type boolean;
-      description "";
-    }
-    leaf invalid-incoming-interface {
-      type boolean;
       description "";
     }
     leaf incoming-interface {
       type if:interface-ref;
       description
         "Reference to an entry in the global interface
-        list.";
+         list.";
     }
-    leaf-list outgoing-interface {
-      type if:interface-ref;
+    leaf mode {
+      type pim-mode;
+      description "";
+    }
+    leaf msdp-learned {
+      type boolean;
+      description "";
+    }
+    leaf rp-address {
+      type inet:ip-address;
+      description "";
+    }
+    leaf rpf-neighbor {
+      type inet:ip-address;
+      description "";
+    }
+    leaf spt-bit {
+      type boolean;
+      description "";
+    }
+    leaf up-time {
+      type uint32;
+      units seconds;
+      description "";
+    }
+    list outgoing-interface {
+      key "name";
       description
         "A list of outgoing interfaces.";
+
+      leaf name {
+        type if:interface-ref;
+        description
+          "Interface name";
+      }
+
+      leaf expire {
+        type yang:timeticks;
+        description "Expiring information.";
+      }
+
+      leaf up-time {
+        type yang:timeticks;
+        description "";
+      }
+      
+      leaf jp-state {
+        type enumeration {
+          enum "no-info" {
+            description 
+              "The interface has Join state and no timers running";
+          }
+          enum "join" {
+            description
+              "The interface has Join state.";
+          }
+          enum "prune-pending" {
+            description
+              "The router has received a Prune on this interface from
+               a downstream neighbor and is waiting to see whether 
+               the prune will be overridden by another downstream
+               router.  For forwarding purposes, the Prune-Pending
+               state functions exactly like the Join state.";
+          }
+        }
+        description "";
+      }
     }
   } // multicast-route-attributes
+
+  grouping neighbor-state-af-attributes {
+    description
+      "A grouping defining neighbor per af attributes.";
+    leaf bfd-status {
+      type enumeration {
+        enum up {
+          description
+          "";
+        }
+        enum down {
+          description
+          "";
+        }
+      }
+      description "";
+    }
+    leaf expire {
+      type uint32;
+      units seconds;
+      description "Neighbor expiring information.";
+    }
+    leaf dr-priority {
+      type uint32;
+      description "DR priority";
+    }
+    leaf gen-id {
+      type uint32;
+      description "Generation ID.";
+    }
+    leaf up-time {
+      type uint32;
+      units seconds;
+      description "";
+    }
+  } // neighbor-state-af-attributes
 
   grouping per-af-attributes {
     description
@@ -441,6 +507,105 @@ module ietf-pim-base {
       if-feature per-af-graceful-restart;
     }
   } // per-af-attributes
+
+  grouping pim-instance-state-ref {
+    description
+      "An absolute reference to a PIM instance.";
+    leaf routing-instance-state-ref {
+      type rt:routing-instance-state-ref;
+      description
+        "Reference to the routing instance state.";
+    }
+  } // pim-instance-state-ref
+
+  grouping pim-instance-af-state-ref {
+    description
+      "An absolute reference to a PIM instance address family.";
+    uses pim-instance-state-ref;
+    leaf instance-af-state-ref {
+      type leafref {
+        path "/rt:routing-state/rt:routing-instance"
+          + "[rt:name = current()/../routing-instance-state-ref]/"
+          + "rt:routing-protocols/pim-base:pim/"
+          + "pim-base:address-family/pim-base:address-family";
+      }
+      description
+        "Reference to a PIM instance address family.";
+    }
+  } // pim-instance-state-af-ref
+
+  grouping pim-interface-state-ref {
+    description
+      "An absolute reference to a PIM interface state.";
+    uses pim-instance-state-ref;
+    leaf interface-state-ref {
+      type leafref {
+        path "/rt:routing-state/rt:routing-instance"
+          + "[rt:name = current()/../routing-instance-state-ref]/"
+          + "rt:routing-protocols/pim-base:pim/pim-base:interfaces/"
+          + "pim-base:interface/pim-base:interface";
+      }
+      description
+        "Reference to a PIM interface.";
+    }
+  } // pim-interface-state-ref
+
+  grouping pim-neighbor-state-ref {
+    description
+      "An absolute reference to a PIM neighbor state.";
+    uses pim-interface-state-ref;
+    leaf interface-af-state-ref {
+      type leafref {
+        path "/rt:routing-state/rt:routing-instance"
+          + "[rt:name = current()/../routing-instance-state-ref]/"
+          + "rt:routing-protocols/pim-base:pim/pim-base:interfaces/"
+          + "pim-base:interface"
+          + "[pim-base:interface = "
+          + "current()/../interface-state-ref]/"
+          + "pim-base:address-family/pim-base:address-family";
+      }
+      description
+        "Reference to a PIM interface address family.";
+    }
+    leaf neighbor-ipv4-state-ref {
+      when "../interface-af-state-ref = 'rt:ipv4'" {
+        description "";
+      }
+      type leafref {
+        path "/rt:routing-state/rt:routing-instance"
+          + "[rt:name = current()/../routing-instance-state-ref]/"
+          + "rt:routing-protocols/pim-base:pim/pim-base:interfaces/"
+          + "pim-base:interface"
+          + "[pim-base:interface = "
+          + "current()/../interface-state-ref]/"
+          + "pim-base:address-family"
+          + "[pim-base:address-family = "
+          + "current()/../interface-af-state-ref]/"
+          + "pim-base:neighbor-ipv4/pim-base:address";
+      }
+      description
+        "Reference to a PIM IPv4 neighbor.";
+    }
+    leaf neighbor-ipv6-state-ref {
+      when "../interface-af-state-ref = 'rt:ipv6'" {
+        description "";
+      }
+      type leafref {
+        path "/rt:routing-state/rt:routing-instance"
+          + "[rt:name = current()/../routing-instance-state-ref]/"
+          + "rt:routing-protocols/pim-base:pim/pim-base:interfaces/"
+          + "pim-base:interface"
+          + "[pim-base:interface = "
+          + "current()/../interface-state-ref]/"
+          + "pim-base:address-family"
+          + "[pim-base:address-family = "
+          + "current()/../interface-af-state-ref]/"
+          + "pim-base:neighbor-ipv6/pim-base:address";
+      }
+      description
+        "Reference to a PIM IPv6 neighbor.";
+    }
+  } // pim-neighbor-state-ref
 
   grouping statistics-container {
     description
@@ -481,26 +646,6 @@ module ietf-pim-base {
       "A grouping defining error statistics
       attributes.";
     uses statistics-sent-received;
-    leaf checksum {
-      type yang:counter32;
-      description
-        "The number of checksum errors.";
-    }    
-    leaf input-output {
-      type yang:counter32;
-      description
-        "The number of I/O errors.";
-    }    
-    leaf length {
-      type yang:counter32;
-      description
-        "The number of length errors.";
-    }    
-    leaf unknown {
-      type yang:counter32;
-      description
-        "The number of unknown errors.";
-    }    
   } // statistics-error
 
   grouping statistics-queue {
@@ -537,16 +682,6 @@ module ietf-pim-base {
       type yang:counter32;
       description
         "The number of Candidate-RP-advertisement messages.";
-    }
-    leaf graft {
-      type yang:counter32;
-      description
-        "The number of graft messages.";
-    }
-    leaf graft-ack {
-      type yang:counter32;
-      description
-        "The number of graft ack messages.";
     }
     leaf hello {
       type yang:counter32;
@@ -654,7 +789,7 @@ module ietf-pim-base {
             key "group source-addr is-rpt";
             description "";
             leaf group {
-              type inet:ipv4-prefix;
+              type inet:ipv4-address;
               description "";
             }
             leaf source-addr {
@@ -681,10 +816,10 @@ module ietf-pim-base {
               description
                 "Only applicable to ipv4 address family.";
             }
-            key "ipv6-prefix source-addr is-rpt";
+            key "group source-addr is-rpt";
             description "";
-            leaf ipv6-prefix {
-              type inet:ipv6-prefix;
+            leaf group {
+              type inet:ipv6-address;
               description "";
             }
             leaf source-addr {
@@ -741,4 +876,47 @@ module ietf-pim-base {
   /*
    * Notifications
    */
+  notification pim-neighbor-event {
+    description "Notification event for neighbor.";
+    leaf event-type {
+      type neighbor-event-type;
+      description "Event type.";
+    }
+    uses pim-neighbor-state-ref;
+    leaf up-time {
+      type uint32;
+      units seconds;
+      description "";
+    }
+  }
+  notification pim-interface-event {
+    description "Notification event for interface.";
+    leaf event-type {
+      type interface-event-type;
+      description "Event type.";
+    }
+    uses pim-interface-state-ref;
+    container ipv4 {
+      description "";
+      leaf-list address {
+        type inet:ipv4-address;
+        description "";
+      }
+      leaf dr-addr {
+        type inet:ipv4-address;
+        description "";
+      }
+    }
+    container ipv6 {
+      description "";
+      leaf-list address {
+        type inet:ipv6-address;
+        description "";
+      }
+      leaf dr-addr {
+        type inet:ipv6-address;
+        description "";
+      }
+    }
+  }  
 }
