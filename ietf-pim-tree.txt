@@ -1,3 +1,4 @@
+<![CDATA[
 module: ietf-pim-base
 augment /rt:routing/rt:routing-instance/rt:routing-protocols:
    +--rw pim
@@ -310,3 +311,4 @@ notifications:
       +--ro is-rpt?                       boolean
       +--ro mode?                         pim-base:pim-mode
       +--ro message-origin?               inet:ip-address
+]]>

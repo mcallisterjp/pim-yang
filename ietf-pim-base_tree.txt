@@ -1,3 +1,4 @@
+<![CDATA[
 module: ietf-pim-base
 augment /rt:routing/rt:routing-instance/rt:routing-protocols:
    +--rw pim
@@ -161,3 +162,4 @@ notifications:
       +--ro ipv6
          +--ro address*   inet:ipv6-address
          +--ro dr-addr?   inet:ipv6-address
+]]>

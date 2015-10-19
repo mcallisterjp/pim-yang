@@ -1,3 +1,6 @@
+<![CDATA[
+<CODE BEGINS>
+
 module ietf-pim-base {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
   // replace with IANA namespace when assigned
@@ -920,3 +923,5 @@ module ietf-pim-base {
     }
   }  
 }
+<CODE ENDS>
+]]>

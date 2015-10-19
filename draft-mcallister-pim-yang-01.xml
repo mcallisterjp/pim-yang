@@ -49,7 +49,7 @@
 <?rfc compact="yes"?> <?rfc subcompact="no"?>
 
 <!-- other categories: bcp, exp, historic, std -->
-<rfc ipr="trust200902" category="std" docName="draft-mcallister-pim-yang-00">
+<rfc ipr="trust200902" category="std" docName="draft-mcallister-pim-yang-01">
 
   <front>
 
@@ -169,6 +169,11 @@
           current form for early oversight and review of the basic hierarchy.
         </t>
         <t>
+          The operational state fields and notifications of this model are also
+          incomplete, though the structure of what has been written may be taken as
+          representative of the structure of the model when complete.
+        </t>
+        <t>
           This model does not cover other multicast protocols such as IGMP/MLD,
           MSDP, mVPN, or m-LDP in-band signalling. It does not cover any configuration
           required to generate the MRIB. These will be covered by future Internet Drafts.
@@ -197,6 +202,15 @@
           implementation.
         </t>
         <t>
+          On the other hand, operational state parameters are not so widely 
+          designated as features, as there are many cases where the defaulting
+          of an operational state parameter would not cause any harm to the 
+          system, and it is much more likely that an implementation without
+          native support for a piece of operational state would be able to 
+          derive a suitable value for a state variable that is not natively 
+          supported.
+        </t>
+        <t>
           For the same reason, wide constant ranges (for example, timer maxima
           and minima) will be used in the model. It is expected that vendors will
           augment the model with any specific restrictions that might be 
@@ -221,6 +235,10 @@
           Where fields are not genuinely essential to protocol operation, they
           are marked as optional. Some fields will be essential but have a
           default specified, so they need not be explicitly configured.
+        </t>
+        <t>
+          This module structure also applies, where applicable, to the operational
+          state and notifications of the model.
         </t>
       </section>
       <section title="Position of address family in hierarchy">
@@ -262,41 +280,20 @@
           "TODO list" section below.
         </t>
       </section>
-      <section title="RP configuration tree">
+      <section title="Group range mappings">
         <t>
-          This draft of the model provides a module (currently called pim-rp)
-          which is used for group range mapping configuration. Though some of 
-          this configuration is defined in the modules for individual PIM modes,
-          the pim-rp structure itself is independent of the PIM mode structures. 
+          There is currently no convenient way in the operational state model to
+          map from a group address to the PIM mode and RP information that it 
+          will be forwarded according to, which complicates reasoning about the
+          running state and the diagnosis of conflicting policy configuration.
         </t>
         <t>
-          The main disadvantage of this structure is that it obscures the mapping
-          from group address to PIM mode, unlike a hypothetical indexed by group
-          range. This also makes the process of validating whether a group mapping
-          policy contradicts another more complicated.
-        </t>
-        <t>
-          However, as the thing that is mapped is defined in terms of a general
-          abstract policy object (which could be a policy, an ACL, or a group
-          range, according to implementation), it is not practical to index on in
-          the base model.
-        </t>
-        <t>
-          Operational state reporting does not have this problem, as there a mapping
-          by group range is straightforward and helpful to network operators.
-        </t>
-      </section>
-      <section title="Passive mode">
-        <t>
-          This draft contains an interface leaf 'passive', indicating that no PIM
-          protocol messages are to be sent on the interface.
-        </t>
-        <t>
-          For some implementations, there is a closely related concept, configurable
-          on a PIM-mode basis, that an interface is not used to run the PIM protocol
-          and also not used for multicast forwarding. This may be used to restrict
-          dense-mode flooding, for example. This will likely be included as a feature
-          in a future draft, but the details are under discussion.
+          A hypothetical group range state reporting object indexed by group range 
+          would be desirable for this purpose, but would be inconvenient for many
+          implementations that index the relevant information on RP address (not
+          applicable for DM or unroutable group-ranges), and difficult to express
+          directly in YANG (as it is difficult to express a container indexed on 
+          an arbitrary, proprietary policy structure).
         </t>
       </section>
       <section title="Issues blocked on other model designers">
@@ -311,10 +308,11 @@
               themselves individually to support BFD?
             </t>
             <t>
-              The abstract concept of a "set of IP addresses", as represented in 
-              implementations by prefixes, ACLs or policy statements, is a general
-              concept out of the scope of this document. It will presumably have a 
-              yang data-type the instantiation of which is vendor-specific.
+              The abstract concepts of a "set of IP addresses" or "set of IP 
+              prefixes", as represented in implementations by prefixes, ACLs or
+              policy statements, is a general concept out of the scope of this
+              document. It will presumably have a yang data-type the instantiation
+              of which is vendor-specific.
             </t>
           </list>
         </t>
@@ -421,15 +419,6 @@
         hierarchy of the model. Other things the draft will include when
         complete but does not yet include:
         <list style='symbols'>
-          <t>
-            State reporting
-          </t>
-          <t>
-            Notifications
-          </t>
-          <t>
-            Neighbor configuration
-          </t>
           <t>
             Interaction with BFD protocol
           </t>
