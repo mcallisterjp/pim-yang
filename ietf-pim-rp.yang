@@ -1,6 +1,3 @@
-<![CDATA[
-<CODE BEGINS>
-
 module ietf-pim-rp {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-rp";
   // replace with IANA namespace when assigned
@@ -40,7 +37,7 @@ module ietf-pim-rp {
   description
     "The YANG module defines a PIM RP (Rendezvous Point) model.";
   
-  revision 2015-10-08 {
+  revision 2015-12-01 {
     description
       "Initial revision.";
     reference
@@ -350,6 +347,7 @@ module ietf-pim-rp {
       }
       leaf up-time {
         type uint32;
+        units seconds;
         description "";
       }
     }
@@ -382,8 +380,7 @@ module ietf-pim-rp {
       description "";
     }
     leaf expire {
-      type uint16;
-      units seconds;
+      type pim-base:timer-value;
       description "";
     }    
   } // rp-state-attributes
@@ -641,5 +638,3 @@ module ietf-pim-rp {
     }
   }
 }
-<CODE ENDS>
-]]>
