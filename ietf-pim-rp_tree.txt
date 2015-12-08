@@ -71,33 +71,31 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/
       |  |  +--ro up-time?        uint32
       |  +--ro rp-candidate-next-advertisement?   uint16
       +--ro rp-list
-      |  +--ro ipv4-rp* [ipv4-addr]
+      |  +--ro ipv4-rp* [ipv4-addr mode]
       |  |  +--ro ipv4-addr           inet:ipv4-address
+      |  |  +--ro mode                identityref
       |  |  +--ro info-source-addr?   inet:ipv4-address
       |  |  +--ro info-source-type?   enumeration
       |  |  +--ro up-time?            uint32
       |  |  +--ro expire?             pim-base:timer-value
-      |  +--ro ipv6-rp* [ipv6-addr]
+      |  +--ro ipv6-rp* [ipv6-addr mode]
       |     +--ro ipv6-addr           inet:ipv6-address
+      |     +--ro mode                identityref
       |     +--ro info-source-addr?   inet:ipv6-address
       |     +--ro info-source-type?   enumeration
       |     +--ro up-time?            uint32
       |     +--ro expire?             pim-base:timer-value
       +--ro rp-mappings
          +--ro ipv4-rp* [group rp-addr]
-         |  +--ro group               inet:ipv4-prefix
-         |  +--ro rp-addr             inet:ipv4-address
-         |  +--ro info-source-addr?   inet:ipv4-address
-         |  +--ro info-source-type?   enumeration
-         |  +--ro up-time?            uint32
-         |  +--ro expire?             pim-base:timer-value
+         |  +--ro group      inet:ipv4-prefix
+         |  +--ro rp-addr    inet:ipv4-address
+         |  +--ro up-time?   uint32
+         |  +--ro expire?    pim-base:timer-value
          +--ro ipv6-rp* [group rp-addr]
-            +--ro group               inet:ipv6-prefix
-            +--ro rp-addr             inet:ipv6-address
-            +--ro info-source-addr?   inet:ipv6-address
-            +--ro info-source-type?   enumeration
-            +--ro up-time?            uint32
-            +--ro expire?             pim-base:timer-value
+            +--ro group      inet:ipv6-prefix
+            +--ro rp-addr    inet:ipv6-address
+            +--ro up-time?   uint32
+            +--ro expire?    pim-base:timer-value
 notifications:
    +---n pim-rp-event
       +--ro event-type?                   rp-event-type

@@ -18,6 +18,10 @@ module ietf-pim-base {
   import ietf-routing {
     prefix "rt";
   }
+
+  import ietf-bfd {
+    prefix "bfd";
+  }
   
   organization
     "IETF PIM Working Group";
@@ -38,7 +42,7 @@ module ietf-pim-base {
     "The module defines a collection of YANG definitions common for
     all PIM modes.";
   
-  revision 2015-12-01 {
+  revision 2015-12-07 {
     description
       "Initial revision.";
     reference
@@ -48,6 +52,11 @@ module ietf-pim-base {
   /*
    * Features
    */
+  feature bfd-protocol-parms {
+    description
+      "BFD protocol specific parameters support.";
+  }
+
   feature global-graceful-restart {
     description
       "Global configuraiont for graceful restart support as per
@@ -230,6 +239,17 @@ module ietf-pim-base {
   grouping interface-config-attributes {
     description
       "A grouping defining interface attributes.";
+    container bfd {
+      description "BFD operation.";
+      leaf enabled {
+        type boolean;
+        description
+          "True if BFD is enabled for the interface.";
+      }
+      uses bfd:bfd-grouping-base-cfg-parms {
+        if-feature bfd-protocol-parms;
+      }
+    }
     leaf dr-priority {
       if-feature intf-dr-priority;
       type uint32;

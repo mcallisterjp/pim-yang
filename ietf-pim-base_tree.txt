@@ -14,6 +14,15 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
             +--rw interface         if:interface-ref
             +--rw address-family* [address-family]
                +--rw address-family       identityref
+               +--rw bfd
+               |  +--rw enabled?                    boolean
+               |  +--rw local-multiplier?           multiplier
+               |  +--rw (interval-config-type)?
+               |     +--:(tx-rx-intervals)
+               |     |  +--rw desired-min-tx-interval     uint32
+               |     |  +--rw required-min-rx-interval    uint32
+               |     +--:(single-interval)
+               |        +--rw min-interval                uint32
                +--rw dr-priority?         uint32 {intf-dr-priority}?
                +--rw hello-interval?      timer-value {intf-hello-interval}?
                +--rw (hello-holdtime-or-multipler)?
@@ -105,6 +114,15 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
             +--ro interface         if:interface-ref
             +--ro address-family* [address-family]
                +--ro address-family       identityref
+               +--ro bfd
+               |  +--ro enabled?                    boolean
+               |  +--ro local-multiplier?           multiplier
+               |  +--ro (interval-config-type)?
+               |     +--:(tx-rx-intervals)
+               |     |  +--ro desired-min-tx-interval     uint32
+               |     |  +--ro required-min-rx-interval    uint32
+               |     +--:(single-interval)
+               |        +--ro min-interval                uint32
                +--ro dr-priority?         uint32 {intf-dr-priority}?
                +--ro hello-interval?      timer-value {intf-hello-interval}?
                +--ro (hello-holdtime-or-multipler)?

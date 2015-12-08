@@ -37,7 +37,7 @@ module ietf-pim-rp {
   description
     "The YANG module defines a PIM RP (Rendezvous Point) model.";
   
-  revision 2015-12-01 {
+  revision 2015-12-07 {
     description
       "Initial revision.";
     reference
@@ -358,9 +358,23 @@ module ietf-pim-rp {
     }
   } // bsr-state-attributes
 
+  grouping rp-mapping-state-attributes {
+    description
+      "Gouring of RP mapping attributes.";
+    leaf up-time {
+      type uint32;
+      units seconds;
+      description "";
+    }
+    leaf expire {
+      type pim-base:timer-value;
+      description "";
+    }    
+  } // rp-mapping-state-attributes
+
   grouping rp-state-attributes {
     description
-      "Gouring of static RP attributes.";
+      "Gouring of RP state attributes.";
     leaf info-source-type {
       type enumeration {
         enum static {
@@ -506,13 +520,20 @@ module ietf-pim-rp {
             description
               "Only applicable to ipv4 address family.";
           }
-          key "ipv4-addr";
+          key "ipv4-addr mode";
           description 
             "A list of IPv4 RP addresses.";
           leaf ipv4-addr {
             type inet:ipv4-address;
             description 
               "RP address.";
+          }
+          leaf mode {
+            type identityref {
+              base rp-mode;
+            }
+            description
+              "RP mode.";
           }
           leaf info-source-addr {
             type inet:ipv4-address;
@@ -527,13 +548,20 @@ module ietf-pim-rp {
             description
               "Only applicable to ipv6 address family.";
           }
-          key "ipv6-addr";
+          key "ipv6-addr mode";
           description 
             "A list of IPv6 RP addresses.";
           leaf ipv6-addr {
             type inet:ipv6-address;
             description 
               "RP address.";
+          }
+          leaf mode {
+            type identityref {
+              base rp-mode;
+            }
+            description
+              "RP mode.";
           }
           leaf info-source-addr {
             type inet:ipv6-address;
@@ -565,12 +593,7 @@ module ietf-pim-rp {
             description 
               "RP address.";
           }
-          leaf info-source-addr {
-            type inet:ipv4-address;
-            description 
-              "The address where RP information is learned.";
-          }
-          uses rp-state-attributes;
+          uses rp-mapping-state-attributes;
         }
         
         list ipv6-rp {
@@ -591,12 +614,7 @@ module ietf-pim-rp {
             description 
               "RP address.";
           }
-          leaf info-source-addr {
-            type inet:ipv6-address;
-            description 
-              "The address where RP information is learned.";
-          }
-          uses rp-state-attributes;
+          uses rp-mapping-state-attributes;
         }
       } // rp-mappings
     } // rp
