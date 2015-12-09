@@ -37,7 +37,7 @@ module ietf-pim-rp {
   description
     "The YANG module defines a PIM RP (Rendezvous Point) model.";
   
-  revision 2015-12-07 {
+  revision 2015-12-08 {
     description
       "Initial revision.";
     reference
@@ -115,6 +115,21 @@ module ietf-pim-rp {
     description
       "The mode of an RP, which can be SM (Sparse Mode) or
       BIDIR (bi-directional).";
+  }
+
+  identity rp-info-source-type {
+    description
+      "The information source of an RP.";
+  }
+  identity static {
+    base rp-info-source-type;
+    description
+      "The RP is statically configured.";
+  }
+  identity bootstrap {
+    base rp-info-source-type;
+    description
+      "The RP is learned from bootstrap.";
   }
 
   /*
@@ -376,15 +391,8 @@ module ietf-pim-rp {
     description
       "Gouring of RP state attributes.";
     leaf info-source-type {
-      type enumeration {
-        enum static {
-          description
-          "";
-        }
-        enum bootstrap {
-          description
-          "";
-        }
+      type identityref {
+        base rp-info-source-type;
       }
       description "";
     } // info-source-type

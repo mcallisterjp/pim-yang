@@ -75,14 +75,14 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/
       |  |  +--ro ipv4-addr           inet:ipv4-address
       |  |  +--ro mode                identityref
       |  |  +--ro info-source-addr?   inet:ipv4-address
-      |  |  +--ro info-source-type?   enumeration
+      |  |  +--ro info-source-type?   identityref
       |  |  +--ro up-time?            uint32
       |  |  +--ro expire?             pim-base:timer-value
       |  +--ro ipv6-rp* [ipv6-addr mode]
       |     +--ro ipv6-addr           inet:ipv6-address
       |     +--ro mode                identityref
       |     +--ro info-source-addr?   inet:ipv6-address
-      |     +--ro info-source-type?   enumeration
+      |     +--ro info-source-type?   identityref
       |     +--ro up-time?            uint32
       |     +--ro expire?             pim-base:timer-value
       +--ro rp-mappings
