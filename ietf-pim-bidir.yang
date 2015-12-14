@@ -3,6 +3,14 @@ module ietf-pim-bidir {
   // replace with IANA namespace when assigned
   prefix pim-bidir;
 
+  import ietf-inet-types {
+    prefix "inet";
+  }
+  
+  import ietf-interfaces {
+    prefix "if";
+  }
+  
   import ietf-routing {
     prefix "rt";
   }
@@ -34,7 +42,7 @@ module ietf-pim-bidir {
     "The YANG module defines a BIDIR (Bidirectional) mode PIM
     model.";
   
-  revision 2015-12-01 {
+  revision 2015-12-09 {
     description
       "Initial revision.";
     reference
@@ -57,6 +65,37 @@ module ietf-pim-bidir {
     description
       "BIDIR (Bidirectional) mode.";
   }
+
+  /*
+   * Typedefs
+   */
+  typedef intf-df-state {
+    type enumeration {
+      enum "offer" {
+        description
+          "Initial election state..";
+      }
+      enum "lose" {
+        description
+          "There either is a different election winner or that no
+           router on the link has a path to the RPA..";
+      }
+      enum "win" {
+        description
+          "The router is the acting DF without any contest.";
+      }
+      enum "backoff" {
+        description
+          "The router is the acting DF but another router has made a
+           bid to take over..";
+      }
+    }
+    description
+      "Interface DF election state type.";
+    reference
+      "RFC5015: Bidirectional Protocol Independent Multicast
+      (BIDIR-PIM).";
+  } // intf-df-state
 
   /*
    * Groupings
@@ -152,6 +191,112 @@ module ietf-pim-bidir {
       description
         "PIM BIDIR state data.";
     } // bidir
+  } // augment
+
+  augment "/rt:routing-state/rt:routing-instance/"
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:address-family/pim-rp:rp" {
+    description "PIM BIDIR augmentation.";
+
+    container bidir {
+      description
+        "PIM BIDIR state data.";
+      container df-election {
+        description
+          "DF election data.";
+        list ipv4-rp {
+          when "../../../../address-family = 'rt:ipv4'" {
+            description
+              "Only applicable to ipv4 address family.";
+          }
+          key "ipv4-addr";
+          description 
+            "A list of IPv4 RP addresses.";
+          leaf ipv4-addr {
+            type inet:ipv4-address;
+            description 
+              "The address of the RP.";
+          }
+        } // ipv4-rp
+        list ipv6-rp {
+          when "../../../../address-family = 'rt:ipv6'" {
+            description
+              "Only applicable to ipv6 address family.";
+          }
+          key "ipv6-addr";
+          description 
+            "A list of IPv6 RP addresses.";
+          leaf ipv6-addr {
+            type inet:ipv6-address;
+            description 
+              "The address of the RP.";
+          }
+        } // ipv6-rp
+      } // df-election
+      
+      container interface-df-election {
+        description
+          "Interface DF election data.";
+        list ipv4-rp {
+          when "../../../../address-family = 'rt:ipv4'" {
+            description
+              "Only applicable to ipv4 address family.";
+          }
+          key "ipv4-addr interface-name";
+          description 
+            "A list of IPv4 RP addresses.";
+          leaf ipv4-addr {
+            type inet:ipv4-address;
+            description 
+              "The address of the RP.";
+          }
+          leaf interface-name {
+            type if:interface-ref;
+            description 
+              "The address of the RP.";
+          }
+          leaf df-address {
+            type inet:ipv4-address;
+            description
+              "DF address.";
+          }
+          leaf interface-state {
+            type intf-df-state;
+            description
+              "Interface state.";
+          }
+        } // ipv4-rp
+        list ipv6-rp {
+          when "../../../../address-family = 'rt:ipv6'" {
+            description
+              "Only applicable to ipv6 address family.";
+          }
+          key "ipv6-addr interface-name";
+          description 
+            "A list of IPv6 RP addresses.";
+          leaf ipv6-addr {
+            type inet:ipv6-address;
+            description 
+              "The address of the RP.";
+          }
+          leaf interface-name {
+            type if:interface-ref;
+            description 
+              "The address of the RP.";
+          }
+          leaf df-address {
+            type inet:ipv6-address;
+            description
+              "DF address.";
+          }
+          leaf interface-state {
+            type intf-df-state;
+            description
+              "Interface state.";
+          }
+        } // ipv6-rp        
+      } // interface-df-election
+    }
   } // augment
 
   /*

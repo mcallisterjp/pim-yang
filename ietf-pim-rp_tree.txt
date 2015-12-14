@@ -31,6 +31,11 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
             +--rw mode?           identityref
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--ro rp
+      +--ro static-rp
+      |  +--ro ipv4-rp* [ipv4-addr]
+      |  |  +--ro ipv4-addr    inet:ipv4-address
+      |  +--ro ipv6-rp* [ipv6-addr]
+      |     +--ro ipv6-addr    inet:ipv6-address
       +--ro bsr {bsr}?
       |  +--ro bsr-candidate!
       |  |  +--ro (interface-or-address)?

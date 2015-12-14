@@ -37,7 +37,7 @@ module ietf-pim-rp {
   description
     "The YANG module defines a PIM RP (Rendezvous Point) model.";
   
-  revision 2015-12-08 {
+  revision 2015-12-09 {
     description
       "Initial revision.";
     reference
@@ -425,6 +425,44 @@ module ietf-pim-rp {
     }
   } // static-rp-attributes
 
+  grouping static-rp-container {
+    description
+      "Gouring of static RP container.";
+    container static-rp {
+      description
+        "Containing static RP attributes.";
+      list ipv4-rp {
+        when "../../../address-family = 'rt:ipv4'" {
+          description
+            "Only applicable to ipv4 address family.";
+        }
+        key "ipv4-addr";
+        description 
+          "A list of IPv4 RP addresses.";
+        leaf ipv4-addr {
+          type inet:ipv4-address;
+          description 
+            "Specifies a static RP address.";
+        }
+      }
+      
+      list ipv6-rp {
+        when "../../../address-family = 'rt:ipv6'" {
+          description
+            "Only applicable to ipv6 address family.";
+        }
+        key "ipv6-addr";
+        description 
+          "A list of IPv6 RP addresses.";
+        leaf ipv6-addr {
+          type inet:ipv6-address;
+          description 
+            "Specifies a static RP address.";
+        }
+      }
+    } // static-rp
+  } // static-rp-container
+
   grouping rp-candidate-attributes {
     description
       "Gouring of RP candidate attributes.";
@@ -455,39 +493,7 @@ module ietf-pim-rp {
       description
         "PIM RP configuration data.";
 
-      container static-rp {
-        description
-          "Containing static RP attributes.";
-        list ipv4-rp {
-          when "../../../address-family = 'rt:ipv4'" {
-            description
-              "Only applicable to ipv4 address family.";
-          }
-          key "ipv4-addr";
-          description 
-            "A list of IPv4 RP addresses.";
-          leaf ipv4-addr {
-            type inet:ipv4-address;
-            description 
-              "Specifies a static RP address.";
-          }
-        }
-        
-        list ipv6-rp {
-          when "../../../address-family = 'rt:ipv6'" {
-            description
-              "Only applicable to ipv6 address family.";
-          }
-          key "ipv6-addr";
-          description 
-            "A list of IPv6 RP addresses.";
-          leaf ipv6-addr {
-            type inet:ipv6-address;
-            description 
-              "Specifies a static RP address.";
-          }
-        }
-      } // static-rp
+      uses static-rp-container;
 
       container bsr {
         if-feature bsr;
@@ -511,6 +517,8 @@ module ietf-pim-rp {
     container rp {
       description
         "PIM RP state data.";
+
+      uses static-rp-container;
 
       container bsr {
         if-feature bsr;

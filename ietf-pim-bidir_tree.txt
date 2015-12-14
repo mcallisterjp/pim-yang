@@ -17,3 +17,21 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-ba
       +--rw override?      boolean {static-rp-override}?
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--ro bidir
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/pim-base:pim/pim-base:address-family/pim-rp:rp:
+   +--ro bidir
+      +--ro df-election
+      |  +--ro ipv4-rp* [ipv4-addr]
+      |  |  +--ro ipv4-addr    inet:ipv4-address
+      |  +--ro ipv6-rp* [ipv6-addr]
+      |     +--ro ipv6-addr    inet:ipv6-address
+      +--ro interface-df-election
+         +--ro ipv4-rp* [ipv4-addr interface-name]
+         |  +--ro ipv4-addr          inet:ipv4-address
+         |  +--ro interface-name     if:interface-ref
+         |  +--ro df-address?        inet:ipv4-address
+         |  +--ro interface-state?   intf-df-state
+         +--ro ipv6-rp* [ipv6-addr interface-name]
+            +--ro ipv6-addr          inet:ipv6-address
+            +--ro interface-name     if:interface-ref
+            +--ro df-address?        inet:ipv6-address
+            +--ro interface-state?   intf-df-state

@@ -1,6 +1,3 @@
-<![CDATA[
-<CODE BEGINS>
-
 module ietf-pim-sm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-sm";
   // replace with IANA namespace when assigned
@@ -40,7 +37,7 @@ module ietf-pim-sm {
   description
     "The YANG module defines a sparse mode PIM model.";
   
-  revision 2015-10-08 {
+  revision 2015-12-09 {
     description
       "Initial revision.";
     reference
@@ -75,32 +72,13 @@ module ietf-pim-sm {
   /*
    * Groupings
    */
-  grouping static-rp-sm-container {
+  grouping af-sm-container {
     description
-      "Gouping that contains SM attributes for static RP.";
-    container sm {
-      presence 
-        "Indicate the support of sparse mode.";
-      description
-        "PIM SM configuration data.";
-
-      uses pim-rp:static-rp-attributes;
-    } // sm
-  } // static-rp-sm-container
-
-  /*
-   * Configuration data nodes
-   */
-
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
-    description "PIM SM augmentation.";
-
+      "Gouping of address family SM container.";
     container sm {
       description
         "PIM SM configuration data.";
-
+      
       container asm {
         description 
           "ASM (Any Source Multicast) attributes.";
@@ -203,14 +181,11 @@ module ietf-pim-sm {
         }
       } // ssm
     } // sm
-  } // augment
+  } // af-sm-container
 
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
-    + "pim-base:interfaces/pim-base:interface/"
-    + "pim-base:address-family" {
-    description "PIM SM augmentation.";
-
+  grouping interface-sm-container {
+    description
+      "Gouping of interface SM container.";
     container sm {
       presence "Present to enable sparse-mode.";
       description
@@ -224,6 +199,40 @@ module ietf-pim-sm {
           forwarding entry.";
       }      
     } // sm
+  } // interface-sm-container
+
+  grouping static-rp-sm-container {
+    description
+      "Gouping that contains SM attributes for static RP.";
+    container sm {
+      presence 
+        "Indicate the support of sparse mode.";
+      description
+        "PIM SM configuration data.";
+
+      uses pim-rp:static-rp-attributes;
+    } // sm
+  } // static-rp-sm-container
+
+  /*
+   * Configuration data nodes
+   */
+
+  augment "/rt:routing/rt:routing-instance/"
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:address-family" {
+    description "PIM SM augmentation.";
+
+    uses af-sm-container;
+  } // augment
+
+  augment "/rt:routing/rt:routing-instance/"
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:interfaces/pim-base:interface/"
+    + "pim-base:address-family" {
+    description "PIM SM augmentation.";
+
+    uses interface-sm-container;
   } // augment
 
   augment "/rt:routing/rt:routing-instance/"
@@ -254,10 +263,34 @@ module ietf-pim-sm {
     description
       "PIM SM state.";
 
-    container sm {
-      description
-        "PIM SM state data.";
-    } // sm
+    uses af-sm-container;
+  } // augment
+
+  augment "/rt:routing-state/rt:routing-instance/"
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:interfaces/pim-base:interface/"
+    + "pim-base:address-family" {
+    description "PIM SM augmentation.";
+
+    uses interface-sm-container;
+  } // augment
+
+  augment "/rt:routing-state/rt:routing-instance/"
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:address-family/pim-rp:rp/"
+    + "pim-rp:static-rp/pim-rp:ipv4-rp" {
+    description "PIM SM augmentation.";
+
+    uses static-rp-sm-container;
+  } // augment
+
+  augment "/rt:routing-state/rt:routing-instance/"
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:address-family/pim-rp:rp/"
+    + "pim-rp:static-rp/pim-rp:ipv6-rp" {
+    description "PIM SM augmentation.";
+
+    uses static-rp-sm-container;
   } // augment
 
   /*
@@ -268,5 +301,3 @@ module ietf-pim-sm {
    * Notifications
    */
 }
-<CODE ENDS>
-]]>
