@@ -42,7 +42,7 @@ module ietf-pim-bidir {
     "The YANG module defines a BIDIR (Bidirectional) mode PIM
     model.";
   
-  revision 2015-12-09 {
+  revision 2015-12-22 {
     description
       "Initial revision.";
     reference
@@ -66,36 +66,43 @@ module ietf-pim-bidir {
       "BIDIR (Bidirectional) mode.";
   }
 
-  /*
-   * Typedefs
-   */
-  typedef intf-df-state {
-    type enumeration {
-      enum "offer" {
-        description
-          "Initial election state..";
-      }
-      enum "lose" {
-        description
-          "There either is a different election winner or that no
-           router on the link has a path to the RPA..";
-      }
-      enum "win" {
-        description
-          "The router is the acting DF without any contest.";
-      }
-      enum "backoff" {
-        description
-          "The router is the acting DF but another router has made a
-           bid to take over..";
-      }
-    }
+  identity df-state {
     description
-      "Interface DF election state type.";
+      "DF election state type.";
     reference
       "RFC5015: Bidirectional Protocol Independent Multicast
       (BIDIR-PIM).";
-  } // intf-df-state
+  }
+
+  identity df-state-offer {
+    base df-state;
+    description
+      "Initial election state..";
+  }
+
+  identity df-state-lose {
+    base df-state;
+    description
+      "There either is a different election winner or that no
+       router on the link has a path to the RPA.";
+  }
+
+  identity df-state-win {
+    base df-state;
+    description
+      "The router is the acting DF without any contest.";
+  }
+
+  identity df-state-backoff {
+    base df-state;
+    description
+      "The router is the acting DF but another router has made a
+       bid to take over..";
+  }
+
+  /*
+   * Typedefs
+   */
 
   /*
    * Groupings
@@ -195,6 +202,55 @@ module ietf-pim-bidir {
 
   augment "/rt:routing-state/rt:routing-instance/"
     + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:interfaces/pim-base:interface/"
+    + "pim-base:address-family" {
+    description "PIM BIDIR augmentation.";
+
+    container bidir {
+      presence "Present to enable BIDIR mode.";
+      description
+        "PIM BIDIR configuration data.";
+
+      container df-election {
+        if-feature intf-df-election;
+        description
+          "DF election attributes.";
+        leaf offer-interval {
+          type pim-base:timer-value;
+          description "Offer interval";
+        }
+        leaf backoff-interval {
+          type pim-base:timer-value;
+          description "Backoff interval";
+        }
+        leaf offer-multipler {
+          type uint8;
+          description "Offer multipler";
+        }        
+      } // df-election
+    } // bidir
+  } // augment
+
+  augment "/rt:routing-state/rt:routing-instance/"
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:address-family/pim-rp:rp/"
+    + "pim-rp:static-rp/pim-rp:ipv4-rp" {
+    description "PIM BIDIR augmentation.";
+
+    uses static-rp-bidir-container;
+  } // augment
+
+  augment "/rt:routing-state/rt:routing-instance/"
+    + "rt:routing-protocols/pim-base:pim/"
+    + "pim-base:address-family/pim-rp:rp/"
+    + "pim-rp:static-rp/pim-rp:ipv6-rp" {
+    description "PIM BIDIR augmentation.";
+
+    uses static-rp-bidir-container;
+  } // augment
+
+  augment "/rt:routing-state/rt:routing-instance/"
+    + "rt:routing-protocols/pim-base:pim/"
     + "pim-base:address-family/pim-rp:rp" {
     description "PIM BIDIR augmentation.";
 
@@ -261,7 +317,9 @@ module ietf-pim-bidir {
               "DF address.";
           }
           leaf interface-state {
-            type intf-df-state;
+            type identityref {
+              base df-state;
+            }
             description
               "Interface state.";
           }
@@ -290,7 +348,9 @@ module ietf-pim-bidir {
               "DF address.";
           }
           leaf interface-state {
-            type intf-df-state;
+            type identityref {
+              base df-state;
+            }
             description
               "Interface state.";
           }

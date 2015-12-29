@@ -1,0 +1,300 @@
+module ietf-igmp {
+  namespace "urn:ietf:params:xml:ns:yang:ietf-igmp";
+  // replace with IANA namespace when assigned
+  prefix igmp;
+
+  import ietf-inet-types {
+    prefix "inet";
+  }
+  
+  import ietf-routing {
+    prefix "rt";
+  }
+
+  import ietf-interfaces {
+    prefix "if";
+  }
+  
+  import ietf-ip {
+    prefix ip;
+  }
+  
+  organization
+    "IETF PIM Working Group";
+
+  contact
+    "WG Web:   <http://tools.ietf.org/wg/pim/>
+     WG List:  <mailto:pim@ietf.org>
+
+     WG Chair: Stig Venaas
+               <mailto:stig@venaas.com>
+
+     WG Chair: Mike McBride
+               <mailto:mmcbride7@gmail.com>
+ 
+     Editors:   ";
+
+  description
+    "The module defines a collection of YANG definitions common for
+    IGMP.";
+  
+  revision 2015-12-22 {
+    description
+      "Initial revision.";
+    reference
+      "RFC XXXX: A YANG Data Model for IGMP";
+  }
+
+  /*
+   * Features
+   */
+  feature global-interface-config {
+    description
+      "Support global configuration applied to all interfaces.";
+  }
+
+  feature intf-admin-enable {
+    description 
+      "Support configuration of interface administrative enabling.";
+  }
+
+  feature intf-group-limit {
+    description 
+      "Support configuration of interface group limit.";
+  }
+
+  feature intf-immediate-leave {
+    description 
+      "Support configuration of interface immediate-leave.";
+  }
+
+  feature intf-join-group {
+    description 
+      "Support configuration of interface join-group.";
+  }
+
+  feature intf-ssm-map {
+    description 
+      "Support configuration of interface ssm-map.";
+  }
+
+  feature intf-static-group {
+    description 
+      "Support configuration of interface static-group.";
+  }
+
+  feature intf-verify-source-subnet {
+    description 
+      "Support configuration of interface verify-source-subnet.";
+  }
+
+  feature per-interface-config {
+    description 
+      "Support per interface configuration.";
+  }
+
+  /*
+   * Typedefs
+   */
+
+  /*
+   * Identities
+   */
+
+  /*
+   * Groupings
+   */
+  grouping interface-config-attributes {
+    description "interface igmp configuration.";
+    
+    leaf enable {
+      if-feature intf-admin-enable;
+      type boolean;
+      description 
+        "true to enable IGMP on the interface; 
+         false to disable IGMP on the interface.";
+    }
+    leaf group-limit {
+      if-feature intf-group-limit;
+      type uint32;
+      description
+        "The maximum number of groups that IGMP can join.";
+    }
+    leaf group-policy {
+      type string;
+      description 
+        "Name of the access policy used to filter IGMP membership.";
+    }
+    leaf immediate-leave {
+      if-feature intf-immediate-leave;
+      type empty;
+      description
+        "If present, IGMP perform an immediate leave upon receiving an
+         IGMP Version 2 (IGMPv2) leave message.
+         If the router is IGMP-enabled, it sends an IGMP last member
+         query with a last member query response time. However, the
+         router does not wait for the response time before it prunes
+         off the group.";
+    }
+    leaf last-member-query-interval {
+      type uint16 {
+        range "1..65535";
+      }
+      description 
+        "Last Member Query Interval, which may be tuned to modify the
+         leave latency of the network.";
+      reference "RFC3376. Sec. 8.8.";
+    }
+    leaf query-interval {
+      type uint16;
+      units seconds;
+      default 125;
+      description 
+        "The Query Interval is the interval between General Queries
+         sent by the Querier.";
+      reference "RFC3376. Sec. 4.1.7, 8.2, 8.14.2.";
+    }
+    leaf query-max-response-time {
+      type uint16;
+      units seconds;
+      description 
+        "Query maximum response time specifies the maximum time
+         allowed before sending a responding report.";
+      reference "RFC3376. Sec. 4.1.1, 8.3, 8.14.3.";
+    }
+    leaf robustness-variable {
+      type uint8 {
+        range "2..7";
+      }
+      default 2;
+      description 
+        "Querier's Robustness Variable allows tuning for the expected
+         packet loss on a network.";
+      reference "RFC3376. Sec. 4.1.6, 8.1, 8.14.1.";
+    }
+    leaf verify-source-subnet {
+      if-feature intf-verify-source-subnet;
+      type empty;
+      description 
+        "If present, the interface accepts packets with matching
+         source IP subnet only.";
+    }
+    leaf version {
+      type uint8 {
+        range "1..3";
+      }
+      description "IGMP version.";
+      reference "RFC1112, RFC2236, RFC3376.";
+    }
+
+    leaf-list join-group {
+      if-feature intf-join-group;
+      type inet:ipv4-address;
+      description 
+        "The router joins this multicast group on the interface.";
+    }
+
+    list ssm-map {
+      if-feature intf-ssm-map;
+      key "address group-policy";
+      description "";
+      leaf address {
+        type inet:ipv4-address;
+        description "";
+      }
+      leaf group-policy {
+        type string;
+        description 
+          "Name of the access policy used to filter IGMP
+           membership.";
+      }
+    }
+
+    list static-group {
+      if-feature intf-static-group;
+      key "group source-addr";
+      description 
+        "A static multicast route, (*,G) or (S,G).";
+      
+      leaf group {
+        type inet:ipv4-address;
+        description 
+          "Multicast group IP address.";
+      }
+      leaf source-addr {
+        type union {
+          type enumeration {
+            enum '*' {
+              description 
+                "Any source address.";
+            }
+          }
+          type inet:ipv4-address;
+        }
+        description 
+          "Multicast source IP address.";
+      }
+    }
+  } // interface-config-attributes
+
+  /*
+   * Configuration data nodes
+   */
+  augment "/rt:routing/rt:routing-instance/"
+    + "rt:routing-protocols" {
+    description 
+      "IGMP augmentation to routing instance configuration.";
+
+    container igmp {
+      description
+        "IGMP configuration data.";
+
+      container global {
+        description
+          "Global attributes.";
+       
+      }
+
+      container interfaces {
+        description
+          "Containing a list of interfaces.";
+
+        uses interface-config-attributes {
+          if-feature global-interface-config;
+        }
+
+        list interface {
+          key "interface";
+          description
+            "List of IGMP interfaces.";
+          leaf interface {
+            type if:interface-ref;
+            must "/if:interfaces/if:interface[if:name = current()]/"
+               + "ip:ipv4" {
+              description
+                "The interface must have IPv4 enabled.";
+            }
+            description
+              "Reference to an entry in the global interface
+               list.";
+          }
+          uses interface-config-attributes {
+            if-feature per-interface-config;
+          }
+        } // interface
+      } // interfaces
+    } // pim
+  } // augment
+
+  /*
+   * Operational state data nodes
+   */
+
+  /*
+   * RPCs
+   */
+
+  /*
+   * Notifications
+   */
+}
