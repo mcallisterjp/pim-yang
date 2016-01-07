@@ -49,7 +49,7 @@
 <?rfc compact="yes"?> <?rfc subcompact="no"?>
 
 <!-- other categories: bcp, exp, historic, std -->
-<rfc ipr="trust200902" category="std" docName="draft-mcallister-pim-yang-01">
+<rfc ipr="trust200902" category="std" docName="draft-mcallister-pim-yang-02">
 
   <front>
 
@@ -96,8 +96,8 @@
         <email>anishp@juniper.net</email>
       </address>
     </author>
-    
-    <date month='' year="2015"/>
+
+    <date month='January' year="2016"/>
     <area>Routing</area>
     <workgroup>PIM Working Group</workgroup>
 
@@ -142,7 +142,7 @@
 
       <section title="Terminology">
         <t>
-          The terminology for describing YANG data models is found in 
+          The terminology for describing YANG data models is found in
           <xref target="RFC6020"/>.
         </t>
         <t>
@@ -155,7 +155,7 @@
     <section title="Design of Data Model">
       <section title="Scope of model">
         <t>
-          The model covers PIM Sparse Mode <xref target="RFC4601"/>, including the 
+          The model covers PIM Sparse Mode <xref target="RFC4601"/>, including the
           Source-Specfic subset <xref target="RFC3569"/>, Dense Mode
           <xref target="RFC3973"/>, and Bi-directional PIM <xref target="RFC5015"/>.
         </t>
@@ -164,7 +164,7 @@
           <xref target="RFC5059"/> and Anycast RP <xref target="RFC4610"/>.
         </t>
         <t>
-          The representation of some of these features is not completely specified 
+          The representation of some of these features is not completely specified
           in this draft of the data model. This model is being circulated in its
           current form for early oversight and review of the basic hierarchy.
         </t>
@@ -184,36 +184,36 @@
           This model is designed to represent the capabilities of PIM devices
           with various specifications, including some with basic subsets of the
           PIM protocol. The main design goals of this draft are that any major
-          now-existing implementation may be said to support the base model, and 
+          now-existing implementation may be said to support the base model, and
           that the configuration of all implementations meeting the specification
           is easy to express through some combination of the features in the base
-          model and simple vendor augmentations. 
+          model and simple vendor augmentations.
         </t>
         <t>
-          There is also value in widely-supported features being standardized, to 
-          save work for individual vendors, and so that mapping between different 
+          There is also value in widely-supported features being standardized, to
+          save work for individual vendors, and so that mapping between different
           vendors' configuration is not needlessly complicated. Therefore these
           modules declare a number of features representing capabilities that
           not all deployed devices support.
         </t>
         <t>
           The extensive use of feature declarations should also substantially
-          simplify the capability negotiation process for a vendor's PIM 
+          simplify the capability negotiation process for a vendor's PIM
           implementation.
         </t>
         <t>
-          On the other hand, operational state parameters are not so widely 
+          On the other hand, operational state parameters are not so widely
           designated as features, as there are many cases where the defaulting
-          of an operational state parameter would not cause any harm to the 
+          of an operational state parameter would not cause any harm to the
           system, and it is much more likely that an implementation without
-          native support for a piece of operational state would be able to 
-          derive a suitable value for a state variable that is not natively 
+          native support for a piece of operational state would be able to
+          derive a suitable value for a state variable that is not natively
           supported.
         </t>
         <t>
           For the same reason, wide constant ranges (for example, timer maxima
           and minima) will be used in the model. It is expected that vendors will
-          augment the model with any specific restrictions that might be 
+          augment the model with any specific restrictions that might be
           required. Vendors may also extend the features list with proprietary
           extensions.
         </t>
@@ -221,7 +221,7 @@
       <section title="Top-level structure">
         <t>
           This model defines several separate modules for modelling PIM
-          configuration, defined below. Again, this separation will make it 
+          configuration, defined below. Again, this separation will make it
           easier to express the specific capabilities of a PIM device.
         </t>
         <t>
@@ -248,11 +248,11 @@
           This is similar to the IS-IS yang draft model.
         </t>
         <t>
-          The reasoning for this is to make it easier for implementations in which 
+          The reasoning for this is to make it easier for implementations in which
           configuration options are not supported for specific address families.
         </t>
         <t>
-          For these implementations, the restriction that interface configuration 
+          For these implementations, the restriction that interface configuration
           must be address-family independent must either be expressed as a vendor
           augmentation of an address-family-independent parameter above the
           address-family level, or by a constraint on the base model objects of a
@@ -283,32 +283,32 @@
       <section title="Group range mappings">
         <t>
           There is currently no convenient way in the operational state model to
-          map from a group address to the PIM mode and RP information that it 
+          map from a group address to the PIM mode and RP information that it
           will be forwarded according to, which complicates reasoning about the
           running state and the diagnosis of conflicting policy configuration.
         </t>
         <t>
-          A hypothetical group range state reporting object indexed by group range 
+          A hypothetical group range state reporting object indexed by group range
           would be desirable for this purpose, but would be inconvenient for many
           implementations that index the relevant information on RP address (not
           applicable for DM or unroutable group-ranges), and difficult to express
-          directly in YANG (as it is difficult to express a container indexed on 
+          directly in YANG (as it is difficult to express a container indexed on
           an arbitrary, proprietary policy structure).
         </t>
       </section>
       <section title="Issues blocked on other model designers">
         <t>
           Some questions must be resolved with reference to other yang models, and so
-          the resolution may be blocked on a decision from another body. Currently 
+          the resolution may be blocked on a decision from another body. Currently
           these issues are:
           <list style='numbers'>
             <t>
               The position of BFD in the configuration; does the BFD model augment
-              various different protocols, or do the protocols have to augment 
+              various different protocols, or do the protocols have to augment
               themselves individually to support BFD?
             </t>
             <t>
-              The abstract concepts of a "set of IP addresses" or "set of IP 
+              The abstract concepts of a "set of IP addresses" or "set of IP
               prefixes", as represented in implementations by prefixes, ACLs or
               policy statements, is a general concept out of the scope of this
               document. It will presumably have a yang data-type the instantiation
@@ -349,9 +349,9 @@
       </section>
       <section title="PIM RP module">
         <t>
-          The PIM RP module contains configuration information scoped to RPs or 
+          The PIM RP module contains configuration information scoped to RPs or
           ranges of group addresses. This does not belong in the hierarchy
-          under any PIM mode, but is augmented by the individual mode-specific 
+          under any PIM mode, but is augmented by the individual mode-specific
           modules as appropriate.
         </t>
         <figure><artwork>
@@ -415,7 +415,7 @@
     <section title="TODO list">
       <t>
         In this draft, several aspects of the model are incomplete. The PIM-DM
-        and BI-DIR modules are just placeholders for now to demonstrate the 
+        and BI-DIR modules are just placeholders for now to demonstrate the
         hierarchy of the model. Other things the draft will include when
         complete but does not yet include:
         <list style='symbols'>

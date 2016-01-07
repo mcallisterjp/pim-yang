@@ -5,14 +5,14 @@
 PIM Working Group                                                 X. Liu
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                           P. McAllister
-Expires: April 21, 2016                              Metaswitch Networks
+Expires: July 10, 2016                               Metaswitch Networks
                                                                 A. Peter
                                                         Juniper Networks
-                                                        October 19, 2015
+                                                         January 7, 2016
 
 
        A YANG data model for Protocol-Independent Multicast (PIM)
-                      draft-mcallister-pim-yang-01
+                      draft-mcallister-pim-yang-02
 
 Abstract
 
@@ -34,11 +34,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 21, 2016.
+   This Internet-Draft will expire on July 10, 2016.
 
 Copyright Notice
 
-   Copyright (c) 2015 IETF Trust and the persons identified as the
+   Copyright (c) 2016 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Liu, et al.              Expires April 21, 2016                 [Page 1]
+Liu, et al.               Expires July 10, 2016                 [Page 1]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
 Table of Contents
@@ -75,23 +75,23 @@ Table of Contents
    4.  Module Structure  . . . . . . . . . . . . . . . . . . . . . .   6
      4.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .   6
      4.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .  10
-     4.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .  12
-     4.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .  13
-     4.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .  14
-   5.  PIM YANG Modules  . . . . . . . . . . . . . . . . . . . . . .  15
-     5.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .  15
-     5.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .  34
-     5.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .  48
-     5.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .  53
-     5.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .  56
-   6.  TODO list . . . . . . . . . . . . . . . . . . . . . . . . . .  59
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  60
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  60
-   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  60
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  60
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  60
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  60
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  61
+     4.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .  13
+     4.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .  14
+     4.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .  15
+   5.  PIM YANG Modules  . . . . . . . . . . . . . . . . . . . . . .  16
+     5.1.  PIM base module . . . . . . . . . . . . . . . . . . . . .  16
+     5.2.  PIM RP module . . . . . . . . . . . . . . . . . . . . . .  36
+     5.3.  PIM-SM module . . . . . . . . . . . . . . . . . . . . . .  50
+     5.4.  PIM-DM module . . . . . . . . . . . . . . . . . . . . . .  57
+     5.5.  PIM-BIDIR module  . . . . . . . . . . . . . . . . . . . .  59
+   6.  TODO list . . . . . . . . . . . . . . . . . . . . . . . . . .  67
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  68
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  68
+   9.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  68
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  68
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  68
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  68
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  69
 
 1.  Introduction
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Liu, et al.              Expires April 21, 2016                 [Page 2]
+Liu, et al.               Expires July 10, 2016                 [Page 2]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
 1.1.  Requirements Language
@@ -165,9 +165,9 @@ Internet-Draft                  PIM YANG                    October 2015
 
 
 
-Liu, et al.              Expires April 21, 2016                 [Page 3]
+Liu, et al.               Expires July 10, 2016                 [Page 3]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
    specification is easy to express through some combination of the
@@ -221,9 +221,9 @@ Internet-Draft                  PIM YANG                    October 2015
 
 
 
-Liu, et al.              Expires April 21, 2016                 [Page 4]
+Liu, et al.               Expires July 10, 2016                 [Page 4]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
 2.4.  Position of address family in hierarchy
@@ -277,9 +277,9 @@ Internet-Draft                  PIM YANG                    October 2015
 
 
 
-Liu, et al.              Expires April 21, 2016                 [Page 5]
+Liu, et al.               Expires July 10, 2016                 [Page 5]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
 3.3.  Issues blocked on other model designers
@@ -319,8 +319,7 @@ Internet-Draft                  PIM YANG                    October 2015
        the latter would allow multiple protocol instances per VRF, which
        does not make sense for PIM.
 
-
-module: ietf-pim-base
+          module: ietf-pim-base
 augment /rt:routing/rt:routing-instance/rt:routing-protocols:
    +--rw pim
       +--rw graceful-restart
@@ -330,31 +329,40 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
       |  +--rw address-family      identityref
       |  +--rw graceful-restart
       |     +--rw enabled?    boolean
-
-
-
-Liu, et al.              Expires April 21, 2016                 [Page 6]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
       |     +--rw duration?   uint16
+
+
+
+Liu, et al.               Expires July 10, 2016                 [Page 6]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
       +--rw interfaces
          +--rw interface* [interface]
             +--rw interface         if:interface-ref
             +--rw address-family* [address-family]
                +--rw address-family       identityref
+               +--rw bfd
+               |  +--rw enabled?                    boolean
+               |  +--rw local-multiplier?           multiplier
+               |  +--rw (interval-config-type)?
+               |     +--:(tx-rx-intervals)
+               |     |  +--rw desired-min-tx-interval     uint32
+               |     |  +--rw required-min-rx-interval    uint32
+               |     +--:(single-interval)
+               |        +--rw min-interval                uint32
                +--rw dr-priority?         uint32 {intf-dr-priority}?
-               +--rw hello-interval?      uint16 {intf-hello-interval}?
+               +--rw hello-interval?      timer-value {intf-hello-interval}?
                +--rw (hello-holdtime-or-multipler)?
                |  +--:(holdtime) {intf-hello-holdtime}?
-               |  |  +--rw hello-holdtime?      uint16
+               |  |  +--rw hello-holdtime?      timer-value
                |  +--:(multipler) {intf-hello-multipler}?
                |     +--rw hello-multipler?     uint8
-               +--rw jp-interval?         uint16 {intf-jp-interval}?
+               +--rw jp-interval?         timer-value {intf-jp-interval}?
                +--rw (jp-holdtime-or-multipler)?
                |  +--:(holdtime) {intf-jp-holdtime}?
-               |  |  +--rw jp-holdtime?         uint16
+               |  |  +--rw jp-holdtime?         timer-value
                |  +--:(multipler) {intf-jp-multipler}?
                |     +--rw jp-multipler?        uint8
                +--rw propagation-delay?   uint16 {intf-propagation-delay}?
@@ -366,43 +374,43 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |  +--ro statistics
       |  |  +--ro discontinuity-time?   yang:date-and-time
       |  |  +--ro error
-      |  |  |  +--ro assert?                       yang:counter32
-      |  |  |  +--ro bsr?                          yang:counter32
-      |  |  |  +--ro candidate-rp-advertisement?   yang:counter32
-      |  |  |  +--ro hello?                        yang:counter32
-      |  |  |  +--ro join-prune?                   yang:counter32
-      |  |  |  +--ro register?                     yang:counter32
-      |  |  |  +--ro register-stop?                yang:counter32
-      |  |  |  +--ro state-refresh?                yang:counter32
+      |  |  |  +--ro assert?                       yang:counter64
+      |  |  |  +--ro bsr?                          yang:counter64
+      |  |  |  +--ro candidate-rp-advertisement?   yang:counter64
+      |  |  |  +--ro hello?                        yang:counter64
+      |  |  |  +--ro join-prune?                   yang:counter64
+      |  |  |  +--ro register?                     yang:counter64
+      |  |  |  +--ro register-stop?                yang:counter64
+      |  |  |  +--ro state-refresh?                yang:counter64
       |  |  +--ro queue
       |  |  |  +--ro size?       uint32
       |  |  |  +--ro overflow?   yang:counter32
       |  |  +--ro received
-      |  |  |  +--ro assert?                       yang:counter32
-      |  |  |  +--ro bsr?                          yang:counter32
-      |  |  |  +--ro candidate-rp-advertisement?   yang:counter32
-      |  |  |  +--ro hello?                        yang:counter32
-      |  |  |  +--ro join-prune?                   yang:counter32
-      |  |  |  +--ro register?                     yang:counter32
-      |  |  |  +--ro register-stop?                yang:counter32
-      |  |  |  +--ro state-refresh?                yang:counter32
 
 
 
-Liu, et al.              Expires April 21, 2016                 [Page 7]
+Liu, et al.               Expires July 10, 2016                 [Page 7]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
+      |  |  |  +--ro assert?                       yang:counter64
+      |  |  |  +--ro bsr?                          yang:counter64
+      |  |  |  +--ro candidate-rp-advertisement?   yang:counter64
+      |  |  |  +--ro hello?                        yang:counter64
+      |  |  |  +--ro join-prune?                   yang:counter64
+      |  |  |  +--ro register?                     yang:counter64
+      |  |  |  +--ro register-stop?                yang:counter64
+      |  |  |  +--ro state-refresh?                yang:counter64
       |  |  +--ro sent
-      |  |     +--ro assert?                       yang:counter32
-      |  |     +--ro bsr?                          yang:counter32
-      |  |     +--ro candidate-rp-advertisement?   yang:counter32
-      |  |     +--ro hello?                        yang:counter32
-      |  |     +--ro join-prune?                   yang:counter32
-      |  |     +--ro register?                     yang:counter32
-      |  |     +--ro register-stop?                yang:counter32
-      |  |     +--ro state-refresh?                yang:counter32
+      |  |     +--ro assert?                       yang:counter64
+      |  |     +--ro bsr?                          yang:counter64
+      |  |     +--ro candidate-rp-advertisement?   yang:counter64
+      |  |     +--ro hello?                        yang:counter64
+      |  |     +--ro join-prune?                   yang:counter64
+      |  |     +--ro register?                     yang:counter64
+      |  |     +--ro register-stop?                yang:counter64
+      |  |     +--ro state-refresh?                yang:counter64
       |  +--ro topology-tree-info
       |     +--ro ipv4-route* [group source-addr is-rpt]
       |     |  +--ro group                 inet:ipv4-address
@@ -418,8 +426,8 @@ Internet-Draft                  PIM YANG                    October 2015
       |     |  +--ro up-time?              uint32
       |     |  +--ro outgoing-interface* [name]
       |     |     +--ro name        if:interface-ref
-      |     |     +--ro expire?     yang:timeticks
-      |     |     +--ro up-time?    yang:timeticks
+      |     |     +--ro expire?     timer-value
+      |     |     +--ro up-time?    uint32
       |     |     +--ro jp-state?   enumeration
       |     +--ro ipv6-route* [group source-addr is-rpt]
       |        +--ro group                 inet:ipv6-address
@@ -434,34 +442,43 @@ Internet-Draft                  PIM YANG                    October 2015
       |        +--ro spt-bit?              boolean
       |        +--ro up-time?              uint32
       |        +--ro outgoing-interface* [name]
+
+
+
+Liu, et al.               Expires July 10, 2016                 [Page 8]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
       |           +--ro name        if:interface-ref
-      |           +--ro expire?     yang:timeticks
-      |           +--ro up-time?    yang:timeticks
+      |           +--ro expire?     timer-value
+      |           +--ro up-time?    uint32
       |           +--ro jp-state?   enumeration
       +--ro interfaces
          +--ro interface* [interface]
             +--ro interface         if:interface-ref
             +--ro address-family* [address-family]
-
-
-
-Liu, et al.              Expires April 21, 2016                 [Page 8]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
                +--ro address-family       identityref
+               +--ro bfd
+               |  +--ro enabled?                    boolean
+               |  +--ro local-multiplier?           multiplier
+               |  +--ro (interval-config-type)?
+               |     +--:(tx-rx-intervals)
+               |     |  +--ro desired-min-tx-interval     uint32
+               |     |  +--ro required-min-rx-interval    uint32
+               |     +--:(single-interval)
+               |        +--ro min-interval                uint32
                +--ro dr-priority?         uint32 {intf-dr-priority}?
-               +--ro hello-interval?      uint16 {intf-hello-interval}?
+               +--ro hello-interval?      timer-value {intf-hello-interval}?
                +--ro (hello-holdtime-or-multipler)?
                |  +--:(holdtime) {intf-hello-holdtime}?
-               |  |  +--ro hello-holdtime?      uint16
+               |  |  +--ro hello-holdtime?      timer-value
                |  +--:(multipler) {intf-hello-multipler}?
                |     +--ro hello-multipler?     uint8
-               +--ro jp-interval?         uint16 {intf-jp-interval}?
+               +--ro jp-interval?         timer-value {intf-jp-interval}?
                +--ro (jp-holdtime-or-multipler)?
                |  +--:(holdtime) {intf-jp-holdtime}?
-               |  |  +--ro jp-holdtime?         uint16
+               |  |  +--ro jp-holdtime?         timer-value
                |  +--:(multipler) {intf-jp-multipler}?
                |     +--ro jp-multipler?        uint8
                +--ro propagation-delay?   uint16 {intf-propagation-delay}?
@@ -473,18 +490,26 @@ Internet-Draft                  PIM YANG                    October 2015
                |  +--ro address*   inet:ipv6-address
                |  +--ro dr-addr?   inet:ipv6-address
                +--ro oper-status?         enumeration
-               +--ro hello-expire?        uint32
+               +--ro hello-expire?        timer-value
                +--ro neighbor-ipv4* [address]
                |  +--ro address        inet:ipv4-address
                |  +--ro bfd-status?    enumeration
-               |  +--ro expire?        uint32
+               |  +--ro expire?        timer-value
                |  +--ro dr-priority?   uint32
                |  +--ro gen-id?        uint32
                |  +--ro up-time?       uint32
+
+
+
+Liu, et al.               Expires July 10, 2016                 [Page 9]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
                +--ro neighbor-ipv6* [address]
                   +--ro address        inet:ipv6-address
                   +--ro bfd-status?    enumeration
-                  +--ro expire?        uint32
+                  +--ro expire?        timer-value
                   +--ro dr-priority?   uint32
                   +--ro gen-id?        uint32
                   +--ro up-time?       uint32
@@ -498,14 +523,6 @@ notifications:
    |  +--ro neighbor-ipv6-state-ref?      leafref
    |  +--ro up-time?                      uint32
    +---n pim-interface-event
-
-
-
-Liu, et al.              Expires April 21, 2016                 [Page 9]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
       +--ro event-type?                   interface-event-type
       +--ro routing-instance-state-ref?   rt:routing-instance-state-ref
       +--ro interface-state-ref?          leafref
@@ -517,7 +534,6 @@ Internet-Draft                  PIM YANG                    October 2015
          +--ro dr-addr?   inet:ipv6-address
 
 
-
 4.2.  PIM RP module
 
    The PIM RP module contains configuration information scoped to RPs or
@@ -525,10 +541,9 @@ Internet-Draft                  PIM YANG                    October 2015
    under any PIM mode, but is augmented by the individual mode-specific
    modules as appropriate.
 
-
-module: ietf-pim-rp
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim
-/pim-base:address-family:
+          module: ietf-pim-rp
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/
+pim-base:address-family:
    +--rw rp
       +--rw static-rp
       |  +--rw ipv4-rp* [ipv4-addr]
@@ -539,6 +554,14 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim
          +--rw bsr-candidate!
          |  +--rw (interface-or-address)?
          |  |  +--:(interface) {candidate-interface}?
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 10]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          |  |  |  +--rw interface           if:interface-ref
          |  |  +--:(ipv4-address) {candidate-ipv4}?
          |  |  |  +--rw ipv4-address        inet:ipv4-address
@@ -554,14 +577,6 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim
          |  +--rw ipv4-address    inet:ipv4-address
          |  +--rw policy?         string
          |  +--rw mode?           identityref
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 10]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
          +--rw rp-candidate-ipv6-address* [ipv6-address] {candidate-ipv6}?
             +--rw ipv6-address    inet:ipv6-address
             +--rw policy?         string
@@ -569,6 +584,11 @@ Internet-Draft                  PIM YANG                    October 2015
 augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
 pim-base:pim/pim-base:address-family:
    +--ro rp
+      +--ro static-rp
+      |  +--ro ipv4-rp* [ipv4-addr]
+      |  |  +--ro ipv4-addr    inet:ipv4-address
+      |  +--ro ipv6-rp* [ipv6-addr]
+      |     +--ro ipv6-addr    inet:ipv6-address
       +--ro bsr {bsr}?
       |  +--ro bsr-candidate!
       |  |  +--ro (interface-or-address)?
@@ -590,6 +610,14 @@ pim-base:pim/pim-base:address-family:
       |  |  +--ro mode?           identityref
       |  +--ro rp-candidate-ipv6-address* [ipv6-address] {candidate-ipv6}?
       |  |  +--ro ipv6-address    inet:ipv6-address
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 11]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
       |  |  +--ro policy?         string
       |  |  +--ro mode?           identityref
       |  +--ro bsr
@@ -609,45 +637,43 @@ pim-base:pim/pim-base:address-family:
       |  |  +--ro up-time?        uint32
       |  +--ro rp-candidate-next-advertisement?   uint16
       +--ro rp-list
-      |  +--ro ipv4-rp* [ipv4-addr]
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 11]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
+      |  +--ro ipv4-rp* [ipv4-addr mode]
       |  |  +--ro ipv4-addr           inet:ipv4-address
+      |  |  +--ro mode                identityref
       |  |  +--ro info-source-addr?   inet:ipv4-address
-      |  |  +--ro info-source-type?   enumeration
+      |  |  +--ro info-source-type?   identityref
       |  |  +--ro up-time?            uint32
-      |  |  +--ro expire?             uint16
-      |  +--ro ipv6-rp* [ipv6-addr]
+      |  |  +--ro expire?             pim-base:timer-value
+      |  +--ro ipv6-rp* [ipv6-addr mode]
       |     +--ro ipv6-addr           inet:ipv6-address
+      |     +--ro mode                identityref
       |     +--ro info-source-addr?   inet:ipv6-address
-      |     +--ro info-source-type?   enumeration
+      |     +--ro info-source-type?   identityref
       |     +--ro up-time?            uint32
-      |     +--ro expire?             uint16
+      |     +--ro expire?             pim-base:timer-value
       +--ro rp-mappings
          +--ro ipv4-rp* [group rp-addr]
-         |  +--ro group               inet:ipv4-prefix
-         |  +--ro rp-addr             inet:ipv4-address
-         |  +--ro info-source-addr?   inet:ipv4-address
-         |  +--ro info-source-type?   enumeration
-         |  +--ro up-time?            uint32
-         |  +--ro expire?             uint16
+         |  +--ro group      inet:ipv4-prefix
+         |  +--ro rp-addr    inet:ipv4-address
+         |  +--ro up-time?   uint32
+         |  +--ro expire?    pim-base:timer-value
          +--ro ipv6-rp* [group rp-addr]
-            +--ro group               inet:ipv6-prefix
-            +--ro rp-addr             inet:ipv6-address
-            +--ro info-source-addr?   inet:ipv6-address
-            +--ro info-source-type?   enumeration
-            +--ro up-time?            uint32
-            +--ro expire?             uint16
+            +--ro group      inet:ipv6-prefix
+            +--ro rp-addr    inet:ipv6-address
+            +--ro up-time?   uint32
+            +--ro expire?    pim-base:timer-value
 notifications:
    +---n pim-rp-event
       +--ro event-type?                   rp-event-type
       +--ro routing-instance-state-ref?   rt:routing-instance-state-ref
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 12]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
       +--ro instance-af-state-ref?        leafref
       +--ro group?                        inet:ip-address
       +--ro rp-address?                   inet:ip-address
@@ -656,64 +682,87 @@ notifications:
       +--ro message-origin?               inet:ip-address
 
 
-
 4.3.  PIM-SM module
 
    This module covers Sparse Mode configuration, including PIM-ASM and
    PIM-SSM.
 
+          module: ietf-pim-sm
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/
+pim-base:address-family:
+   +--rw sm
+      +--rw asm
+      |  +--rw anycast-rp!
+      |  |  +--rw ipv4
+      |  |  |  +--rw ipv4-anycast-rp* [anycast-addr rp-addr]
+      |  |  |     +--rw anycast-addr    inet:ipv4-address
+      |  |  |     +--rw rp-addr         inet:ipv4-address
+      |  |  +--rw ipv6
+      |  |     +--rw ipv6-anycast-rip* [anycast-addr rp-addr]
+      |  |        +--rw anycast-addr    inet:ipv6-address
+      |  |        +--rw rp-addr         inet:ipv6-address
+      |  +--rw spt-switch
+      |     +--rw infinity! {spt-switch-infinity}?
+      |        +--rw policy-name?   string {spt-switch-policy}?
+      +--rw ssm!
+         +--rw range-poligy?   string
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/
+pim-base:interfaces/pim-base:interface/pim-base:address-family:
+   +--rw sm!
+      +--rw passive?   empty
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/
+pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv4-rp:
+   +--rw sm!
+      +--rw policy-name?   string
+      +--rw override?      boolean {static-rp-override}?
+augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/
+pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv6-rp:
+   +--rw sm!
+      +--rw policy-name?   string
+      +--rw override?      boolean {static-rp-override}?
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family:
 
 
 
-
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 12]
+Liu, et al.               Expires July 10, 2016                [Page 13]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
-   module: ietf-pim-sm
-   augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family:
-      +--rw sm
-         +--rw asm
-         |  +--rw anycast-rp!
-         |  |  +--rw ipv4
-         |  |  |  +--rw ipv4-anycast-rp* [anycast-addr rp-addr]
-         |  |  |     +--rw anycast-addr    inet:ipv4-address
-         |  |  |     +--rw rp-addr         inet:ipv4-address
-         |  |  +--rw ipv6
-         |  |     +--rw ipv6-anycast-rip* [anycast-addr rp-addr]
-         |  |        +--rw anycast-addr    inet:ipv6-address
-         |  |        +--rw rp-addr         inet:ipv6-address
-         |  +--rw spt-switch
-         |     +--rw infinity! {spt-switch-infinity}?
-         |        +--rw policy-name?   string {spt-switch-policy}?
-         +--rw ssm!
-            +--rw range-poligy?   string
-   augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:interfaces/pim-base:interface/
-   pim-base:address-family:
-      +--rw sm!
-         +--rw passive?   empty
-   augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/
-   pim-rp:ipv4-rp:
-      +--rw sm!
-         +--rw policy-name?   string
-         +--rw override?      boolean {static-rp-override}?
-   augment /rt:routing/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/
-   pim-rp:ipv6-rp:
-      +--rw sm!
-         +--rw policy-name?   string
-         +--rw override?      boolean {static-rp-override}?
-   augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
-   pim-base:pim/pim-base:address-family:
-      +--ro sm
-
+   +--ro sm
+      +--ro asm
+      |  +--ro anycast-rp!
+      |  |  +--ro ipv4
+      |  |  |  +--ro ipv4-anycast-rp* [anycast-addr rp-addr]
+      |  |  |     +--ro anycast-addr    inet:ipv4-address
+      |  |  |     +--ro rp-addr         inet:ipv4-address
+      |  |  +--ro ipv6
+      |  |     +--ro ipv6-anycast-rip* [anycast-addr rp-addr]
+      |  |        +--ro anycast-addr    inet:ipv6-address
+      |  |        +--ro rp-addr         inet:ipv6-address
+      |  +--ro spt-switch
+      |     +--ro infinity! {spt-switch-infinity}?
+      |        +--ro policy-name?   string {spt-switch-policy}?
+      +--ro ssm!
+         +--ro range-poligy?   string
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:interfaces/pim-base:interface/
+pim-base:address-family:
+   +--ro sm!
+      +--ro passive?   empty
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/
+pim-rp:ipv4-rp:
+   +--ro sm!
+      +--ro policy-name?   string
+      +--ro override?      boolean {static-rp-override}?
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+pim-base:pim/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/
+pim-rp:ipv6-rp:
+   +--ro sm!
+      +--ro policy-name?   string
+      +--ro override?      boolean {static-rp-override}?
 
 
 4.4.  PIM-DM module
@@ -725,9 +774,16 @@ Internet-Draft                  PIM YANG                    October 2015
 
 
 
-Liu, et al.              Expires April 21, 2016                [Page 13]
+
+
+
+
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 14]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
    module: ietf-pim-dm
@@ -748,8 +804,7 @@ Internet-Draft                  PIM YANG                    October 2015
 
    This module will cover Bidirectional PIM configuration.
 
-
-   module: ietf-pim-bidir
+             module: ietf-pim-bidir
    augment /rt:routing/rt:routing-instance/rt:routing-protocols/
    pim-base:pim/pim-base:address-family:
       +--rw bidir
@@ -758,8 +813,8 @@ Internet-Draft                  PIM YANG                    October 2015
    pim-base:address-family:
       +--rw bidir!
          +--rw df-election {intf-df-election}?
-            +--rw offer-interval?     uint32
-            +--rw backoff-interval?   uint32
+            +--rw offer-interval?     pim-base:timer-value
+            +--rw backoff-interval?   pim-base:timer-value
             +--rw offer-multipler?    uint8
    augment /rt:routing/rt:routing-instance/rt:routing-protocols/
    pim-base:pim/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/
@@ -776,14 +831,53 @@ Internet-Draft                  PIM YANG                    October 2015
    augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
    pim-base:pim/pim-base:address-family:
       +--ro bidir
+   augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+   pim-base:pim/pim-base:interfaces/pim-base:interface/
+   pim-base:address-family:
 
 
 
-
-
-Liu, et al.              Expires April 21, 2016                [Page 14]
+Liu, et al.               Expires July 10, 2016                [Page 15]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
+
+
+      +--ro bidir!
+         +--ro df-election {intf-df-election}?
+            +--ro offer-interval?     pim-base:timer-value
+            +--ro backoff-interval?   pim-base:timer-value
+            +--ro offer-multipler?    uint8
+   augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+   pim-base:pim/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/
+   pim-rp:ipv4-rp:
+      +--ro bidir!
+         +--ro policy-name?   string
+         +--ro override?      boolean {static-rp-override}?
+   augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+   pim-base:pim/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/
+   pim-rp:ipv6-rp:
+      +--ro bidir!
+         +--ro policy-name?   string
+         +--ro override?      boolean {static-rp-override}?
+   augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
+   pim-base:pim/pim-base:address-family/pim-rp:rp:
+      +--ro bidir
+         +--ro df-election
+         |  +--ro ipv4-rp* [ipv4-addr]
+         |  |  +--ro ipv4-addr    inet:ipv4-address
+         |  +--ro ipv6-rp* [ipv6-addr]
+         |     +--ro ipv6-addr    inet:ipv6-address
+         +--ro interface-df-election
+            +--ro ipv4-rp* [ipv4-addr interface-name]
+            |  +--ro ipv4-addr          inet:ipv4-address
+            |  +--ro interface-name     if:interface-ref
+            |  +--ro df-address?        inet:ipv4-address
+            |  +--ro interface-state?   identityref
+            +--ro ipv6-rp* [ipv6-addr interface-name]
+               +--ro ipv6-addr          inet:ipv6-address
+               +--ro interface-name     if:interface-ref
+               +--ro df-address?        inet:ipv6-address
+               +--ro interface-state?   identityref
 
 
 5.  PIM YANG Modules
@@ -791,11 +885,19 @@ Internet-Draft                  PIM YANG                    October 2015
 5.1.  PIM base module
 
 
-   <CODE BEGINS>
+   <CODE BEGINS> file "ietf-pim-base.yang"
 
    module ietf-pim-base {
      namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
      // replace with IANA namespace when assigned
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 16]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
      prefix pim-base;
 
      import ietf-inet-types {
@@ -812,6 +914,10 @@ Internet-Draft                  PIM YANG                    October 2015
 
      import ietf-routing {
        prefix "rt";
+     }
+
+     import ietf-bfd {
+       prefix "bfd";
      }
 
      organization
@@ -833,24 +939,29 @@ Internet-Draft                  PIM YANG                    October 2015
        "The module defines a collection of YANG definitions common for
        all PIM modes.";
 
-     revision 2015-10-08 {
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 15]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
+     revision 2015-12-07 {
        description
          "Initial revision.";
        reference
          "RFC XXXX: A YANG Data Model for PIM";
      }
 
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 17]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
      /*
       * Features
       */
+     feature bfd-protocol-parms {
+       description
+         "BFD protocol specific parameters support.";
+     }
+
      feature global-graceful-restart {
        description
          "Global configuraiont for graceful restart support as per
@@ -890,15 +1001,14 @@ Internet-Draft                  PIM YANG                    October 2015
      feature intf-jp-multipler {
        description
          "Support configuration of interface join prune multipler.";
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 16]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
      }
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 18]
+
+Internet-Draft                  PIM YANG                    January 2016
+
 
      feature intf-propagation-delay {
        description
@@ -946,16 +1056,16 @@ Internet-Draft                  PIM YANG                    October 2015
          enum up {
            description
              "Neighbor status changed to up.";
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 17]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
          }
          enum down {
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 19]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
            description
              "Neighbor status changed to down.";
          }
@@ -1002,16 +1112,16 @@ Internet-Draft                  PIM YANG                    October 2015
              description "The timer is set to infinity.";
            }
            enum "no-expiry" {
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 18]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
              description "The timer is not set.";
            }
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 20]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          }
        }
        units seconds;
@@ -1045,7 +1155,7 @@ Internet-Draft                  PIM YANG                    October 2015
          }
          leaf duration {
            type uint16;
-           units "seconds";
+           units seconds;
            description
              "Maximum time for graceful restart to finish.";
          }
@@ -1057,22 +1167,33 @@ Internet-Draft                  PIM YANG                    October 2015
      grouping interface-config-attributes {
        description
          "A grouping defining interface attributes.";
-       leaf dr-priority {
+       container bfd {
+         description "BFD operation.";
+         leaf enabled {
 
 
 
-Liu, et al.              Expires April 21, 2016                [Page 19]
+Liu, et al.               Expires July 10, 2016                [Page 21]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
+           type boolean;
+           description
+             "True if BFD is enabled for the interface.";
+         }
+         uses bfd:bfd-grouping-base-cfg-parms {
+           if-feature bfd-protocol-parms;
+         }
+       }
+       leaf dr-priority {
          if-feature intf-dr-priority;
          type uint32;
          description "DR priority";
        }
        leaf hello-interval {
          if-feature intf-hello-interval;
-         type uint16;
+         type timer-value;
          description "Hello interval";
        }
        choice hello-holdtime-or-multipler {
@@ -1080,7 +1201,7 @@ Internet-Draft                  PIM YANG                    October 2015
          case holdtime {
            if-feature intf-hello-holdtime;
            leaf hello-holdtime {
-             type uint16;
+             type timer-value;
              description "Hello holdtime";
            }
          }
@@ -1094,7 +1215,7 @@ Internet-Draft                  PIM YANG                    October 2015
        }
        leaf jp-interval {
          if-feature intf-jp-interval;
-         type uint16;
+         type timer-value;
          description "Join prune interval";
        }
        choice jp-holdtime-or-multipler {
@@ -1102,9 +1223,17 @@ Internet-Draft                  PIM YANG                    October 2015
          case holdtime {
            if-feature intf-jp-holdtime;
            leaf jp-holdtime {
-             type uint16;
+             type timer-value;
              description "Join prune holdtime";
            }
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 22]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          }
          case multipler {
            if-feature intf-jp-multipler;
@@ -1114,22 +1243,16 @@ Internet-Draft                  PIM YANG                    October 2015
            }
          }
        }
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 20]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
        leaf propagation-delay {
          if-feature intf-propagation-delay;
          type uint16;
+         units milliseconds;
          description "Propagation description";
        }
        leaf override-interval {
          if-feature intf-override-interval;
          type uint16;
+         units milliseconds;
          description "Override interval";
        }
      } // interface-config-attributes
@@ -1159,6 +1282,14 @@ Internet-Draft                  PIM YANG                    October 2015
          }
          description "";
          leaf-list address {
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 23]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
            type inet:ipv6-address;
            description "";
          }
@@ -1169,14 +1300,6 @@ Internet-Draft                  PIM YANG                    October 2015
        }
        uses interface-state-af-attributes;
      } // interface-state-attributes
-
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 21]
-
-Internet-Draft                  PIM YANG                    October 2015
-
 
      grouping interface-state-af-attributes {
        description
@@ -1197,7 +1320,7 @@ Internet-Draft                  PIM YANG                    October 2015
        }
 
        leaf hello-expire {
-         type uint32;
+         type timer-value;
          description "Hello interval exiration time.";
        }
 
@@ -1215,6 +1338,14 @@ Internet-Draft                  PIM YANG                    October 2015
          uses neighbor-state-af-attributes;
        } // list neighbor-ipv4
 
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 24]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
        list neighbor-ipv6 {
          when "../../../address-family = 'rt:ipv6'" {
            description
@@ -1226,14 +1357,6 @@ Internet-Draft                  PIM YANG                    October 2015
            type inet:ipv6-address;
            description "";
          }
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 22]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
          uses neighbor-state-af-attributes;
        } // list neighbor-ipv4
      } // interface-state-af-attributes
@@ -1271,6 +1394,14 @@ Internet-Draft                  PIM YANG                    October 2015
        }
        leaf spt-bit {
          type boolean;
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 25]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          description "";
        }
        leaf up-time {
@@ -1283,13 +1414,6 @@ Internet-Draft                  PIM YANG                    October 2015
          description
            "A list of outgoing interfaces.";
 
-
-
-Liu, et al.              Expires April 21, 2016                [Page 23]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
          leaf name {
            type if:interface-ref;
            description
@@ -1297,12 +1421,13 @@ Internet-Draft                  PIM YANG                    October 2015
          }
 
          leaf expire {
-           type yang:timeticks;
+           type timer-value;
            description "Expiring information.";
          }
 
          leaf up-time {
-           type yang:timeticks;
+           type uint32;
+           units seconds;
            description "";
          }
 
@@ -1325,6 +1450,14 @@ Internet-Draft                  PIM YANG                    October 2015
                   state functions exactly like the Join state.";
              }
            }
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 26]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
            description "";
          }
        }
@@ -1338,14 +1471,6 @@ Internet-Draft                  PIM YANG                    October 2015
            enum up {
              description
              "";
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 24]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
            }
            enum down {
              description
@@ -1355,8 +1480,7 @@ Internet-Draft                  PIM YANG                    October 2015
          description "";
        }
        leaf expire {
-         type uint32;
-         units seconds;
+         type timer-value;
          description "Neighbor expiring information.";
        }
        leaf dr-priority {
@@ -1382,6 +1506,14 @@ Internet-Draft                  PIM YANG                    October 2015
        }
      } // per-af-attributes
 
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 27]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
      grouping pim-instance-state-ref {
        description
          "An absolute reference to a PIM instance.";
@@ -1394,14 +1526,6 @@ Internet-Draft                  PIM YANG                    October 2015
 
      grouping pim-instance-af-state-ref {
        description
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 25]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
          "An absolute reference to a PIM instance address family.";
        uses pim-instance-state-ref;
        leaf instance-af-state-ref {
@@ -1438,6 +1562,14 @@ Internet-Draft                  PIM YANG                    October 2015
        uses pim-interface-state-ref;
        leaf interface-af-state-ref {
          type leafref {
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 28]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
            path "/rt:routing-state/rt:routing-instance"
              + "[rt:name = current()/../routing-instance-state-ref]/"
              + "rt:routing-protocols/pim-base:pim/pim-base:interfaces/"
@@ -1450,14 +1582,6 @@ Internet-Draft                  PIM YANG                    October 2015
            "Reference to a PIM interface address family.";
        }
        leaf neighbor-ipv4-state-ref {
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 26]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
          when "../interface-af-state-ref = 'rt:ipv4'" {
            description "";
          }
@@ -1494,6 +1618,14 @@ Internet-Draft                  PIM YANG                    October 2015
          }
          description
            "Reference to a PIM IPv6 neighbor.";
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 29]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
        }
      } // pim-neighbor-state-ref
 
@@ -1506,14 +1638,6 @@ Internet-Draft                  PIM YANG                    October 2015
            type yang:date-and-time;
            description
              "The time on the most recent occasion at which any one
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 27]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
              or more of the statistic counters suffered a
              discontinuity. If no such discontinuities have occurred
              since the last re-initialization of the local
@@ -1550,6 +1674,14 @@ Internet-Draft                  PIM YANG                    October 2015
        description
          "A grouping defining queue statistics
          attributes.";
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 30]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
        leaf size {
          type uint32;
          description
@@ -1562,55 +1694,55 @@ Internet-Draft                  PIM YANG                    October 2015
        }
      } // statistics-queue
 
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 28]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
      grouping statistics-sent-received {
        description
          "A grouping defining sent and received statistics
          attributes.";
        leaf assert {
-         type yang:counter32;
+         type yang:counter64;
          description
            "The number of assert messages.";
        }
        leaf bsr {
-         type yang:counter32;
+         type yang:counter64;
          description
            "The number of bsr messages.";
        }
        leaf candidate-rp-advertisement {
-         type yang:counter32;
+         type yang:counter64;
          description
            "The number of Candidate-RP-advertisement messages.";
        }
        leaf hello {
-         type yang:counter32;
+         type yang:counter64;
          description
            "The number of hello messages.";
        }
        leaf join-prune {
-         type yang:counter32;
+         type yang:counter64;
          description
            "The number of join/prune messages.";
        }
        leaf register {
-         type yang:counter32;
+         type yang:counter64;
          description
            "The number of register messages.";
        }
        leaf register-stop {
-         type yang:counter32;
+         type yang:counter64;
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 31]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          description
            "The number of register stop messages.";
        }
        leaf state-refresh {
-         type yang:counter32;
+         type yang:counter64;
          description
            "The number of state refresh messages.";
        }
@@ -1618,14 +1750,6 @@ Internet-Draft                  PIM YANG                    October 2015
 
      /*
       * Configuration data nodes
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 29]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
       */
 
      augment "/rt:routing/rt:routing-instance/"
@@ -1662,6 +1786,14 @@ Internet-Draft                  PIM YANG                    October 2015
                  list.";
              }
              list address-family {
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 32]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
                key "address-family";
                description
                  "Each list entry for one address family.";
@@ -1674,14 +1806,6 @@ Internet-Draft                  PIM YANG                    October 2015
      } // augment
 
      /*
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 30]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
       * Operational state data nodes
       */
 
@@ -1718,6 +1842,14 @@ Internet-Draft                  PIM YANG                    October 2015
                  type union {
                    type enumeration {
                      enum '*' {
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 33]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
                        description "";
                      }
                    }
@@ -1729,14 +1861,6 @@ Internet-Draft                  PIM YANG                    October 2015
                  type boolean;
                  description "";
                }
-
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 31]
-
-Internet-Draft                  PIM YANG                    October 2015
-
 
                uses multicast-route-attributes;
              } // ipv4-route
@@ -1774,6 +1898,14 @@ Internet-Draft                  PIM YANG                    October 2015
          } // address-family
 
          container interfaces {
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 34]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
            description
              "Containing a list of interfaces.";
            list interface {
@@ -1786,14 +1918,6 @@ Internet-Draft                  PIM YANG                    October 2015
                  "Reference to an entry in the global interface
                  list.";
              }
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 32]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
              list address-family {
                key "address-family";
                description
@@ -1830,6 +1954,14 @@ Internet-Draft                  PIM YANG                    October 2015
      notification pim-interface-event {
        description "Notification event for interface.";
        leaf event-type {
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 35]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          type interface-event-type;
          description "Event type.";
        }
@@ -1842,14 +1974,6 @@ Internet-Draft                  PIM YANG                    October 2015
          }
          leaf dr-addr {
            type inet:ipv4-address;
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 33]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
            description "";
          }
        }
@@ -1866,14 +1990,14 @@ Internet-Draft                  PIM YANG                    October 2015
        }
      }
    }
-   <CODE ENDS>
 
+   <CODE ENDS>
 
 
 5.2.  PIM RP module
 
 
-   <CODE BEGINS>
+   <CODE BEGINS> file "ietf-pim-rp.yang"
 
    module ietf-pim-rp {
      namespace "urn:ietf:params:xml:ns:yang:ietf-pim-rp";
@@ -1886,6 +2010,14 @@ Internet-Draft                  PIM YANG                    October 2015
 
      import ietf-interfaces {
        prefix "if";
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 36]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
      }
 
      import ietf-routing {
@@ -1898,13 +2030,6 @@ Internet-Draft                  PIM YANG                    October 2015
 
      organization
        "IETF PIM Working Group";
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 34]
-
-Internet-Draft                  PIM YANG                    October 2015
-
 
      contact
        "WG Web:   <http://tools.ietf.org/wg/pim/>
@@ -1921,7 +2046,7 @@ Internet-Draft                  PIM YANG                    October 2015
      description
        "The YANG module defines a PIM RP (Rendezvous Point) model.";
 
-     revision 2015-10-08 {
+     revision 2015-12-09 {
        description
          "Initial revision.";
        reference
@@ -1942,6 +2067,13 @@ Internet-Draft                  PIM YANG                    October 2015
           BSR election state.";
      }
 
+
+
+Liu, et al.               Expires July 10, 2016                [Page 37]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
      feature static-rp-override {
        description
          "This feature indicates that the system supports configuration
@@ -1953,14 +2085,6 @@ Internet-Draft                  PIM YANG                    October 2015
          "This feature indicates that the system supports using
          an interface to configure a BSR or RP candidate.";
      }
-
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 35]
-
-Internet-Draft                  PIM YANG                    October 2015
-
 
      feature candidate-ipv4 {
        description
@@ -1998,6 +2122,14 @@ Internet-Draft                  PIM YANG                    October 2015
          }
        }
        description "Operational status event type for notifications.";
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 38]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
      }
 
      /*
@@ -2009,15 +2141,22 @@ Internet-Draft                  PIM YANG                    October 2015
          BIDIR (bi-directional).";
      }
 
+     identity rp-info-source-type {
+       description
+         "The information source of an RP.";
+     }
+     identity static {
+       base rp-info-source-type;
+       description
+         "The RP is statically configured.";
+     }
+     identity bootstrap {
+       base rp-info-source-type;
+       description
+         "The RP is learned from bootstrap.";
+     }
+
      /*
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 36]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
       * Groupings
       */
      grouping bsr-config-attributes {
@@ -2039,6 +2178,14 @@ Internet-Draft                  PIM YANG                    October 2015
                mandatory true;
                description
                  "Interface to be used by BSR.";
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 39]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
              }
            }
            case ipv4-address {
@@ -2066,14 +2213,6 @@ Internet-Draft                  PIM YANG                    October 2015
                description
                  "IP address to be used by BSR.";
              }
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 37]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
            }
          }
 
@@ -2095,6 +2234,14 @@ Internet-Draft                  PIM YANG                    October 2015
            description
              "BSR election priority among different candidate BSRs.
              A larger value has a higher priority over a smaller
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 40]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
              value.";
          }
        } // bsr-candidate
@@ -2122,14 +2269,6 @@ Internet-Draft                  PIM YANG                    October 2015
          description
            "A list of RP candidates";
          leaf ipv4-address {
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 38]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
            type inet:ipv4-address;
            description
              "IPv4 address that the RP candidate uses.";
@@ -2151,6 +2290,14 @@ Internet-Draft                  PIM YANG                    October 2015
            description
              "IPv6 address that the RP candidate uses.";
          }
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 41]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          uses rp-candidate-attributes;
        }
      } // bsr-config-attributes
@@ -2178,14 +2325,6 @@ Internet-Draft                  PIM YANG                    October 2015
          leaf up-time {
            type uint32;
            units seconds;
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 39]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
            description "";
          }
        }
@@ -2207,6 +2346,14 @@ Internet-Draft                  PIM YANG                    October 2015
                     scope zone. Currently, no other router is the
                     preferred BSR, but this router is not yet the
                     elected BSR.  This is a temporary state that
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 42]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
                     prevents rapid thrashing of the choice of BSR
                     during BSR election.";
                }
@@ -2234,14 +2381,6 @@ Internet-Draft                  PIM YANG                    October 2015
                  description
                    "The router does not know of an active BSR, and will
                     accept the first Bootstrap message it sees as giving
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 40]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
                     the new BSR's identity and the RP-Set.";
                }
                enum "accept" {
@@ -2263,6 +2402,14 @@ Internet-Draft                  PIM YANG                    October 2015
        leaf bsr-next-bootstrap {
          type uint16;
          units seconds;
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 43]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          description "";
        }
 
@@ -2279,6 +2426,7 @@ Internet-Draft                  PIM YANG                    October 2015
          }
          leaf up-time {
            type uint32;
+           units seconds;
            description "";
          }
        }
@@ -2289,28 +2437,35 @@ Internet-Draft                  PIM YANG                    October 2015
        }
      } // bsr-state-attributes
 
-     grouping rp-state-attributes {
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 41]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
+     grouping rp-mapping-state-attributes {
        description
-         "Gouring of static RP attributes.";
+         "Gouring of RP mapping attributes.";
+       leaf up-time {
+         type uint32;
+         units seconds;
+         description "";
+       }
+       leaf expire {
+         type pim-base:timer-value;
+         description "";
+       }
+     } // rp-mapping-state-attributes
+
+     grouping rp-state-attributes {
+       description
+         "Gouring of RP state attributes.";
        leaf info-source-type {
-         type enumeration {
-           enum static {
-             description
-             "";
-           }
-           enum bootstrap {
-             description
-             "";
-           }
+         type identityref {
+           base rp-info-source-type;
          }
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 44]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          description "";
        } // info-source-type
        leaf up-time {
@@ -2319,8 +2474,7 @@ Internet-Draft                  PIM YANG                    October 2015
          description "";
        }
        leaf expire {
-         type uint16;
-         units seconds;
+         type pim-base:timer-value;
          description "";
        }
      } // rp-state-attributes
@@ -2343,17 +2497,55 @@ Internet-Draft                  PIM YANG                    October 2015
        }
      } // static-rp-attributes
 
+     grouping static-rp-container {
+       description
+         "Gouring of static RP container.";
+       container static-rp {
+         description
+           "Containing static RP attributes.";
+         list ipv4-rp {
+           when "../../../address-family = 'rt:ipv4'" {
+             description
+               "Only applicable to ipv4 address family.";
+           }
+           key "ipv4-addr";
+           description
+             "A list of IPv4 RP addresses.";
+           leaf ipv4-addr {
+             type inet:ipv4-address;
+             description
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 45]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
+               "Specifies a static RP address.";
+           }
+         }
+
+         list ipv6-rp {
+           when "../../../address-family = 'rt:ipv6'" {
+             description
+               "Only applicable to ipv6 address family.";
+           }
+           key "ipv6-addr";
+           description
+             "A list of IPv6 RP addresses.";
+           leaf ipv6-addr {
+             type inet:ipv6-address;
+             description
+               "Specifies a static RP address.";
+           }
+         }
+       } // static-rp
+     } // static-rp-container
+
      grouping rp-candidate-attributes {
        description
          "Gouring of RP candidate attributes.";
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 42]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
        leaf policy {
          type string;
          description
@@ -2378,50 +2570,18 @@ Internet-Draft                  PIM YANG                    October 2015
        description "PIM RP augmentation.";
 
        container rp {
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 46]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          description
            "PIM RP configuration data.";
 
-         container static-rp {
-           description
-             "Containing static RP attributes.";
-           list ipv4-rp {
-             when "../../../address-family = 'rt:ipv4'" {
-               description
-                 "Only applicable to ipv4 address family.";
-             }
-             key "ipv4-addr";
-             description
-               "A list of IPv4 RP addresses.";
-             leaf ipv4-addr {
-               type inet:ipv4-address;
-               description
-                 "Specifies a static RP address.";
-             }
-           }
-
-           list ipv6-rp {
-             when "../../../address-family = 'rt:ipv6'" {
-               description
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 43]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
-                 "Only applicable to ipv6 address family.";
-             }
-             key "ipv6-addr";
-             description
-               "A list of IPv6 RP addresses.";
-             leaf ipv6-addr {
-               type inet:ipv6-address;
-               description
-                 "Specifies a static RP address.";
-             }
-           }
-         } // static-rp
+         uses static-rp-container;
 
          container bsr {
            if-feature bsr;
@@ -2446,6 +2606,8 @@ Internet-Draft                  PIM YANG                    October 2015
          description
            "PIM RP state data.";
 
+         uses static-rp-container;
+
          container bsr {
            if-feature bsr;
            description
@@ -2458,25 +2620,32 @@ Internet-Draft                  PIM YANG                    October 2015
            description
              "Containing a list RPs.";
            list ipv4-rp {
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 44]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
              when "../../../address-family = 'rt:ipv4'" {
                description
                  "Only applicable to ipv4 address family.";
              }
-             key "ipv4-addr";
+             key "ipv4-addr mode";
              description
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 47]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
                "A list of IPv4 RP addresses.";
              leaf ipv4-addr {
                type inet:ipv4-address;
                description
                  "RP address.";
+             }
+             leaf mode {
+               type identityref {
+                 base rp-mode;
+               }
+               description
+                 "RP mode.";
              }
              leaf info-source-addr {
                type inet:ipv4-address;
@@ -2491,13 +2660,20 @@ Internet-Draft                  PIM YANG                    October 2015
                description
                  "Only applicable to ipv6 address family.";
              }
-             key "ipv6-addr";
+             key "ipv6-addr mode";
              description
                "A list of IPv6 RP addresses.";
              leaf ipv6-addr {
                type inet:ipv6-address;
                description
                  "RP address.";
+             }
+             leaf mode {
+               type identityref {
+                 base rp-mode;
+               }
+               description
+                 "RP mode.";
              }
              leaf info-source-addr {
                type inet:ipv6-address;
@@ -2506,6 +2682,14 @@ Internet-Draft                  PIM YANG                    October 2015
              }
              uses rp-state-attributes;
            }
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 48]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          } // rp-list
 
          container rp-mappings {
@@ -2514,14 +2698,6 @@ Internet-Draft                  PIM YANG                    October 2015
            list ipv4-rp {
              when "../../../address-family = 'rt:ipv4'" {
                description
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 45]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
                  "Only applicable to ipv4 address family.";
              }
              key "group rp-addr";
@@ -2537,12 +2713,7 @@ Internet-Draft                  PIM YANG                    October 2015
                description
                  "RP address.";
              }
-             leaf info-source-addr {
-               type inet:ipv4-address;
-               description
-                 "The address where RP information is learned.";
-             }
-             uses rp-state-attributes;
+             uses rp-mapping-state-attributes;
            }
 
            list ipv6-rp {
@@ -2563,23 +2734,18 @@ Internet-Draft                  PIM YANG                    October 2015
                description
                  "RP address.";
              }
-             leaf info-source-addr {
-               type inet:ipv6-address;
-               description
-                 "The address where RP information is learned.";
-             }
-             uses rp-state-attributes;
+             uses rp-mapping-state-attributes;
            }
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 46]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
          } // rp-mappings
        } // rp
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 49]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
      } // augment
 
      /*
@@ -2618,28 +2784,24 @@ Internet-Draft                  PIM YANG                    October 2015
        }
      }
    }
+
    <CODE ENDS>
-
-
-
-
-
-
-
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 47]
-
-Internet-Draft                  PIM YANG                    October 2015
 
 
 5.3.  PIM-SM module
 
 
-   <CODE BEGINS>
+   <CODE BEGINS> file "ietf-pim-sm.yang"
 
    module ietf-pim-sm {
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 50]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
      namespace "urn:ietf:params:xml:ns:yang:ietf-pim-sm";
      // replace with IANA namespace when assigned
      prefix pim-sm;
@@ -2678,24 +2840,24 @@ Internet-Draft                  PIM YANG                    October 2015
      description
        "The YANG module defines a sparse mode PIM model.";
 
-     revision 2015-10-08 {
+     revision 2015-12-09 {
        description
          "Initial revision.";
        reference
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 48]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
          "RFC XXXX: A YANG Data Model for PIM";
      }
 
      /*
       * Features
       */
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 51]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
      feature spt-switch-infinity {
        description
          "This feature indicates that the system supports configuration
@@ -2721,36 +2883,9 @@ Internet-Draft                  PIM YANG                    October 2015
      /*
       * Groupings
       */
-     grouping static-rp-sm-container {
+     grouping af-sm-container {
        description
-         "Gouping that contains SM attributes for static RP.";
-       container sm {
-         presence
-           "Indicate the support of sparse mode.";
-         description
-           "PIM SM configuration data.";
-
-         uses pim-rp:static-rp-attributes;
-       } // sm
-     } // static-rp-sm-container
-
-     /*
-      * Configuration data nodes
-      */
-
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 49]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
-     augment "/rt:routing/rt:routing-instance/"
-       + "rt:routing-protocols/pim-base:pim/"
-       + "pim-base:address-family" {
-       description "PIM SM augmentation.";
-
+         "Gouping of address family SM container.";
        container sm {
          description
            "PIM SM configuration data.";
@@ -2771,6 +2906,14 @@ Internet-Draft                  PIM YANG                    October 2015
                    "Only applicable to ipv4 address family.";
                }
                description
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 52]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
                  "IPv4 attributes. Only applicable when
                  pim-base:address-family is ipv4.";
                list ipv4-anycast-rp {
@@ -2794,14 +2937,6 @@ Internet-Draft                  PIM YANG                    October 2015
                  }
                }
              }
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 50]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
              container ipv6 {
                when "../../../../address-family = 'rt:ipv6'" {
                  description
@@ -2827,6 +2962,14 @@ Internet-Draft                  PIM YANG                    October 2015
                    description
                      "IP address of the router configured with anycast
                      RP. This is the IP address where the Register
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 53]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
                      messages are forwarded.";
                  }
                }
@@ -2850,14 +2993,6 @@ Internet-Draft                  PIM YANG                    October 2015
                }
              } // infinity
            }
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 51]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
          } // asm
 
          container ssm {
@@ -2873,18 +3008,23 @@ Internet-Draft                  PIM YANG                    October 2015
            }
          } // ssm
        } // sm
-     } // augment
+     } // af-sm-container
 
-     augment "/rt:routing/rt:routing-instance/"
-       + "rt:routing-protocols/pim-base:pim/"
-       + "pim-base:interfaces/pim-base:interface/"
-       + "pim-base:address-family" {
-       description "PIM SM augmentation.";
-
+     grouping interface-sm-container {
+       description
+         "Gouping of interface SM container.";
        container sm {
          presence "Present to enable sparse-mode.";
          description
            "PIM SM configuration data.";
+
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 54]
+
+Internet-Draft                  PIM YANG                    January 2016
+
 
          leaf passive {
            type empty;
@@ -2894,26 +3034,60 @@ Internet-Draft                  PIM YANG                    October 2015
              forwarding entry.";
          }
        } // sm
+     } // interface-sm-container
+
+     grouping static-rp-sm-container {
+       description
+         "Gouping that contains SM attributes for static RP.";
+       container sm {
+         presence
+           "Indicate the support of sparse mode.";
+         description
+           "PIM SM configuration data.";
+
+         uses pim-rp:static-rp-attributes;
+       } // sm
+     } // static-rp-sm-container
+
+     /*
+      * Configuration data nodes
+      */
+
+     augment "/rt:routing/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:address-family" {
+       description "PIM SM augmentation.";
+
+       uses af-sm-container;
+     } // augment
+
+     augment "/rt:routing/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:interfaces/pim-base:interface/"
+       + "pim-base:address-family" {
+       description "PIM SM augmentation.";
+
+       uses interface-sm-container;
      } // augment
 
      augment "/rt:routing/rt:routing-instance/"
        + "rt:routing-protocols/pim-base:pim/"
        + "pim-base:address-family/pim-rp:rp/"
        + "pim-rp:static-rp/pim-rp:ipv4-rp" {
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 55]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
        description "PIM SM augmentation.";
 
        uses static-rp-sm-container;
      } // augment
 
      augment "/rt:routing/rt:routing-instance/"
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 52]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
        + "rt:routing-protocols/pim-base:pim/"
        + "pim-base:address-family/pim-rp:rp/"
        + "pim-rp:static-rp/pim-rp:ipv6-rp" {
@@ -2932,10 +3106,42 @@ Internet-Draft                  PIM YANG                    October 2015
        description
          "PIM SM state.";
 
-       container sm {
-         description
-           "PIM SM state data.";
-       } // sm
+       uses af-sm-container;
+     } // augment
+
+     augment "/rt:routing-state/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:interfaces/pim-base:interface/"
+       + "pim-base:address-family" {
+       description "PIM SM augmentation.";
+
+       uses interface-sm-container;
+     } // augment
+
+     augment "/rt:routing-state/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:address-family/pim-rp:rp/"
+       + "pim-rp:static-rp/pim-rp:ipv4-rp" {
+       description "PIM SM augmentation.";
+
+       uses static-rp-sm-container;
+     } // augment
+
+     augment "/rt:routing-state/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:address-family/pim-rp:rp/"
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 56]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
+       + "pim-rp:static-rp/pim-rp:ipv6-rp" {
+       description "PIM SM augmentation.";
+
+       uses static-rp-sm-container;
      } // augment
 
      /*
@@ -2946,8 +3152,8 @@ Internet-Draft                  PIM YANG                    October 2015
       * Notifications
       */
    }
-   <CODE ENDS>
 
+   <CODE ENDS>
 
 
 5.4.  PIM-DM module
@@ -2962,14 +3168,6 @@ Internet-Draft                  PIM YANG                    October 2015
 
      import ietf-routing {
        prefix "rt";
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 53]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
      }
 
      import ietf-pim-base {
@@ -2988,6 +3186,13 @@ Internet-Draft                  PIM YANG                    October 2015
 
         WG Chair: Mike McBride
                   <mailto:mmcbride7@gmail.com>
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 57]
+
+Internet-Draft                  PIM YANG                    January 2016
+
 
         Editors:   ";
 
@@ -3018,14 +3223,6 @@ Internet-Draft                  PIM YANG                    October 2015
       */
 
      augment "/rt:routing/rt:routing-instance/"
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 54]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
        + "rt:routing-protocols/pim-base:pim/"
        + "pim-base:address-family" {
        description "PIM DM augmentation.";
@@ -3045,6 +3242,14 @@ Internet-Draft                  PIM YANG                    October 2015
 
        container dm {
          presence "Present to enable dense-mode.";
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 58]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
          description
            "PIM DM configuration data.";
        } // sm
@@ -3077,20 +3282,31 @@ Internet-Draft                  PIM YANG                    October 2015
 
 
 
-Liu, et al.              Expires April 21, 2016                [Page 55]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
 5.5.  PIM-BIDIR module
 
 
-   <CODE BEGINS>
+   <CODE BEGINS> file "ietf-pim-bidir.yang"
 
    module ietf-pim-bidir {
      namespace "urn:ietf:params:xml:ns:yang:ietf-pim-bidir";
      // replace with IANA namespace when assigned
      prefix pim-bidir;
+
+     import ietf-inet-types {
+       prefix "inet";
+     }
+
+     import ietf-interfaces {
+       prefix "if";
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 59]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
+     }
 
      import ietf-routing {
        prefix "rt";
@@ -3123,20 +3339,12 @@ Internet-Draft                  PIM YANG                    October 2015
        "The YANG module defines a BIDIR (Bidirectional) mode PIM
        model.";
 
-     revision 2015-10-08 {
+     revision 2015-12-22 {
        description
          "Initial revision.";
        reference
          "RFC XXXX: A YANG Data Model for PIM";
      }
-
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 56]
-
-Internet-Draft                  PIM YANG                    October 2015
-
 
      /*
       * Features
@@ -3145,6 +3353,14 @@ Internet-Draft                  PIM YANG                    October 2015
        description
          "Support configuration of interface DF election.";
      }
+
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 60]
+
+Internet-Draft                  PIM YANG                    January 2016
+
 
      /*
       * Identities
@@ -3155,7 +3371,53 @@ Internet-Draft                  PIM YANG                    October 2015
          "BIDIR (Bidirectional) mode.";
      }
 
+     identity df-state {
+       description
+         "DF election state type.";
+       reference
+         "RFC5015: Bidirectional Protocol Independent Multicast
+         (BIDIR-PIM).";
+     }
+
+     identity df-state-offer {
+       base df-state;
+       description
+         "Initial election state..";
+     }
+
+     identity df-state-lose {
+       base df-state;
+       description
+         "There either is a different election winner or that no
+          router on the link has a path to the RPA.";
+     }
+
+     identity df-state-win {
+       base df-state;
+       description
+         "The router is the acting DF without any contest.";
+     }
+
+     identity df-state-backoff {
+       base df-state;
+       description
+         "The router is the acting DF but another router has made a
+          bid to take over..";
+     }
+
      /*
+      * Typedefs
+      */
+
+     /*
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 61]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
       * Groupings
       */
      grouping static-rp-bidir-container {
@@ -3186,14 +3448,6 @@ Internet-Draft                  PIM YANG                    October 2015
        } // bidir
      } // augment
 
-
-
-
-Liu, et al.              Expires April 21, 2016                [Page 57]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
      augment "/rt:routing/rt:routing-instance/"
        + "rt:routing-protocols/pim-base:pim/"
        + "pim-base:interfaces/pim-base:interface/"
@@ -3210,11 +3464,19 @@ Internet-Draft                  PIM YANG                    October 2015
            description
              "DF election attributes.";
            leaf offer-interval {
-             type uint32;
+             type pim-base:timer-value;
              description "Offer interval";
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 62]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
            }
            leaf backoff-interval {
-             type uint32;
+             type pim-base:timer-value;
              description "Backoff interval";
            }
            leaf offer-multipler {
@@ -3243,13 +3505,6 @@ Internet-Draft                  PIM YANG                    October 2015
        uses static-rp-bidir-container;
      } // augment
 
-
-
-Liu, et al.              Expires April 21, 2016                [Page 58]
-
-Internet-Draft                  PIM YANG                    October 2015
-
-
      /*
       * Operational state data nodes
       */
@@ -3266,6 +3521,197 @@ Internet-Draft                  PIM YANG                    October 2015
        } // bidir
      } // augment
 
+     augment "/rt:routing-state/rt:routing-instance/"
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 63]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:interfaces/pim-base:interface/"
+       + "pim-base:address-family" {
+       description "PIM BIDIR augmentation.";
+
+       container bidir {
+         presence "Present to enable BIDIR mode.";
+         description
+           "PIM BIDIR configuration data.";
+
+         container df-election {
+           if-feature intf-df-election;
+           description
+             "DF election attributes.";
+           leaf offer-interval {
+             type pim-base:timer-value;
+             description "Offer interval";
+           }
+           leaf backoff-interval {
+             type pim-base:timer-value;
+             description "Backoff interval";
+           }
+           leaf offer-multipler {
+             type uint8;
+             description "Offer multipler";
+           }
+         } // df-election
+       } // bidir
+     } // augment
+
+     augment "/rt:routing-state/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:address-family/pim-rp:rp/"
+       + "pim-rp:static-rp/pim-rp:ipv4-rp" {
+       description "PIM BIDIR augmentation.";
+
+       uses static-rp-bidir-container;
+     } // augment
+
+     augment "/rt:routing-state/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:address-family/pim-rp:rp/"
+       + "pim-rp:static-rp/pim-rp:ipv6-rp" {
+       description "PIM BIDIR augmentation.";
+
+       uses static-rp-bidir-container;
+     } // augment
+
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 64]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
+     augment "/rt:routing-state/rt:routing-instance/"
+       + "rt:routing-protocols/pim-base:pim/"
+       + "pim-base:address-family/pim-rp:rp" {
+       description "PIM BIDIR augmentation.";
+
+       container bidir {
+         description
+           "PIM BIDIR state data.";
+         container df-election {
+           description
+             "DF election data.";
+           list ipv4-rp {
+             when "../../../../address-family = 'rt:ipv4'" {
+               description
+                 "Only applicable to ipv4 address family.";
+             }
+             key "ipv4-addr";
+             description
+               "A list of IPv4 RP addresses.";
+             leaf ipv4-addr {
+               type inet:ipv4-address;
+               description
+                 "The address of the RP.";
+             }
+           } // ipv4-rp
+           list ipv6-rp {
+             when "../../../../address-family = 'rt:ipv6'" {
+               description
+                 "Only applicable to ipv6 address family.";
+             }
+             key "ipv6-addr";
+             description
+               "A list of IPv6 RP addresses.";
+             leaf ipv6-addr {
+               type inet:ipv6-address;
+               description
+                 "The address of the RP.";
+             }
+           } // ipv6-rp
+         } // df-election
+
+         container interface-df-election {
+           description
+             "Interface DF election data.";
+           list ipv4-rp {
+             when "../../../../address-family = 'rt:ipv4'" {
+               description
+                 "Only applicable to ipv4 address family.";
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 65]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
+             }
+             key "ipv4-addr interface-name";
+             description
+               "A list of IPv4 RP addresses.";
+             leaf ipv4-addr {
+               type inet:ipv4-address;
+               description
+                 "The address of the RP.";
+             }
+             leaf interface-name {
+               type if:interface-ref;
+               description
+                 "The address of the RP.";
+             }
+             leaf df-address {
+               type inet:ipv4-address;
+               description
+                 "DF address.";
+             }
+             leaf interface-state {
+               type identityref {
+                 base df-state;
+               }
+               description
+                 "Interface state.";
+             }
+           } // ipv4-rp
+           list ipv6-rp {
+             when "../../../../address-family = 'rt:ipv6'" {
+               description
+                 "Only applicable to ipv6 address family.";
+             }
+             key "ipv6-addr interface-name";
+             description
+               "A list of IPv6 RP addresses.";
+             leaf ipv6-addr {
+               type inet:ipv6-address;
+               description
+                 "The address of the RP.";
+             }
+             leaf interface-name {
+               type if:interface-ref;
+               description
+                 "The address of the RP.";
+             }
+             leaf df-address {
+               type inet:ipv6-address;
+               description
+
+
+
+Liu, et al.               Expires July 10, 2016                [Page 66]
+
+Internet-Draft                  PIM YANG                    January 2016
+
+
+                 "DF address.";
+             }
+             leaf interface-state {
+               type identityref {
+                 base df-state;
+               }
+               description
+                 "Interface state.";
+             }
+           } // ipv6-rp
+         } // interface-df-election
+       }
+     } // augment
+
      /*
       * RPCs
       */
@@ -3274,6 +3720,7 @@ Internet-Draft                  PIM YANG                    October 2015
       * Notifications
       */
    }
+
    <CODE ENDS>
 
 
@@ -3301,9 +3748,10 @@ Internet-Draft                  PIM YANG                    October 2015
 
 
 
-Liu, et al.              Expires April 21, 2016                [Page 59]
+
+Liu, et al.               Expires July 10, 2016                [Page 67]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
 7.  Security Considerations
@@ -3328,8 +3776,8 @@ Internet-Draft                  PIM YANG                    October 2015
 10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119, DOI 10.17487/
-              RFC2119, March 1997,
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
               <http://www.rfc-editor.org/info/rfc2119>.
 
    [RFC6020]  Bjorklund, M., Ed., "YANG - A Data Modeling Language for
@@ -3344,8 +3792,8 @@ Internet-Draft                  PIM YANG                    October 2015
 
    [I-D.ietf-netmod-rfc6087bis]
               Bierman, A., "Guidelines for Authors and Reviewers of YANG
-              Data Model Documents", draft-ietf-netmod-rfc6087bis-04
-              (work in progress), July 2015.
+              Data Model Documents", draft-ietf-netmod-rfc6087bis-05
+              (work in progress), October 2015.
 
 10.2.  Informative References
 
@@ -3357,9 +3805,9 @@ Internet-Draft                  PIM YANG                    October 2015
 
 
 
-Liu, et al.              Expires April 21, 2016                [Page 60]
+Liu, et al.               Expires July 10, 2016                [Page 68]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
    [RFC3973]  Adams, A., Nicholas, J., and W. Siadak, "Protocol
@@ -3369,13 +3817,13 @@ Internet-Draft                  PIM YANG                    October 2015
 
    [RFC4601]  Fenner, B., Handley, M., Holbrook, H., and I. Kouvelas,
               "Protocol Independent Multicast - Sparse Mode (PIM-SM):
-              Protocol Specification (Revised)", RFC 4601, DOI 10.17487/
-              RFC4601, August 2006,
+              Protocol Specification (Revised)", RFC 4601,
+              DOI 10.17487/RFC4601, August 2006,
               <http://www.rfc-editor.org/info/rfc4601>.
 
    [RFC4610]  Farinacci, D. and Y. Cai, "Anycast-RP Using Protocol
-              Independent Multicast (PIM)", RFC 4610, DOI 10.17487/
-              RFC4610, August 2006,
+              Independent Multicast (PIM)", RFC 4610,
+              DOI 10.17487/RFC4610, August 2006,
               <http://www.rfc-editor.org/info/rfc4610>.
 
    [RFC5015]  Handley, M., Kouvelas, I., Speakman, T., and L. Vicisano,
@@ -3413,9 +3861,9 @@ Authors' Addresses
 
 
 
-Liu, et al.              Expires April 21, 2016                [Page 61]
+Liu, et al.               Expires July 10, 2016                [Page 69]
 
-Internet-Draft                  PIM YANG                    October 2015
+Internet-Draft                  PIM YANG                    January 2016
 
 
    Pete McAllister
@@ -3469,4 +3917,4 @@ Internet-Draft                  PIM YANG                    October 2015
 
 
 
-Liu, et al.              Expires April 21, 2016                [Page 62]
+Liu, et al.               Expires July 10, 2016                [Page 70]
