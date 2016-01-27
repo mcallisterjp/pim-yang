@@ -38,7 +38,7 @@ module ietf-igmp {
     "The module defines a collection of YANG definitions common for
     IGMP.";
   
-  revision 2015-12-22 {
+  revision 2016-01-26 {
     description
       "Initial revision.";
     reference
@@ -53,14 +53,19 @@ module ietf-igmp {
       "Support global configuration applied to all interfaces.";
   }
 
+  feature global-max-entries {
+    description 
+      "Support configuration of global max-entries.";
+  }
+
+  feature global-max-groups {
+    description 
+      "Support configuration of global max-groups.";
+  }
+
   feature intf-admin-enable {
     description 
       "Support configuration of interface administrative enabling.";
-  }
-
-  feature intf-group-limit {
-    description 
-      "Support configuration of interface group limit.";
   }
 
   feature intf-immediate-leave {
@@ -71,6 +76,26 @@ module ietf-igmp {
   feature intf-join-group {
     description 
       "Support configuration of interface join-group.";
+  }
+
+  feature intf-max-groups {
+    description 
+      "Support configuration of interface max-groups.";
+  }
+
+  feature intf-max-group-sources {
+    description 
+      "Support configuration of interface max-group-sources.";
+  }
+
+  feature intf-require-router-alert {
+    description 
+      "Support configuration of interface require-router-alert.";
+  }
+
+  feature intf-source-policy {
+    description 
+      "Support configuration of interface source policy.";
   }
 
   feature intf-ssm-map {
@@ -104,8 +129,25 @@ module ietf-igmp {
   /*
    * Groupings
    */
+  grouping global-config-attributes {
+    description "Global igmp configuration.";
+    
+    leaf max-entries {
+      if-feature global-max-entries;
+      type uint32;
+      description
+        "The maximum number of entries in IGMP.";
+    }
+    leaf max-groups {
+      if-feature global-max-groups;
+      type uint32;
+      description
+        "The maximum number of groups that IGMP can join.";
+    }
+  } // global-config-attributes
+
   grouping interface-config-attributes {
-    description "interface igmp configuration.";
+    description "Per interface igmp configuration.";
     
     leaf enable {
       if-feature intf-admin-enable;
@@ -113,12 +155,6 @@ module ietf-igmp {
       description 
         "true to enable IGMP on the interface; 
          false to disable IGMP on the interface.";
-    }
-    leaf group-limit {
-      if-feature intf-group-limit;
-      type uint32;
-      description
-        "The maximum number of groups that IGMP can join.";
     }
     leaf group-policy {
       type string;
@@ -145,6 +181,18 @@ module ietf-igmp {
          leave latency of the network.";
       reference "RFC3376. Sec. 8.8.";
     }
+    leaf max-groups {
+      if-feature intf-max-groups;
+      type uint32;
+      description
+        "The maximum number of groups that IGMP can join.";
+    }
+    leaf max-group-sources {
+      if-feature intf-max-group-sources;
+      type uint32;
+      description
+        "The maximum number of group sources.";
+    }
     leaf query-interval {
       type uint16;
       units seconds;
@@ -162,6 +210,12 @@ module ietf-igmp {
          allowed before sending a responding report.";
       reference "RFC3376. Sec. 4.1.1, 8.3, 8.14.3.";
     }
+    leaf require-router-alert {
+      if-feature intf-require-router-alert;
+      type boolean;
+      description
+        "";
+    }
     leaf robustness-variable {
       type uint8 {
         range "2..7";
@@ -171,6 +225,12 @@ module ietf-igmp {
         "Querier's Robustness Variable allows tuning for the expected
          packet loss on a network.";
       reference "RFC3376. Sec. 4.1.6, 8.1, 8.14.1.";
+    }
+    leaf source-policy {
+      if-feature intf-source-policy;
+      type string;
+      description 
+        "Name of the access policy used to filter sources.";
     }
     leaf verify-source-subnet {
       if-feature intf-verify-source-subnet;
@@ -237,6 +297,68 @@ module ietf-igmp {
     }
   } // interface-config-attributes
 
+  grouping interfaces-config-attributes {
+    description 
+      "Configuration attributes applied to interfaces whose 
+       per interface attributes are not existing.";
+    
+    leaf last-member-query-interval {
+      type uint16 {
+        range "1..65535";
+      }
+      description 
+        "Last Member Query Interval, which may be tuned to modify the
+         leave latency of the network.";
+      reference "RFC3376. Sec. 8.8.";
+    }
+    leaf max-groups-per-interface {
+      if-feature intf-max-groups;
+      type uint32;
+      description
+        "The maximum number of groups that IGMP can join.";
+    }
+    leaf query-interval {
+      type uint16;
+      units seconds;
+      default 125;
+      description 
+        "The Query Interval is the interval between General Queries
+         sent by the Querier.";
+      reference "RFC3376. Sec. 4.1.7, 8.2, 8.14.2.";
+    }
+    leaf query-max-response-time {
+      type uint16;
+      units seconds;
+      description 
+        "Query maximum response time specifies the maximum time
+         allowed before sending a responding report.";
+      reference "RFC3376. Sec. 4.1.1, 8.3, 8.14.3.";
+    }
+    leaf require-router-alert {
+      if-feature intf-require-router-alert;
+      type boolean;
+      description
+        "";
+    }
+    leaf robustness-variable {
+      type uint8 {
+        range "2..7";
+      }
+      default 2;
+      description 
+        "Querier's Robustness Variable allows tuning for the expected
+         packet loss on a network.";
+      reference "RFC3376. Sec. 4.1.6, 8.1, 8.14.1.";
+    }
+    leaf version {
+      type uint8 {
+        range "1..3";
+      }
+      description "IGMP version.";
+      reference "RFC1112, RFC2236, RFC3376.";
+    }
+  } // interfaces-config-attributes
+
   /*
    * Configuration data nodes
    */
@@ -252,14 +374,14 @@ module ietf-igmp {
       container global {
         description
           "Global attributes.";
-       
+        uses global-config-attributes;
       }
 
       container interfaces {
         description
           "Containing a list of interfaces.";
 
-        uses interface-config-attributes {
+        uses interfaces-config-attributes {
           if-feature global-interface-config;
         }
 

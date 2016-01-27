@@ -2,34 +2,29 @@ module: ietf-igmp
 augment /rt:routing/rt:routing-instance/rt:routing-protocols:
    +--rw igmp
       +--rw global
+      |  +--rw max-entries?   uint32 {global-max-entries}?
+      |  +--rw max-groups?    uint32 {global-max-groups}?
       +--rw interfaces
-         +--rw enable?                       boolean {intf-admin-enable}?
-         +--rw group-limit?                  uint32 {intf-group-limit}?
-         +--rw group-policy?                 string
-         +--rw immediate-leave?              empty {intf-immediate-leave}?
          +--rw last-member-query-interval?   uint16
+         +--rw max-groups-per-interface?     uint32 {intf-max-groups}?
          +--rw query-interval?               uint16
          +--rw query-max-response-time?      uint16
+         +--rw require-router-alert?         boolean {intf-require-router-alert}?
          +--rw robustness-variable?          uint8
-         +--rw verify-source-subnet?         empty {intf-verify-source-subnet}?
          +--rw version?                      uint8
-         +--rw join-group*                   inet:ipv4-address {intf-join-group}?
-         +--rw ssm-map* [address group-policy] {intf-ssm-map}?
-         |  +--rw address         inet:ipv4-address
-         |  +--rw group-policy    string
-         +--rw static-group* [group source-addr] {intf-static-group}?
-         |  +--rw group          inet:ipv4-address
-         |  +--rw source-addr    union
          +--rw interface* [interface]
             +--rw interface                     if:interface-ref
             +--rw enable?                       boolean {intf-admin-enable}?
-            +--rw group-limit?                  uint32 {intf-group-limit}?
             +--rw group-policy?                 string
             +--rw immediate-leave?              empty {intf-immediate-leave}?
             +--rw last-member-query-interval?   uint16
+            +--rw max-groups?                   uint32 {intf-max-groups}?
+            +--rw max-group-sources?            uint32 {intf-max-group-sources}?
             +--rw query-interval?               uint16
             +--rw query-max-response-time?      uint16
+            +--rw require-router-alert?         boolean {intf-require-router-alert}?
             +--rw robustness-variable?          uint8
+            +--rw source-policy?                string {intf-source-policy}?
             +--rw verify-source-subnet?         empty {intf-verify-source-subnet}?
             +--rw version?                      uint8
             +--rw join-group*                   inet:ipv4-address {intf-join-group}?
