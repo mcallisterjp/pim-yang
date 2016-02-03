@@ -1,7 +1,43 @@
-module: ietf-igmp
+module: ietf-igmp-mld
 augment /rt:routing/rt:routing-instance/rt:routing-protocols:
    +--rw igmp
+   |  +--rw global
+   |  |  +--rw enable?        boolean {global-admin-enable}?
+   |  |  +--rw max-entries?   uint32 {global-max-entries}?
+   |  |  +--rw max-groups?    uint32 {global-max-groups}?
+   |  +--rw interfaces
+   |     +--rw last-member-query-interval?   uint16
+   |     +--rw max-groups-per-interface?     uint32 {intf-max-groups}?
+   |     +--rw query-interval?               uint16
+   |     +--rw query-max-response-time?      uint16
+   |     +--rw require-router-alert?         boolean {intf-require-router-alert}?
+   |     +--rw robustness-variable?          uint8
+   |     +--rw version?                      uint8
+   |     +--rw interface* [interface]
+   |        +--rw interface                     if:interface-ref
+   |        +--rw enable?                       boolean {intf-admin-enable}?
+   |        +--rw group-policy?                 string
+   |        +--rw immediate-leave?              empty {intf-immediate-leave}?
+   |        +--rw last-member-query-interval?   uint16
+   |        +--rw max-groups?                   uint32 {intf-max-groups}?
+   |        +--rw max-group-sources?            uint32 {intf-max-group-sources}?
+   |        +--rw query-interval?               uint16
+   |        +--rw query-max-response-time?      uint16
+   |        +--rw require-router-alert?         boolean {intf-require-router-alert}?
+   |        +--rw robustness-variable?          uint8
+   |        +--rw source-policy?                string {intf-source-policy}?
+   |        +--rw verify-source-subnet?         empty {intf-verify-source-subnet}?
+   |        +--rw version?                      uint8
+   |        +--rw join-group*                   inet:ipv4-address {intf-join-group}?
+   |        +--rw ssm-map* [source-addr group-policy] {intf-ssm-map}?
+   |        |  +--rw source-addr     source-addr-type
+   |        |  +--rw group-policy    string
+   |        +--rw static-group* [group source-addr] {intf-static-group}?
+   |           +--rw group          inet:ipv4-address
+   |           +--rw source-addr    source-addr-type
+   +--rw mld
       +--rw global
+      |  +--rw enable?        boolean {global-admin-enable}?
       |  +--rw max-entries?   uint32 {global-max-entries}?
       |  +--rw max-groups?    uint32 {global-max-groups}?
       +--rw interfaces
@@ -28,9 +64,9 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
             +--rw verify-source-subnet?         empty {intf-verify-source-subnet}?
             +--rw version?                      uint8
             +--rw join-group*                   inet:ipv4-address {intf-join-group}?
-            +--rw ssm-map* [address group-policy] {intf-ssm-map}?
-            |  +--rw address         inet:ipv4-address
+            +--rw ssm-map* [source-addr group-policy] {intf-ssm-map}?
+            |  +--rw source-addr     source-addr-type
             |  +--rw group-policy    string
             +--rw static-group* [group source-addr] {intf-static-group}?
                +--rw group          inet:ipv4-address
-               +--rw source-addr    union
+               +--rw source-addr    source-addr-type

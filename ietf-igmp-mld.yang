@@ -1,7 +1,7 @@
-module ietf-igmp {
-  namespace "urn:ietf:params:xml:ns:yang:ietf-igmp";
+module ietf-igmp-mld {
+  namespace "urn:ietf:params:xml:ns:yang:ietf-igmp-mld";
   // replace with IANA namespace when assigned
-  prefix igmp;
+  prefix igmp-mld;
 
   import ietf-inet-types {
     prefix "inet";
@@ -38,7 +38,7 @@ module ietf-igmp {
     "The module defines a collection of YANG definitions common for
     IGMP.";
   
-  revision 2016-01-26 {
+  revision 2016-02-02 {
     description
       "Initial revision.";
     reference
@@ -48,6 +48,11 @@ module ietf-igmp {
   /*
    * Features
    */
+  feature global-admin-enable {
+    description 
+      "Support global configuration to enable or disable protocol.";
+  }
+
   feature global-interface-config {
     description
       "Support global configuration applied to all interfaces.";
@@ -121,6 +126,19 @@ module ietf-igmp {
   /*
    * Typedefs
    */
+  typedef source-addr-type {
+    type union {
+      type enumeration {
+        enum '*' {
+          description 
+          "Any source address.";
+        }
+      }
+      type inet:ipv4-address;
+    }
+    description 
+      "Multicast source IP address type.";
+  } // source-addr-type
 
   /*
    * Identities
@@ -132,6 +150,14 @@ module ietf-igmp {
   grouping global-config-attributes {
     description "Global igmp configuration.";
     
+    leaf enable {
+      if-feature global-admin-enable;
+      type boolean;
+      description 
+        "true to enable IGMP in the routing instance; 
+         false to disable IGMP in the routing instance.";
+    }
+
     leaf max-entries {
       if-feature global-max-entries;
       type uint32;
@@ -256,11 +282,12 @@ module ietf-igmp {
 
     list ssm-map {
       if-feature intf-ssm-map;
-      key "address group-policy";
+      key "source-addr group-policy";
       description "";
-      leaf address {
-        type inet:ipv4-address;
-        description "";
+      leaf source-addr {
+        type source-addr-type;
+        description 
+          "Multicast source IP address.";
       }
       leaf group-policy {
         type string;
@@ -282,15 +309,7 @@ module ietf-igmp {
           "Multicast group IP address.";
       }
       leaf source-addr {
-        type union {
-          type enumeration {
-            enum '*' {
-              description 
-                "Any source address.";
-            }
-          }
-          type inet:ipv4-address;
-        }
+        type source-addr-type;
         description 
           "Multicast source IP address.";
       }
@@ -405,7 +424,47 @@ module ietf-igmp {
           }
         } // interface
       } // interfaces
-    } // pim
+    } // igmp
+
+    container mld {
+      description
+        "MLD configuration data.";
+
+      container global {
+        description
+          "Global attributes.";
+        uses global-config-attributes;
+      }
+
+      container interfaces {
+        description
+          "Containing a list of interfaces.";
+
+        uses interfaces-config-attributes {
+          if-feature global-interface-config;
+        }
+
+        list interface {
+          key "interface";
+          description
+            "List of MLD interfaces.";
+          leaf interface {
+            type if:interface-ref;
+            must "/if:interfaces/if:interface[if:name = current()]/"
+               + "ip:ipv6" {
+              description
+                "The interface must have IPv4 enabled.";
+            }
+            description
+              "Reference to an entry in the global interface
+               list.";
+          }
+          uses interface-config-attributes {
+            if-feature per-interface-config;
+          }
+        } // interface
+      } // interfaces
+    } // igmp
   } // augment
 
   /*
