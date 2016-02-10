@@ -5,14 +5,14 @@
 PIM Working Group                                                 X. Liu
 Internet-Draft                                                  Ericsson
 Intended status: Standards Track                           P. McAllister
-Expires: July 10, 2016                               Metaswitch Networks
+Expires: August 13, 2016                             Metaswitch Networks
                                                                 A. Peter
                                                         Juniper Networks
-                                                         January 7, 2016
+                                                       February 10, 2016
 
 
        A YANG data model for Protocol-Independent Multicast (PIM)
-                      draft-mcallister-pim-yang-02
+                         draft-ietf-pim-yang-00
 
 Abstract
 
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 10, 2016.
+   This Internet-Draft will expire on August 13, 2016.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Liu, et al.               Expires July 10, 2016                 [Page 1]
+Liu, et al.              Expires August 13, 2016                [Page 1]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
 Table of Contents
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Liu, et al.               Expires July 10, 2016                 [Page 2]
+Liu, et al.              Expires August 13, 2016                [Page 2]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
 1.1.  Requirements Language
@@ -165,9 +165,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                 [Page 3]
+Liu, et al.              Expires August 13, 2016                [Page 3]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
    specification is easy to express through some combination of the
@@ -221,9 +221,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                 [Page 4]
+Liu, et al.              Expires August 13, 2016                [Page 4]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
 2.4.  Position of address family in hierarchy
@@ -277,9 +277,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                 [Page 5]
+Liu, et al.              Expires August 13, 2016                [Page 5]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
 3.3.  Issues blocked on other model designers
@@ -333,9 +333,9 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
 
 
 
-Liu, et al.               Expires July 10, 2016                 [Page 6]
+Liu, et al.              Expires August 13, 2016                [Page 6]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
       +--rw interfaces
@@ -389,9 +389,9 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
 
 
 
-Liu, et al.               Expires July 10, 2016                 [Page 7]
+Liu, et al.              Expires August 13, 2016                [Page 7]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
       |  |  |  +--ro assert?                       yang:counter64
@@ -445,9 +445,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                 [Page 8]
+Liu, et al.              Expires August 13, 2016                [Page 8]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
       |           +--ro name        if:interface-ref
@@ -501,9 +501,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                 [Page 9]
+Liu, et al.              Expires August 13, 2016                [Page 9]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
                +--ro neighbor-ipv6* [address]
@@ -557,9 +557,9 @@ pim-base:address-family:
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 10]
+Liu, et al.              Expires August 13, 2016               [Page 10]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          |  |  |  +--rw interface           if:interface-ref
@@ -613,9 +613,9 @@ pim-base:pim/pim-base:address-family:
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 11]
+Liu, et al.              Expires August 13, 2016               [Page 11]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
       |  |  +--ro policy?         string
@@ -669,9 +669,9 @@ notifications:
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 12]
+Liu, et al.              Expires August 13, 2016               [Page 12]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
       +--ro instance-af-state-ref?        leafref
@@ -725,9 +725,9 @@ pim-base:pim/pim-base:address-family:
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 13]
+Liu, et al.              Expires August 13, 2016               [Page 13]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
    +--ro sm
@@ -781,9 +781,9 @@ pim-rp:ipv6-rp:
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 14]
+Liu, et al.              Expires August 13, 2016               [Page 14]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
    module: ietf-pim-dm
@@ -837,9 +837,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 15]
+Liu, et al.              Expires August 13, 2016               [Page 15]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
       +--ro bidir!
@@ -893,9 +893,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 16]
+Liu, et al.              Expires August 13, 2016               [Page 16]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      prefix pim-base;
@@ -949,9 +949,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 17]
+Liu, et al.              Expires August 13, 2016               [Page 17]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      /*
@@ -1005,9 +1005,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 18]
+Liu, et al.              Expires August 13, 2016               [Page 18]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      feature intf-propagation-delay {
@@ -1061,9 +1061,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 19]
+Liu, et al.              Expires August 13, 2016               [Page 19]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
            description
@@ -1117,9 +1117,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 20]
+Liu, et al.              Expires August 13, 2016               [Page 20]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          }
@@ -1173,9 +1173,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 21]
+Liu, et al.              Expires August 13, 2016               [Page 21]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
            type boolean;
@@ -1229,9 +1229,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 22]
+Liu, et al.              Expires August 13, 2016               [Page 22]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          }
@@ -1285,9 +1285,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 23]
+Liu, et al.              Expires August 13, 2016               [Page 23]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
            type inet:ipv6-address;
@@ -1341,9 +1341,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 24]
+Liu, et al.              Expires August 13, 2016               [Page 24]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
        list neighbor-ipv6 {
@@ -1397,9 +1397,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 25]
+Liu, et al.              Expires August 13, 2016               [Page 25]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          description "";
@@ -1453,9 +1453,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 26]
+Liu, et al.              Expires August 13, 2016               [Page 26]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
            description "";
@@ -1509,9 +1509,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 27]
+Liu, et al.              Expires August 13, 2016               [Page 27]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      grouping pim-instance-state-ref {
@@ -1565,9 +1565,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 28]
+Liu, et al.              Expires August 13, 2016               [Page 28]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
            path "/rt:routing-state/rt:routing-instance"
@@ -1621,9 +1621,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 29]
+Liu, et al.              Expires August 13, 2016               [Page 29]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
        }
@@ -1677,9 +1677,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 30]
+Liu, et al.              Expires August 13, 2016               [Page 30]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
        leaf size {
@@ -1733,9 +1733,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 31]
+Liu, et al.              Expires August 13, 2016               [Page 31]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          description
@@ -1789,9 +1789,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 32]
+Liu, et al.              Expires August 13, 2016               [Page 32]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
                key "address-family";
@@ -1845,9 +1845,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 33]
+Liu, et al.              Expires August 13, 2016               [Page 33]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
                        description "";
@@ -1901,9 +1901,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 34]
+Liu, et al.              Expires August 13, 2016               [Page 34]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
            description
@@ -1957,9 +1957,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 35]
+Liu, et al.              Expires August 13, 2016               [Page 35]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          type interface-event-type;
@@ -2013,9 +2013,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 36]
+Liu, et al.              Expires August 13, 2016               [Page 36]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      }
@@ -2069,9 +2069,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 37]
+Liu, et al.              Expires August 13, 2016               [Page 37]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      feature static-rp-override {
@@ -2125,9 +2125,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 38]
+Liu, et al.              Expires August 13, 2016               [Page 38]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      }
@@ -2181,9 +2181,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 39]
+Liu, et al.              Expires August 13, 2016               [Page 39]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
              }
@@ -2237,9 +2237,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 40]
+Liu, et al.              Expires August 13, 2016               [Page 40]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
              value.";
@@ -2293,9 +2293,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 41]
+Liu, et al.              Expires August 13, 2016               [Page 41]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          uses rp-candidate-attributes;
@@ -2349,9 +2349,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 42]
+Liu, et al.              Expires August 13, 2016               [Page 42]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
                     prevents rapid thrashing of the choice of BSR
@@ -2405,9 +2405,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 43]
+Liu, et al.              Expires August 13, 2016               [Page 43]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          description "";
@@ -2461,9 +2461,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 44]
+Liu, et al.              Expires August 13, 2016               [Page 44]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          description "";
@@ -2517,9 +2517,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 45]
+Liu, et al.              Expires August 13, 2016               [Page 45]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
                "Specifies a static RP address.";
@@ -2573,9 +2573,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 46]
+Liu, et al.              Expires August 13, 2016               [Page 46]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          description
@@ -2629,9 +2629,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 47]
+Liu, et al.              Expires August 13, 2016               [Page 47]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
                "A list of IPv4 RP addresses.";
@@ -2685,9 +2685,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 48]
+Liu, et al.              Expires August 13, 2016               [Page 48]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          } // rp-list
@@ -2741,9 +2741,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 49]
+Liu, et al.              Expires August 13, 2016               [Page 49]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      } // augment
@@ -2797,9 +2797,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 50]
+Liu, et al.              Expires August 13, 2016               [Page 50]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      namespace "urn:ietf:params:xml:ns:yang:ietf-pim-sm";
@@ -2853,9 +2853,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 51]
+Liu, et al.              Expires August 13, 2016               [Page 51]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      feature spt-switch-infinity {
@@ -2909,9 +2909,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 52]
+Liu, et al.              Expires August 13, 2016               [Page 52]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
                  "IPv4 attributes. Only applicable when
@@ -2965,9 +2965,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 53]
+Liu, et al.              Expires August 13, 2016               [Page 53]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
                      messages are forwarded.";
@@ -3021,9 +3021,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 54]
+Liu, et al.              Expires August 13, 2016               [Page 54]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          leaf passive {
@@ -3077,9 +3077,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 55]
+Liu, et al.              Expires August 13, 2016               [Page 55]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
        description "PIM SM augmentation.";
@@ -3133,9 +3133,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 56]
+Liu, et al.              Expires August 13, 2016               [Page 56]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
        + "pim-rp:static-rp/pim-rp:ipv6-rp" {
@@ -3189,9 +3189,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 57]
+Liu, et al.              Expires August 13, 2016               [Page 57]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
         Editors:   ";
@@ -3245,9 +3245,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 58]
+Liu, et al.              Expires August 13, 2016               [Page 58]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
          description
@@ -3301,9 +3301,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 59]
+Liu, et al.              Expires August 13, 2016               [Page 59]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      }
@@ -3357,9 +3357,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 60]
+Liu, et al.              Expires August 13, 2016               [Page 60]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      /*
@@ -3413,9 +3413,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 61]
+Liu, et al.              Expires August 13, 2016               [Page 61]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
       * Groupings
@@ -3469,9 +3469,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 62]
+Liu, et al.              Expires August 13, 2016               [Page 62]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
            }
@@ -3525,9 +3525,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 63]
+Liu, et al.              Expires August 13, 2016               [Page 63]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
        + "rt:routing-protocols/pim-base:pim/"
@@ -3581,9 +3581,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 64]
+Liu, et al.              Expires August 13, 2016               [Page 64]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
      augment "/rt:routing-state/rt:routing-instance/"
@@ -3637,9 +3637,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 65]
+Liu, et al.              Expires August 13, 2016               [Page 65]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
              }
@@ -3693,9 +3693,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 66]
+Liu, et al.              Expires August 13, 2016               [Page 66]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
                  "DF address.";
@@ -3749,9 +3749,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 67]
+Liu, et al.              Expires August 13, 2016               [Page 67]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
 7.  Security Considerations
@@ -3805,9 +3805,9 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 68]
+Liu, et al.              Expires August 13, 2016               [Page 68]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
    [RFC3973]  Adams, A., Nicholas, J., and W. Siadak, "Protocol
@@ -3861,9 +3861,9 @@ Authors' Addresses
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 69]
+Liu, et al.              Expires August 13, 2016               [Page 69]
 
-Internet-Draft                  PIM YANG                    January 2016
+Internet-Draft                  PIM YANG                   February 2016
 
 
    Pete McAllister
@@ -3917,4 +3917,4 @@ Internet-Draft                  PIM YANG                    January 2016
 
 
 
-Liu, et al.               Expires July 10, 2016                [Page 70]
+Liu, et al.              Expires August 13, 2016               [Page 70]
