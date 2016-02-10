@@ -7,6 +7,10 @@ module ietf-igmp-mld {
     prefix "inet";
   }
   
+  import ietf-yang-types {
+    prefix "yang";
+  }
+  
   import ietf-routing {
     prefix "rt";
   }
@@ -38,7 +42,7 @@ module ietf-igmp-mld {
     "The module defines a collection of YANG definitions common for
     IGMP.";
   
-  revision 2016-02-02 {
+  revision 2016-02-08 {
     description
       "Initial revision.";
     reference
@@ -126,7 +130,7 @@ module ietf-igmp-mld {
   /*
    * Typedefs
    */
-  typedef source-addr-type {
+  typedef source-ipv4-addr-type {
     type union {
       type enumeration {
         enum '*' {
@@ -138,7 +142,21 @@ module ietf-igmp-mld {
     }
     description 
       "Multicast source IP address type.";
-  } // source-addr-type
+  } // source-ipv4-addr-type
+
+  typedef source-ipv6-addr-type {
+    type union {
+      type enumeration {
+        enum '*' {
+          description 
+          "Any source address.";
+        }
+      }
+      type inet:ipv6-address;
+    }
+    description 
+      "Multicast source IP address type.";
+  } // source-ipv6-addr-type
 
   /*
    * Identities
@@ -148,7 +166,7 @@ module ietf-igmp-mld {
    * Groupings
    */
   grouping global-config-attributes {
-    description "Global igmp configuration.";
+    description "Global IGMP and MLD configuration.";
     
     leaf enable {
       if-feature global-admin-enable;
@@ -172,8 +190,190 @@ module ietf-igmp-mld {
     }
   } // global-config-attributes
 
-  grouping interface-config-attributes {
-    description "Per interface igmp configuration.";
+  grouping global-state-attributes {
+    description "Global IGMP and MLD state attributes.";
+    
+    leaf entries-count {
+      type uint32;
+      description
+        "The number of entries in IGMP.";
+    }
+    leaf groups-count {
+      type uint32;
+      description
+        "The number of groups that IGMP can join.";
+    }
+    
+    container statistics {
+      description "Global statistics.";
+
+      leaf discontinuity-time {
+        type yang:date-and-time;
+        description
+          "The time on the most recent occasion at which any one
+          or more of the statistic counters suffered a
+          discontinuity. If no such discontinuities have occurred
+          since the last re-initialization of the local
+          management subsystem, then this node contains the time
+          the local management subsystem re-initialized itself.";
+      }
+
+      container error {
+        description "Statistics of errors.";
+        uses global-statistics-error;
+      }
+
+      container received {
+        description "Statistics of received messages.";
+        uses global-statistics-sent-received;
+      }
+      container sent {
+        description "Statistics of sent messages.";
+        uses global-statistics-sent-received;
+      }
+    } // statistics
+  } // global-state-attributes
+
+  grouping global-statistics-error {
+    description
+      "A grouping defining statistics attributes for errors.";
+    uses global-statistics-sent-received;
+    leaf checksum {
+      type yang:counter64;
+      description
+        "The number of checksum errors.";
+    }
+    leaf too-short {
+      type yang:counter64;
+      description
+        "The number of messages that are too short.";
+    }
+  } // global-statistics-error
+
+  grouping global-statistics-sent-received {
+    description
+      "A grouping defining statistics attributes.";
+    leaf total {
+      type yang:counter64;
+      description
+        "The number of total messages.";
+    }
+    leaf query {
+      type yang:counter64;
+      description
+        "The number of query messages.";
+    }
+    leaf report {
+      type yang:counter64;
+      description
+        "The number of report messages.";
+    }
+    leaf leave {
+      type yang:counter64;
+      description
+        "The number of leave messages.";
+    }
+  } // global-statistics-sent-received
+
+  grouping interface-config-attributes-mld {
+    description "Per interface igmp configuration for mld.";
+    
+    uses interface-config-attributes-igmp-mld;
+
+    leaf-list join-group {
+      if-feature intf-join-group;
+      type inet:ipv6-address;
+      description 
+        "The router joins this multicast group on the interface.";
+    }
+
+    list ssm-map {
+      if-feature intf-ssm-map;
+      key "source-addr group-policy";
+      description "";
+      leaf source-addr {
+        type source-ipv6-addr-type;
+        description 
+          "Multicast source IP address.";
+      }
+      leaf group-policy {
+        type string;
+        description 
+          "Name of the access policy used to filter IGMP
+           membership.";
+      }
+    }
+
+    list static-group {
+      if-feature intf-static-group;
+      key "group source-addr";
+      description 
+        "A static multicast route, (*,G) or (S,G).";
+      
+      leaf group {
+        type inet:ipv6-address;
+        description 
+          "Multicast group IP address.";
+      }
+      leaf source-addr {
+        type source-ipv6-addr-type;
+        description 
+          "Multicast source IP address.";
+      }
+    }
+  } // interface-config-attributes-mld
+
+  grouping interface-config-attributes-igmp {
+    description "Per interface igmp configuration for IGMP.";
+    
+    uses interface-config-attributes-igmp-mld;
+
+    leaf-list join-group {
+      if-feature intf-join-group;
+      type inet:ipv4-address;
+      description 
+        "The router joins this multicast group on the interface.";
+    }
+
+    list ssm-map {
+      if-feature intf-ssm-map;
+      key "source-addr group-policy";
+      description "";
+      leaf source-addr {
+        type source-ipv4-addr-type;
+        description 
+          "Multicast source IP address.";
+      }
+      leaf group-policy {
+        type string;
+        description 
+          "Name of the access policy used to filter IGMP
+           membership.";
+      }
+    }
+
+    list static-group {
+      if-feature intf-static-group;
+      key "group source-addr";
+      description 
+        "A static multicast route, (*,G) or (S,G).";
+      
+      leaf group {
+        type inet:ipv4-address;
+        description 
+          "Multicast group IP address.";
+      }
+      leaf source-addr {
+        type source-ipv4-addr-type;
+        description 
+          "Multicast source IP address.";
+      }
+    }
+  } // interface-config-attributes-igmp
+
+  grouping interface-config-attributes-igmp-mld {
+    description 
+      "Per interface configuration for both IGMP and MLD.";
     
     leaf enable {
       if-feature intf-admin-enable;
@@ -272,49 +472,191 @@ module ietf-igmp-mld {
       description "IGMP version.";
       reference "RFC1112, RFC2236, RFC3376.";
     }
+  } // interface-config-attributes-igmp-mld
 
-    leaf-list join-group {
+  grouping interface-state-attributes-mld {
+    description 
+      "Per interface state attributes for MLD.";
+    
+    uses interface-state-attributes-igmp-mld;
+
+    leaf dr {
+      type inet:ipv6-address;
+      description "";
+    }
+    leaf querier {
+      type inet:ipv6-address;
+      description "";
+    }
+    leaf-list joined-group {
+      if-feature intf-join-group;
+      type inet:ipv6-address;
+      description 
+        "The routers that joined this multicast group.";
+    }
+
+    list group {
+      key "address";
+      description "";
+
+      leaf address {
+        type inet:ipv6-address;
+        description 
+          "";
+      }
+      uses interface-state-group-attributes-igmp-mld;
+      leaf-list host {
+        type inet:ipv6-address;
+        description 
+          "";
+      }
+      leaf last-reporter {
+        type inet:ipv6-address;
+        description "";
+      }
+      list source {
+        key "address";
+        description "";
+
+        leaf address {
+          type inet:ipv6-address;
+          description "";
+        }
+        uses interface-state-source-attributes-igmp-mld;
+        leaf last-reporter {
+          type inet:ipv6-address;
+          description "";
+        }
+      } // list source
+    } // list group
+  } // interface-state-attributes-mld
+
+  grouping interface-state-attributes-igmp {
+    description 
+      "Per interface state attributes for IGMP.";
+    
+    uses interface-state-attributes-igmp-mld;
+
+    leaf dr {
+      type inet:ipv4-address;
+      description "";
+    }
+    leaf querier {
+      type inet:ipv4-address;
+      description "";
+    }
+    leaf-list joined-group {
       if-feature intf-join-group;
       type inet:ipv4-address;
       description 
-        "The router joins this multicast group on the interface.";
+        "The routers that joined this multicast group.";
     }
 
-    list ssm-map {
-      if-feature intf-ssm-map;
-      key "source-addr group-policy";
+    list group {
+      key "address";
       description "";
-      leaf source-addr {
-        type source-addr-type;
-        description 
-          "Multicast source IP address.";
-      }
-      leaf group-policy {
-        type string;
-        description 
-          "Name of the access policy used to filter IGMP
-           membership.";
-      }
-    }
 
-    list static-group {
-      if-feature intf-static-group;
-      key "group source-addr";
-      description 
-        "A static multicast route, (*,G) or (S,G).";
-      
-      leaf group {
+      leaf address {
         type inet:ipv4-address;
         description 
-          "Multicast group IP address.";
+          "";
       }
-      leaf source-addr {
-        type source-addr-type;
+      uses interface-state-group-attributes-igmp-mld;
+      leaf-list host {
+        type inet:ipv4-address;
         description 
-          "Multicast source IP address.";
+          "";
       }
+      leaf last-reporter {
+        type inet:ipv4-address;
+        description "";
+      }
+      list source {
+        key "address";
+        description "";
+
+        leaf address {
+          type inet:ipv4-address;
+          description "";
+        }
+        uses interface-state-source-attributes-igmp-mld;
+        leaf last-reporter {
+          type inet:ipv4-address;
+          description "";
+        }
+      } // list source
+    } // list group
+  } // interface-state-attributes-igmp
+
+  grouping interface-state-attributes-igmp-mld {
+    description 
+      "Per interface state attributes for both IGMP and MLD.";
+    
+    leaf oper-status {
+      type enumeration {
+        enum up {
+          description
+          "Ready to pass packets.";
+        }
+        enum down {
+          description
+          "The interface does not pass any packets.";
+        }
+      }
+      description "";
     }
-  } // interface-config-attributes
+  } // interface-config-attributes-igmp-mld
+
+  grouping interface-state-group-attributes-igmp-mld {
+    description 
+      "Per interface state attributes for both IGMP and MLD
+       groups.";
+    
+    leaf expire {
+      type uint32;
+      units seconds;
+      description "";
+    }
+    leaf filter-mode {
+      type enumeration {
+        enum "include" {
+          description
+          "";
+        }
+        enum "exclude" {
+          description
+          "";
+        }
+      }
+      description "";
+    }
+    leaf host-count {
+      type uint32;
+        description "";
+    }      
+    leaf up-time {
+      type uint32;
+      units seconds;
+      description "";
+    }
+  } // interface-state-group-attributes-igmp-mld
+
+  grouping interface-state-source-attributes-igmp-mld {
+    description 
+      "Per interface state attributes for both IGMP and MLD
+       groups.";
+    
+    leaf expire {
+      type uint32;
+      units seconds;
+      description "";
+    }
+    leaf up-time {
+      type uint32;
+      units seconds;
+      description "";
+    }
+  } // interface-state-source-attributes-igmp-mld
 
   grouping interfaces-config-attributes {
     description 
@@ -384,7 +726,7 @@ module ietf-igmp-mld {
   augment "/rt:routing/rt:routing-instance/"
     + "rt:routing-protocols" {
     description 
-      "IGMP augmentation to routing instance configuration.";
+      "IGMP and MLD augmentation to routing instance configuration.";
 
     container igmp {
       description
@@ -419,7 +761,7 @@ module ietf-igmp-mld {
               "Reference to an entry in the global interface
                list.";
           }
-          uses interface-config-attributes {
+          uses interface-config-attributes-igmp {
             if-feature per-interface-config;
           }
         } // interface
@@ -459,17 +801,106 @@ module ietf-igmp-mld {
               "Reference to an entry in the global interface
                list.";
           }
-          uses interface-config-attributes {
+          uses interface-config-attributes-mld {
             if-feature per-interface-config;
           }
         } // interface
       } // interfaces
-    } // igmp
+    } // mld
   } // augment
 
   /*
    * Operational state data nodes
    */
+  augment "/rt:routing-state/rt:routing-instance/"
+    + "rt:routing-protocols" {
+    description
+      "IGMP and MLD augmentation to routing instance state.";
+
+    container igmp {
+      description
+        "IGMP configuration data.";
+
+      container global {
+        description
+          "Global attributes.";
+        uses global-config-attributes;
+        uses global-state-attributes;
+      }
+
+      container interfaces {
+        description
+          "Containing a list of interfaces.";
+
+        uses interfaces-config-attributes {
+          if-feature global-interface-config;
+        }
+
+        list interface {
+          key "interface";
+          description
+            "List of IGMP interfaces.";
+          leaf interface {
+            type if:interface-ref;
+            must "/if:interfaces/if:interface[if:name = current()]/"
+               + "ip:ipv4" {
+              description
+                "The interface must have IPv4 enabled.";
+            }
+            description
+              "Reference to an entry in the global interface
+               list.";
+          }
+          uses interface-config-attributes-igmp {
+            if-feature per-interface-config;
+          }
+          uses interface-state-attributes-igmp;
+        } // interface
+      } // interfaces
+    } // igmp
+
+    container mld {
+      description
+        "MLD configuration data.";
+
+      container global {
+        description
+          "Global attributes.";
+        uses global-config-attributes;
+        uses global-state-attributes;
+      }
+
+      container interfaces {
+        description
+          "Containing a list of interfaces.";
+
+        uses interfaces-config-attributes {
+          if-feature global-interface-config;
+        }
+
+        list interface {
+          key "interface";
+          description
+            "List of MLD interfaces.";
+          leaf interface {
+            type if:interface-ref;
+            must "/if:interfaces/if:interface[if:name = current()]/"
+               + "ip:ipv6" {
+              description
+                "The interface must have IPv4 enabled.";
+            }
+            description
+              "Reference to an entry in the global interface
+               list.";
+          }
+          uses interface-config-attributes-mld {
+            if-feature per-interface-config;
+          }
+          uses interface-state-attributes-mld;
+        } // interface
+      } // interfaces
+    } // mld
+  } // augment
 
   /*
    * RPCs

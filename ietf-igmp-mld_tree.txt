@@ -30,11 +30,11 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
    |        +--rw version?                      uint8
    |        +--rw join-group*                   inet:ipv4-address {intf-join-group}?
    |        +--rw ssm-map* [source-addr group-policy] {intf-ssm-map}?
-   |        |  +--rw source-addr     source-addr-type
+   |        |  +--rw source-addr     source-ipv4-addr-type
    |        |  +--rw group-policy    string
    |        +--rw static-group* [group source-addr] {intf-static-group}?
    |           +--rw group          inet:ipv4-address
-   |           +--rw source-addr    source-addr-type
+   |           +--rw source-addr    source-ipv4-addr-type
    +--rw mld
       +--rw global
       |  +--rw enable?        boolean {global-admin-enable}?
@@ -63,10 +63,157 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
             +--rw source-policy?                string {intf-source-policy}?
             +--rw verify-source-subnet?         empty {intf-verify-source-subnet}?
             +--rw version?                      uint8
-            +--rw join-group*                   inet:ipv4-address {intf-join-group}?
+            +--rw join-group*                   inet:ipv6-address {intf-join-group}?
             +--rw ssm-map* [source-addr group-policy] {intf-ssm-map}?
-            |  +--rw source-addr     source-addr-type
+            |  +--rw source-addr     source-ipv6-addr-type
             |  +--rw group-policy    string
             +--rw static-group* [group source-addr] {intf-static-group}?
-               +--rw group          inet:ipv4-address
-               +--rw source-addr    source-addr-type
+               +--rw group          inet:ipv6-address
+               +--rw source-addr    source-ipv6-addr-type
+augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
+   +--ro igmp
+   |  +--ro global
+   |  |  +--ro enable?          boolean {global-admin-enable}?
+   |  |  +--ro max-entries?     uint32 {global-max-entries}?
+   |  |  +--ro max-groups?      uint32 {global-max-groups}?
+   |  |  +--ro entries-count?   uint32
+   |  |  +--ro groups-count?    uint32
+   |  |  +--ro statistics
+   |  |     +--ro discontinuity-time?   yang:date-and-time
+   |  |     +--ro error
+   |  |     |  +--ro total?       yang:counter64
+   |  |     |  +--ro query?       yang:counter64
+   |  |     |  +--ro report?      yang:counter64
+   |  |     |  +--ro leave?       yang:counter64
+   |  |     |  +--ro checksum?    yang:counter64
+   |  |     |  +--ro too-short?   yang:counter64
+   |  |     +--ro received
+   |  |     |  +--ro total?    yang:counter64
+   |  |     |  +--ro query?    yang:counter64
+   |  |     |  +--ro report?   yang:counter64
+   |  |     |  +--ro leave?    yang:counter64
+   |  |     +--ro sent
+   |  |        +--ro total?    yang:counter64
+   |  |        +--ro query?    yang:counter64
+   |  |        +--ro report?   yang:counter64
+   |  |        +--ro leave?    yang:counter64
+   |  +--ro interfaces
+   |     +--ro last-member-query-interval?   uint16
+   |     +--ro max-groups-per-interface?     uint32 {intf-max-groups}?
+   |     +--ro query-interval?               uint16
+   |     +--ro query-max-response-time?      uint16
+   |     +--ro require-router-alert?         boolean {intf-require-router-alert}?
+   |     +--ro robustness-variable?          uint8
+   |     +--ro version?                      uint8
+   |     +--ro interface* [interface]
+   |        +--ro interface                     if:interface-ref
+   |        +--ro enable?                       boolean {intf-admin-enable}?
+   |        +--ro group-policy?                 string
+   |        +--ro immediate-leave?              empty {intf-immediate-leave}?
+   |        +--ro last-member-query-interval?   uint16
+   |        +--ro max-groups?                   uint32 {intf-max-groups}?
+   |        +--ro max-group-sources?            uint32 {intf-max-group-sources}?
+   |        +--ro query-interval?               uint16
+   |        +--ro query-max-response-time?      uint16
+   |        +--ro require-router-alert?         boolean {intf-require-router-alert}?
+   |        +--ro robustness-variable?          uint8
+   |        +--ro source-policy?                string {intf-source-policy}?
+   |        +--ro verify-source-subnet?         empty {intf-verify-source-subnet}?
+   |        +--ro version?                      uint8
+   |        +--ro join-group*                   inet:ipv4-address {intf-join-group}?
+   |        +--ro ssm-map* [source-addr group-policy] {intf-ssm-map}?
+   |        |  +--ro source-addr     source-ipv4-addr-type
+   |        |  +--ro group-policy    string
+   |        +--ro static-group* [group source-addr] {intf-static-group}?
+   |        |  +--ro group          inet:ipv4-address
+   |        |  +--ro source-addr    source-ipv4-addr-type
+   |        +--ro oper-status?                  enumeration
+   |        +--ro dr?                           inet:ipv4-address
+   |        +--ro querier?                      inet:ipv4-address
+   |        +--ro joined-group*                 inet:ipv4-address {intf-join-group}?
+   |        +--ro group* [address]
+   |           +--ro address          inet:ipv4-address
+   |           +--ro expire?          uint32
+   |           +--ro filter-mode?     enumeration
+   |           +--ro host-count?      uint32
+   |           +--ro up-time?         uint32
+   |           +--ro host*            inet:ipv4-address
+   |           +--ro last-reporter?   inet:ipv4-address
+   |           +--ro source* [address]
+   |              +--ro address          inet:ipv4-address
+   |              +--ro expire?          uint32
+   |              +--ro up-time?         uint32
+   |              +--ro last-reporter?   inet:ipv4-address
+   +--ro mld
+      +--ro global
+      |  +--ro enable?          boolean {global-admin-enable}?
+      |  +--ro max-entries?     uint32 {global-max-entries}?
+      |  +--ro max-groups?      uint32 {global-max-groups}?
+      |  +--ro entries-count?   uint32
+      |  +--ro groups-count?    uint32
+      |  +--ro statistics
+      |     +--ro discontinuity-time?   yang:date-and-time
+      |     +--ro error
+      |     |  +--ro total?       yang:counter64
+      |     |  +--ro query?       yang:counter64
+      |     |  +--ro report?      yang:counter64
+      |     |  +--ro leave?       yang:counter64
+      |     |  +--ro checksum?    yang:counter64
+      |     |  +--ro too-short?   yang:counter64
+      |     +--ro received
+      |     |  +--ro total?    yang:counter64
+      |     |  +--ro query?    yang:counter64
+      |     |  +--ro report?   yang:counter64
+      |     |  +--ro leave?    yang:counter64
+      |     +--ro sent
+      |        +--ro total?    yang:counter64
+      |        +--ro query?    yang:counter64
+      |        +--ro report?   yang:counter64
+      |        +--ro leave?    yang:counter64
+      +--ro interfaces
+         +--ro last-member-query-interval?   uint16
+         +--ro max-groups-per-interface?     uint32 {intf-max-groups}?
+         +--ro query-interval?               uint16
+         +--ro query-max-response-time?      uint16
+         +--ro require-router-alert?         boolean {intf-require-router-alert}?
+         +--ro robustness-variable?          uint8
+         +--ro version?                      uint8
+         +--ro interface* [interface]
+            +--ro interface                     if:interface-ref
+            +--ro enable?                       boolean {intf-admin-enable}?
+            +--ro group-policy?                 string
+            +--ro immediate-leave?              empty {intf-immediate-leave}?
+            +--ro last-member-query-interval?   uint16
+            +--ro max-groups?                   uint32 {intf-max-groups}?
+            +--ro max-group-sources?            uint32 {intf-max-group-sources}?
+            +--ro query-interval?               uint16
+            +--ro query-max-response-time?      uint16
+            +--ro require-router-alert?         boolean {intf-require-router-alert}?
+            +--ro robustness-variable?          uint8
+            +--ro source-policy?                string {intf-source-policy}?
+            +--ro verify-source-subnet?         empty {intf-verify-source-subnet}?
+            +--ro version?                      uint8
+            +--ro join-group*                   inet:ipv6-address {intf-join-group}?
+            +--ro ssm-map* [source-addr group-policy] {intf-ssm-map}?
+            |  +--ro source-addr     source-ipv6-addr-type
+            |  +--ro group-policy    string
+            +--ro static-group* [group source-addr] {intf-static-group}?
+            |  +--ro group          inet:ipv6-address
+            |  +--ro source-addr    source-ipv6-addr-type
+            +--ro oper-status?                  enumeration
+            +--ro dr?                           inet:ipv6-address
+            +--ro querier?                      inet:ipv6-address
+            +--ro joined-group*                 inet:ipv6-address {intf-join-group}?
+            +--ro group* [address]
+               +--ro address          inet:ipv6-address
+               +--ro expire?          uint32
+               +--ro filter-mode?     enumeration
+               +--ro host-count?      uint32
+               +--ro up-time?         uint32
+               +--ro host*            inet:ipv6-address
+               +--ro last-reporter?   inet:ipv6-address
+               +--ro source* [address]
+                  +--ro address          inet:ipv6-address
+                  +--ro expire?          uint32
+                  +--ro up-time?         uint32
+                  +--ro last-reporter?   inet:ipv6-address
