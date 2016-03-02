@@ -30,7 +30,7 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
    |        +--rw version?                      uint8
    |        +--rw join-group*                   inet:ipv4-address {intf-join-group}?
    |        +--rw ssm-map* [source-addr group-policy] {intf-ssm-map}?
-   |        |  +--rw source-addr     source-ipv4-addr-type
+   |        |  +--rw source-addr     ssm-map-ipv4-addr-type
    |        |  +--rw group-policy    string
    |        +--rw static-group* [group source-addr] {intf-static-group}?
    |           +--rw group          inet:ipv4-address
@@ -65,7 +65,7 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
             +--rw version?                      uint8
             +--rw join-group*                   inet:ipv6-address {intf-join-group}?
             +--rw ssm-map* [source-addr group-policy] {intf-ssm-map}?
-            |  +--rw source-addr     source-ipv6-addr-type
+            |  +--rw source-addr     ssm-map-ipv6-addr-type
             |  +--rw group-policy    string
             +--rw static-group* [group source-addr] {intf-static-group}?
                +--rw group          inet:ipv6-address
@@ -122,7 +122,7 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
    |        +--ro version?                      uint8
    |        +--ro join-group*                   inet:ipv4-address {intf-join-group}?
    |        +--ro ssm-map* [source-addr group-policy] {intf-ssm-map}?
-   |        |  +--ro source-addr     source-ipv4-addr-type
+   |        |  +--ro source-addr     ssm-map-ipv4-addr-type
    |        |  +--ro group-policy    string
    |        +--ro static-group* [group source-addr] {intf-static-group}?
    |        |  +--ro group          inet:ipv4-address
@@ -195,13 +195,12 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
             +--ro version?                      uint8
             +--ro join-group*                   inet:ipv6-address {intf-join-group}?
             +--ro ssm-map* [source-addr group-policy] {intf-ssm-map}?
-            |  +--ro source-addr     source-ipv6-addr-type
+            |  +--ro source-addr     ssm-map-ipv6-addr-type
             |  +--ro group-policy    string
             +--ro static-group* [group source-addr] {intf-static-group}?
             |  +--ro group          inet:ipv6-address
             |  +--ro source-addr    source-ipv6-addr-type
             +--ro oper-status?                  enumeration
-            +--ro dr?                           inet:ipv6-address
             +--ro querier?                      inet:ipv6-address
             +--ro joined-group*                 inet:ipv6-address {intf-join-group}?
             +--ro group* [address]
@@ -217,3 +216,14 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
                   +--ro expire?          uint32
                   +--ro up-time?         uint32
                   +--ro last-reporter?   inet:ipv6-address
+rpcs:
+   +---x clear-igmp-groups {rpc-clear-groups}?
+   |  +---w input
+   |     +---w routing-instance?   rt:routing-instance-ref
+   |     +---w interface?          leafref
+   |     +---w group?              inet:ipv4-address
+   +---x clear-mld-groups {rpc-clear-groups}?
+      +---w input
+         +---w routing-instance?   rt:routing-instance-ref
+         +---w interface?          leafref
+         +---w group?              inet:ipv4-address

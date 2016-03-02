@@ -42,7 +42,7 @@ module ietf-igmp-mld {
     "The module defines a collection of YANG definitions common for
     IGMP.";
   
-  revision 2016-02-08 {
+  revision 2016-03-01 {
     description
       "Initial revision.";
     reference
@@ -127,9 +127,42 @@ module ietf-igmp-mld {
       "Support per interface configuration.";
   }
 
+  feature rpc-clear-groups {
+    description 
+      "Support rpc's to clear groups.";
+  }
+
   /*
    * Typedefs
    */
+  typedef ssm-map-ipv4-addr-type {
+    type union {
+      type enumeration {
+        enum 'policy' {
+          description 
+          "Source address is specified in SSM map policy.";
+        }
+      }
+      type inet:ipv4-address;
+    }
+    description 
+      "Multicast source IP address type for SSM map.";
+  } // source-ipv4-addr-type
+
+  typedef ssm-map-ipv6-addr-type {
+    type union {
+      type enumeration {
+        enum 'policy' {
+          description 
+          "Source address is specified in SSM map policy.";
+        }
+      }
+      type inet:ipv6-address;
+    }
+    description 
+      "Multicast source IP address type for SSM map.";
+  } // source-ipv6-addr-type
+
   typedef source-ipv4-addr-type {
     type union {
       type enumeration {
@@ -275,53 +308,67 @@ module ietf-igmp-mld {
     }
   } // global-statistics-sent-received
 
-  grouping interface-config-attributes-mld {
-    description "Per interface igmp configuration for mld.";
+  grouping interfaces-config-attributes {
+    description 
+      "Configuration attributes applied to interfaces whose 
+       per interface attributes are not existing.";
     
-    uses interface-config-attributes-igmp-mld;
-
-    leaf-list join-group {
-      if-feature intf-join-group;
-      type inet:ipv6-address;
+    leaf last-member-query-interval {
+      type uint16 {
+        range "1..65535";
+      }
       description 
-        "The router joins this multicast group on the interface.";
+        "Last Member Query Interval, which may be tuned to modify the
+         leave latency of the network.";
+      reference "RFC3376. Sec. 8.8.";
     }
-
-    list ssm-map {
-      if-feature intf-ssm-map;
-      key "source-addr group-policy";
-      description "";
-      leaf source-addr {
-        type source-ipv6-addr-type;
-        description 
-          "Multicast source IP address.";
-      }
-      leaf group-policy {
-        type string;
-        description 
-          "Name of the access policy used to filter IGMP
-           membership.";
-      }
+    leaf max-groups-per-interface {
+      if-feature intf-max-groups;
+      type uint32;
+      description
+        "The maximum number of groups that IGMP can join.";
     }
-
-    list static-group {
-      if-feature intf-static-group;
-      key "group source-addr";
+    leaf query-interval {
+      type uint16;
+      units seconds;
+      default 125;
       description 
-        "A static multicast route, (*,G) or (S,G).";
-      
-      leaf group {
-        type inet:ipv6-address;
-        description 
-          "Multicast group IP address.";
-      }
-      leaf source-addr {
-        type source-ipv6-addr-type;
-        description 
-          "Multicast source IP address.";
-      }
+        "The Query Interval is the interval between General Queries
+         sent by the Querier.";
+      reference "RFC3376. Sec. 4.1.7, 8.2, 8.14.2.";
     }
-  } // interface-config-attributes-mld
+    leaf query-max-response-time {
+      type uint16;
+      units seconds;
+      description 
+        "Query maximum response time specifies the maximum time
+         allowed before sending a responding report.";
+      reference "RFC3376. Sec. 4.1.1, 8.3, 8.14.3.";
+    }
+    leaf require-router-alert {
+      if-feature intf-require-router-alert;
+      type boolean;
+      description
+        "";
+    }
+    leaf robustness-variable {
+      type uint8 {
+        range "2..7";
+      }
+      default 2;
+      description 
+        "Querier's Robustness Variable allows tuning for the expected
+         packet loss on a network.";
+      reference "RFC3376. Sec. 4.1.6, 8.1, 8.14.1.";
+    }
+    leaf version {
+      type uint8 {
+        range "1..3";
+      }
+      description "IGMP version.";
+      reference "RFC1112, RFC2236, RFC3376.";
+    }
+  } // interfaces-config-attributes
 
   grouping interface-config-attributes-igmp {
     description "Per interface igmp configuration for IGMP.";
@@ -340,7 +387,7 @@ module ietf-igmp-mld {
       key "source-addr group-policy";
       description "";
       leaf source-addr {
-        type source-ipv4-addr-type;
+        type ssm-map-ipv4-addr-type;
         description 
           "Multicast source IP address.";
       }
@@ -474,62 +521,53 @@ module ietf-igmp-mld {
     }
   } // interface-config-attributes-igmp-mld
 
-  grouping interface-state-attributes-mld {
-    description 
-      "Per interface state attributes for MLD.";
+  grouping interface-config-attributes-mld {
+    description "Per interface igmp configuration for mld.";
     
-    uses interface-state-attributes-igmp-mld;
+    uses interface-config-attributes-igmp-mld;
 
-    leaf dr {
-      type inet:ipv6-address;
-      description "";
-    }
-    leaf querier {
-      type inet:ipv6-address;
-      description "";
-    }
-    leaf-list joined-group {
+    leaf-list join-group {
       if-feature intf-join-group;
       type inet:ipv6-address;
       description 
-        "The routers that joined this multicast group.";
+        "The router joins this multicast group on the interface.";
     }
 
-    list group {
-      key "address";
+    list ssm-map {
+      if-feature intf-ssm-map;
+      key "source-addr group-policy";
       description "";
+      leaf source-addr {
+        type ssm-map-ipv6-addr-type;
+        description 
+          "Multicast source IP address.";
+      }
+      leaf group-policy {
+        type string;
+        description 
+          "Name of the access policy used to filter IGMP
+           membership.";
+      }
+    }
 
-      leaf address {
+    list static-group {
+      if-feature intf-static-group;
+      key "group source-addr";
+      description 
+        "A static multicast route, (*,G) or (S,G).";
+      
+      leaf group {
         type inet:ipv6-address;
         description 
-          "";
+          "Multicast group IP address.";
       }
-      uses interface-state-group-attributes-igmp-mld;
-      leaf-list host {
-        type inet:ipv6-address;
+      leaf source-addr {
+        type source-ipv6-addr-type;
         description 
-          "";
+          "Multicast source IP address.";
       }
-      leaf last-reporter {
-        type inet:ipv6-address;
-        description "";
-      }
-      list source {
-        key "address";
-        description "";
-
-        leaf address {
-          type inet:ipv6-address;
-          description "";
-        }
-        uses interface-state-source-attributes-igmp-mld;
-        leaf last-reporter {
-          type inet:ipv6-address;
-          description "";
-        }
-      } // list source
-    } // list group
-  } // interface-state-attributes-mld
+    }
+  } // interface-config-attributes-mld
 
   grouping interface-state-attributes-igmp {
     description 
@@ -607,6 +645,59 @@ module ietf-igmp-mld {
     }
   } // interface-config-attributes-igmp-mld
 
+  grouping interface-state-attributes-mld {
+    description 
+      "Per interface state attributes for MLD.";
+    
+    uses interface-state-attributes-igmp-mld;
+
+    leaf querier {
+      type inet:ipv6-address;
+      description "";
+    }
+    leaf-list joined-group {
+      if-feature intf-join-group;
+      type inet:ipv6-address;
+      description 
+        "The routers that joined this multicast group.";
+    }
+
+    list group {
+      key "address";
+      description "";
+
+      leaf address {
+        type inet:ipv6-address;
+        description 
+          "";
+      }
+      uses interface-state-group-attributes-igmp-mld;
+      leaf-list host {
+        type inet:ipv6-address;
+        description 
+          "";
+      }
+      leaf last-reporter {
+        type inet:ipv6-address;
+        description "";
+      }
+      list source {
+        key "address";
+        description "";
+
+        leaf address {
+          type inet:ipv6-address;
+          description "";
+        }
+        uses interface-state-source-attributes-igmp-mld;
+        leaf last-reporter {
+          type inet:ipv6-address;
+          description "";
+        }
+      } // list source
+    } // list group
+  } // interface-state-attributes-mld
+
   grouping interface-state-group-attributes-igmp-mld {
     description 
       "Per interface state attributes for both IGMP and MLD
@@ -657,68 +748,6 @@ module ietf-igmp-mld {
       description "";
     }
   } // interface-state-source-attributes-igmp-mld
-
-  grouping interfaces-config-attributes {
-    description 
-      "Configuration attributes applied to interfaces whose 
-       per interface attributes are not existing.";
-    
-    leaf last-member-query-interval {
-      type uint16 {
-        range "1..65535";
-      }
-      description 
-        "Last Member Query Interval, which may be tuned to modify the
-         leave latency of the network.";
-      reference "RFC3376. Sec. 8.8.";
-    }
-    leaf max-groups-per-interface {
-      if-feature intf-max-groups;
-      type uint32;
-      description
-        "The maximum number of groups that IGMP can join.";
-    }
-    leaf query-interval {
-      type uint16;
-      units seconds;
-      default 125;
-      description 
-        "The Query Interval is the interval between General Queries
-         sent by the Querier.";
-      reference "RFC3376. Sec. 4.1.7, 8.2, 8.14.2.";
-    }
-    leaf query-max-response-time {
-      type uint16;
-      units seconds;
-      description 
-        "Query maximum response time specifies the maximum time
-         allowed before sending a responding report.";
-      reference "RFC3376. Sec. 4.1.1, 8.3, 8.14.3.";
-    }
-    leaf require-router-alert {
-      if-feature intf-require-router-alert;
-      type boolean;
-      description
-        "";
-    }
-    leaf robustness-variable {
-      type uint8 {
-        range "2..7";
-      }
-      default 2;
-      description 
-        "Querier's Robustness Variable allows tuning for the expected
-         packet loss on a network.";
-      reference "RFC3376. Sec. 4.1.6, 8.1, 8.14.1.";
-    }
-    leaf version {
-      type uint8 {
-        range "1..3";
-      }
-      description "IGMP version.";
-      reference "RFC1112, RFC2236, RFC3376.";
-    }
-  } // interfaces-config-attributes
 
   /*
    * Configuration data nodes
@@ -905,6 +934,83 @@ module ietf-igmp-mld {
   /*
    * RPCs
    */
+  rpc clear-igmp-groups {
+    if-feature rpc-clear-groups;
+    description
+      "Clears the specified IGMP cache tables.";
+    
+    input {
+      leaf routing-instance {
+        type rt:routing-instance-ref;
+        description
+          "Routing instance name identifying a specific routing
+           instance.
+           This leaf is optional for the rpc. 
+           If it is specified, the rpc will clear groups in the
+           specified routing instance;
+           if it is not specified, the rpc will clear all groups in
+           all routing instances.";
+      }
+      leaf interface {
+        type leafref {
+          path "/rt:routing/rt:routing-instance"
+            + "[rt:name=current()/../routing-instance]/"
+            + "rt:routing-protocols/igmp/interfaces/interface/"
+            + "interface";
+        }
+        description
+          "Name of the IGMP interface.
+           If it is not specified, groups from all interfaces are 
+           cleared.";
+      }
+      leaf group {
+        type inet:ipv4-address;
+        description 
+          "Multicast group IP address.
+           If it is not specified, all IGMP group tables are 
+           cleared.";
+      }
+    }
+  } // rpc clear-igmp-groups
+
+  rpc clear-mld-groups {
+    if-feature rpc-clear-groups;
+    description
+      "Clears the specified MLD cache tables.";
+    
+    input {
+      leaf routing-instance {
+        type rt:routing-instance-ref;
+        description
+          "Routing instance name identifying a specific routing
+           instance.
+           This leaf is optional for the rpc. 
+           If it is specified, the rpc will clear groups in the
+           specified routing instance;
+           if it is not specified, the rpc will clear all groups in
+           all routing instances.";
+      }
+      leaf interface {
+        type leafref {
+          path "/rt:routing/rt:routing-instance"
+            + "[rt:name=current()/../routing-instance]/"
+            + "rt:routing-protocols/mld/interfaces/interface/"
+            + "interface";
+        }
+        description
+          "Name of the MLD interface.
+           If it is not specified, groups from all interfaces are 
+           cleared.";
+      }
+      leaf group {
+        type inet:ipv4-address;
+        description 
+          "Multicast group IP address.
+           If it is not specified, all MLD group tables are 
+           cleared.";
+      }
+    }
+  } // rpc clear-mld-groups
 
   /*
    * Notifications
