@@ -1,5 +1,5 @@
 module: ietf-igmp-mld
-augment /rt:routing/rt:routing-instance/rt:routing-protocols:
+augment /rt:routing/rt:routing-protocols:
    +--rw igmp
    |  +--rw global
    |  |  +--rw enable?        boolean {global-admin-enable}?
@@ -70,7 +70,7 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
             +--rw static-group* [group source-addr] {intf-static-group}?
                +--rw group          inet:ipv6-address
                +--rw source-addr    source-ipv6-addr-type
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
+augment /rt:routing-state/rt:routing-protocols:
    +--ro igmp
    |  +--ro global
    |  |  +--ro enable?          boolean {global-admin-enable}?
@@ -219,11 +219,9 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
 rpcs:
    +---x clear-igmp-groups {rpc-clear-groups}?
    |  +---w input
-   |     +---w routing-instance?   rt:routing-instance-ref
-   |     +---w interface?          leafref
-   |     +---w group?              inet:ipv4-address
+   |     +---w interface?   leafref
+   |     +---w group?       inet:ipv4-address
    +---x clear-mld-groups {rpc-clear-groups}?
       +---w input
-         +---w routing-instance?   rt:routing-instance-ref
-         +---w interface?          leafref
-         +---w group?              inet:ipv4-address
+         +---w interface?   leafref
+         +---w group?       inet:ipv4-address

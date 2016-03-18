@@ -42,7 +42,7 @@ module ietf-igmp-mld {
     "The module defines a collection of YANG definitions common for
     IGMP.";
   
-  revision 2016-03-01 {
+  revision 2016-03-17 {
     description
       "Initial revision.";
     reference
@@ -59,7 +59,7 @@ module ietf-igmp-mld {
 
   feature global-interface-config {
     description
-      "Support global configuration applied to all interfaces.";
+      "Support global configuration applied for all interfaces.";
   }
 
   feature global-max-entries {
@@ -371,7 +371,7 @@ module ietf-igmp-mld {
   } // interfaces-config-attributes
 
   grouping interface-config-attributes-igmp {
-    description "Per interface igmp configuration for IGMP.";
+    description "Per interface configuration for IGMP.";
     
     uses interface-config-attributes-igmp-mld;
 
@@ -522,7 +522,7 @@ module ietf-igmp-mld {
   } // interface-config-attributes-igmp-mld
 
   grouping interface-config-attributes-mld {
-    description "Per interface igmp configuration for mld.";
+    description "Per interface configuration for mld.";
     
     uses interface-config-attributes-igmp-mld;
 
@@ -752,8 +752,7 @@ module ietf-igmp-mld {
   /*
    * Configuration data nodes
    */
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols" {
+  augment "/rt:routing/rt:routing-protocols" {
     description 
       "IGMP and MLD augmentation to routing instance configuration.";
 
@@ -841,8 +840,7 @@ module ietf-igmp-mld {
   /*
    * Operational state data nodes
    */
-  augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols" {
+  augment "/rt:routing-state/rt:routing-protocols" {
     description
       "IGMP and MLD augmentation to routing instance state.";
 
@@ -940,23 +938,10 @@ module ietf-igmp-mld {
       "Clears the specified IGMP cache tables.";
     
     input {
-      leaf routing-instance {
-        type rt:routing-instance-ref;
-        description
-          "Routing instance name identifying a specific routing
-           instance.
-           This leaf is optional for the rpc. 
-           If it is specified, the rpc will clear groups in the
-           specified routing instance;
-           if it is not specified, the rpc will clear all groups in
-           all routing instances.";
-      }
       leaf interface {
         type leafref {
-          path "/rt:routing/rt:routing-instance"
-            + "[rt:name=current()/../routing-instance]/"
-            + "rt:routing-protocols/igmp/interfaces/interface/"
-            + "interface";
+          path "/rt:routing/rt:routing-protocols/igmp/interfaces/"
+            + "interface/interface";
         }
         description
           "Name of the IGMP interface.
@@ -979,23 +964,10 @@ module ietf-igmp-mld {
       "Clears the specified MLD cache tables.";
     
     input {
-      leaf routing-instance {
-        type rt:routing-instance-ref;
-        description
-          "Routing instance name identifying a specific routing
-           instance.
-           This leaf is optional for the rpc. 
-           If it is specified, the rpc will clear groups in the
-           specified routing instance;
-           if it is not specified, the rpc will clear all groups in
-           all routing instances.";
-      }
       leaf interface {
         type leafref {
-          path "/rt:routing/rt:routing-instance"
-            + "[rt:name=current()/../routing-instance]/"
-            + "rt:routing-protocols/mld/interfaces/interface/"
-            + "interface";
+          path "/rt:routing/rt:routing-protocols/mld/interfaces/"
+            + "interface/interface";
         }
         description
           "Name of the MLD interface.
