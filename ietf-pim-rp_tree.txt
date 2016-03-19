@@ -1,6 +1,5 @@
 module: ietf-pim-rp
-augment /rt:routing/rt:routing-instance/rt:routing-protocols/pim-base:pim/
-pim-base:address-family:
+augment /rt:routing/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--rw rp
       +--rw static-rp
       |  +--rw ipv4-rp* [ipv4-addr]
@@ -30,8 +29,7 @@ pim-base:address-family:
             +--rw ipv6-address    inet:ipv6-address
             +--rw policy?         string
             +--rw mode?           identityref
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols/
-pim-base:pim/pim-base:address-family:
+augment /rt:routing-state/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--ro rp
       +--ro static-rp
       |  +--ro ipv4-rp* [ipv4-addr]
@@ -105,11 +103,10 @@ pim-base:pim/pim-base:address-family:
             +--ro expire?    pim-base:timer-value
 notifications:
    +---n pim-rp-event
-      +--ro event-type?                   rp-event-type
-      +--ro routing-instance-state-ref?   rt:routing-instance-state-ref
-      +--ro instance-af-state-ref?        leafref
-      +--ro group?                        inet:ip-address
-      +--ro rp-address?                   inet:ip-address
-      +--ro is-rpt?                       boolean
-      +--ro mode?                         pim-base:pim-mode
-      +--ro message-origin?               inet:ip-address
+      +--ro event-type?              rp-event-type
+      +--ro instance-af-state-ref?   leafref
+      +--ro group?                   inet:ip-address
+      +--ro rp-address?              inet:ip-address
+      +--ro is-rpt?                  boolean
+      +--ro mode?                    pim-base:pim-mode
+      +--ro message-origin?          inet:ip-address

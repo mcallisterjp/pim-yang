@@ -1,6 +1,3 @@
-<![CDATA[
-<CODE BEGINS> file "ietf-pim-bidir.yang"
-
 module ietf-pim-bidir {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-bidir";
   // replace with IANA namespace when assigned
@@ -9,15 +6,15 @@ module ietf-pim-bidir {
   import ietf-inet-types {
     prefix "inet";
   }
-
+  
   import ietf-interfaces {
     prefix "if";
   }
-
+  
   import ietf-routing {
     prefix "rt";
   }
-
+  
   import ietf-pim-base {
     prefix "pim-base";
   }
@@ -38,14 +35,14 @@ module ietf-pim-bidir {
 
      WG Chair: Mike McBride
                <mailto:mmcbride7@gmail.com>
-
+ 
      Editors:   ";
 
   description
     "The YANG module defines a BIDIR (Bidirectional) mode PIM
     model.";
-
-  revision 2015-12-22 {
+  
+  revision 2016-03-18 {
     description
       "Initial revision.";
     reference
@@ -56,10 +53,10 @@ module ietf-pim-bidir {
    * Features
    */
   feature intf-df-election {
-    description
+    description 
       "Support configuration of interface DF election.";
   }
-
+  
   /*
    * Identities
    */
@@ -114,7 +111,7 @@ module ietf-pim-bidir {
     description
       "Gouping that contains BIDIR attributes for static RP.";
     container bidir {
-      presence
+      presence 
         "Indicate the support of BIDIR mode.";
       description
         "PIM BIDIR configuration data.";
@@ -127,8 +124,7 @@ module ietf-pim-bidir {
    * Configuration data nodes
    */
 
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing/rt:routing-protocols/pim-base:pim/"
     + "pim-base:address-family" {
     description "PIM BIDIR augmentation.";
 
@@ -138,8 +134,7 @@ module ietf-pim-bidir {
     } // bidir
   } // augment
 
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing/rt:routing-protocols/pim-base:pim/"
     + "pim-base:interfaces/pim-base:interface/"
     + "pim-base:address-family" {
     description "PIM BIDIR augmentation.";
@@ -164,13 +159,12 @@ module ietf-pim-bidir {
         leaf offer-multipler {
           type uint8;
           description "Offer multipler";
-        }
+        }        
       } // df-election
     } // bidir
   } // augment
 
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing/rt:routing-protocols/pim-base:pim/"
     + "pim-base:address-family/pim-rp:rp/"
     + "pim-rp:static-rp/pim-rp:ipv4-rp" {
     description "PIM BIDIR augmentation.";
@@ -178,8 +172,7 @@ module ietf-pim-bidir {
     uses static-rp-bidir-container;
   } // augment
 
-  augment "/rt:routing/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing/rt:routing-protocols/pim-base:pim/"
     + "pim-base:address-family/pim-rp:rp/"
     + "pim-rp:static-rp/pim-rp:ipv6-rp" {
     description "PIM BIDIR augmentation.";
@@ -191,8 +184,7 @@ module ietf-pim-bidir {
    * Operational state data nodes
    */
 
-  augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing-state/rt:routing-protocols/pim-base:pim/"
     + "pim-base:address-family" {
     description
       "PIM BIDIR state.";
@@ -203,8 +195,7 @@ module ietf-pim-bidir {
     } // bidir
   } // augment
 
-  augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing-state/rt:routing-protocols/pim-base:pim/"
     + "pim-base:interfaces/pim-base:interface/"
     + "pim-base:address-family" {
     description "PIM BIDIR augmentation.";
@@ -229,13 +220,12 @@ module ietf-pim-bidir {
         leaf offer-multipler {
           type uint8;
           description "Offer multipler";
-        }
+        }        
       } // df-election
     } // bidir
   } // augment
 
-  augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing-state/rt:routing-protocols/pim-base:pim/"
     + "pim-base:address-family/pim-rp:rp/"
     + "pim-rp:static-rp/pim-rp:ipv4-rp" {
     description "PIM BIDIR augmentation.";
@@ -243,8 +233,7 @@ module ietf-pim-bidir {
     uses static-rp-bidir-container;
   } // augment
 
-  augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing-state/rt:routing-protocols/pim-base:pim/"
     + "pim-base:address-family/pim-rp:rp/"
     + "pim-rp:static-rp/pim-rp:ipv6-rp" {
     description "PIM BIDIR augmentation.";
@@ -252,8 +241,7 @@ module ietf-pim-bidir {
     uses static-rp-bidir-container;
   } // augment
 
-  augment "/rt:routing-state/rt:routing-instance/"
-    + "rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing-state/rt:routing-protocols/pim-base:pim/"
     + "pim-base:address-family/pim-rp:rp" {
     description "PIM BIDIR augmentation.";
 
@@ -269,11 +257,11 @@ module ietf-pim-bidir {
               "Only applicable to ipv4 address family.";
           }
           key "ipv4-addr";
-          description
+          description 
             "A list of IPv4 RP addresses.";
           leaf ipv4-addr {
             type inet:ipv4-address;
-            description
+            description 
               "The address of the RP.";
           }
         } // ipv4-rp
@@ -283,16 +271,16 @@ module ietf-pim-bidir {
               "Only applicable to ipv6 address family.";
           }
           key "ipv6-addr";
-          description
+          description 
             "A list of IPv6 RP addresses.";
           leaf ipv6-addr {
             type inet:ipv6-address;
-            description
+            description 
               "The address of the RP.";
           }
         } // ipv6-rp
       } // df-election
-
+      
       container interface-df-election {
         description
           "Interface DF election data.";
@@ -302,16 +290,16 @@ module ietf-pim-bidir {
               "Only applicable to ipv4 address family.";
           }
           key "ipv4-addr interface-name";
-          description
+          description 
             "A list of IPv4 RP addresses.";
           leaf ipv4-addr {
             type inet:ipv4-address;
-            description
+            description 
               "The address of the RP.";
           }
           leaf interface-name {
             type if:interface-ref;
-            description
+            description 
               "The address of the RP.";
           }
           leaf df-address {
@@ -333,16 +321,16 @@ module ietf-pim-bidir {
               "Only applicable to ipv6 address family.";
           }
           key "ipv6-addr interface-name";
-          description
+          description 
             "A list of IPv6 RP addresses.";
           leaf ipv6-addr {
             type inet:ipv6-address;
-            description
+            description 
               "The address of the RP.";
           }
           leaf interface-name {
             type if:interface-ref;
-            description
+            description 
               "The address of the RP.";
           }
           leaf df-address {
@@ -357,7 +345,7 @@ module ietf-pim-bidir {
             description
               "Interface state.";
           }
-        } // ipv6-rp
+        } // ipv6-rp        
       } // interface-df-election
     }
   } // augment
@@ -370,6 +358,3 @@ module ietf-pim-bidir {
    * Notifications
    */
 }
-
-<CODE ENDS>
-]]>

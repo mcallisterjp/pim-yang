@@ -1,5 +1,5 @@
 module: ietf-pim-base
-augment /rt:routing/rt:routing-instance/rt:routing-protocols:
+augment /rt:routing/rt:routing-protocols:
    +--rw pim
       +--rw graceful-restart
       |  +--rw enabled?    boolean
@@ -38,7 +38,7 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
                |     +--rw jp-multipler?        uint8
                +--rw propagation-delay?   uint16 {intf-propagation-delay}?
                +--rw override-interval?   uint16 {intf-override-interval}?
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
+augment /rt:routing-state/rt:routing-protocols:
    +--ro pim
       +--ro address-family* [address-family]
       |  +--ro address-family        identityref
@@ -162,17 +162,15 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
                   +--ro up-time?       uint32
 notifications:
    +---n pim-neighbor-event
-   |  +--ro event-type?                   neighbor-event-type
-   |  +--ro routing-instance-state-ref?   rt:routing-instance-state-ref
-   |  +--ro interface-state-ref?          leafref
-   |  +--ro interface-af-state-ref?       leafref
-   |  +--ro neighbor-ipv4-state-ref?      leafref
-   |  +--ro neighbor-ipv6-state-ref?      leafref
-   |  +--ro up-time?                      uint32
+   |  +--ro event-type?                neighbor-event-type
+   |  +--ro interface-state-ref?       leafref
+   |  +--ro interface-af-state-ref?    leafref
+   |  +--ro neighbor-ipv4-state-ref?   leafref
+   |  +--ro neighbor-ipv6-state-ref?   leafref
+   |  +--ro up-time?                   uint32
    +---n pim-interface-event
-      +--ro event-type?                   interface-event-type
-      +--ro routing-instance-state-ref?   rt:routing-instance-state-ref
-      +--ro interface-state-ref?          leafref
+      +--ro event-type?            interface-event-type
+      +--ro interface-state-ref?   leafref
       +--ro ipv4
       |  +--ro address*   inet:ipv4-address
       |  +--ro dr-addr?   inet:ipv4-address
