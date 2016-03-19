@@ -1,6 +1,5 @@
-<![CDATA[
 module: ietf-pim-base
-augment /rt:routing/rt:routing-instance/rt:routing-protocols:
+augment /rt:routing/rt:routing-protocols:
    +--rw pim
       +--rw graceful-restart
       |  +--rw enabled?    boolean
@@ -30,12 +29,12 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
       |  |  |        +--rw pim-sm:override?      boolean {static-rp-override}?
       |  |  +--rw pim-rp:bsr {bsr}?
       |  |     +--rw pim-rp:bsr-candidate!
-      |  |     |  +--rw (interface-or-address)?
-      |  |     |  |  +--:(interface) {candidate-interface}?
+      |  |     |  +--rw (pim-rp:interface-or-address)?
+      |  |     |  |  +--:(pim-rp:interface) {candidate-interface}?
       |  |     |  |  |  +--rw pim-rp:interface           if:interface-ref
-      |  |     |  |  +--:(ipv4-address) {candidate-ipv4}?
+      |  |     |  |  +--:(pim-rp:ipv4-address) {candidate-ipv4}?
       |  |     |  |  |  +--rw pim-rp:ipv4-address        inet:ipv4-address
-      |  |     |  |  +--:(ipv6-address) {candidate-ipv6}?
+      |  |     |  |  +--:(pim-rp:ipv6-address) {candidate-ipv6}?
       |  |     |  |     +--rw pim-rp:ipv6-address        inet:ipv6-address
       |  |     |  +--rw pim-rp:hash-mask-length    uint8
       |  |     |  +--rw pim-rp:priority            uint8
@@ -74,65 +73,74 @@ augment /rt:routing/rt:routing-instance/rt:routing-protocols:
             +--rw interface         if:interface-ref
             +--rw address-family* [address-family]
                +--rw address-family       identityref
+               +--rw bfd
+               |  +--rw enabled?                    boolean
+               |  +--rw local-multiplier?           bfd-multiplier
+               |  +--rw (interval-config-type)?
+               |     +--:(tx-rx-intervals)
+               |     |  +--rw desired-min-tx-interval     uint32
+               |     |  +--rw required-min-rx-interval    uint32
+               |     +--:(single-interval)
+               |        +--rw min-interval                uint32
                +--rw dr-priority?         uint32 {intf-dr-priority}?
-               +--rw hello-interval?      uint16 {intf-hello-interval}?
+               +--rw hello-interval?      timer-value {intf-hello-interval}?
                +--rw (hello-holdtime-or-multipler)?
                |  +--:(holdtime) {intf-hello-holdtime}?
-               |  |  +--rw hello-holdtime?      uint16
+               |  |  +--rw hello-holdtime?      timer-value
                |  +--:(multipler) {intf-hello-multipler}?
                |     +--rw hello-multipler?     uint8
-               +--rw jp-interval?         uint16 {intf-jp-interval}?
+               +--rw jp-interval?         timer-value {intf-jp-interval}?
                +--rw (jp-holdtime-or-multipler)?
                |  +--:(holdtime) {intf-jp-holdtime}?
-               |  |  +--rw jp-holdtime?         uint16
+               |  |  +--rw jp-holdtime?         timer-value
                |  +--:(multipler) {intf-jp-multipler}?
                |     +--rw jp-multipler?        uint8
                +--rw propagation-delay?   uint16 {intf-propagation-delay}?
                +--rw override-interval?   uint16 {intf-override-interval}?
                +--rw pim-bidir:bidir!
                |  +--rw pim-bidir:df-election {intf-df-election}?
-               |     +--rw pim-bidir:offer-interval?     uint32
-               |     +--rw pim-bidir:backoff-interval?   uint32
+               |     +--rw pim-bidir:offer-interval?     pim-base:timer-value
+               |     +--rw pim-bidir:backoff-interval?   pim-base:timer-value
                |     +--rw pim-bidir:offer-multipler?    uint8
                +--rw pim-dm:dm!
                +--rw pim-sm:sm!
                   +--rw pim-sm:passive?   empty
-augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
+augment /rt:routing-state/rt:routing-protocols:
    +--ro pim
       +--ro address-family* [address-family]
       |  +--ro address-family        identityref
       |  +--ro statistics
       |  |  +--ro discontinuity-time?   yang:date-and-time
       |  |  +--ro error
-      |  |  |  +--ro assert?                       yang:counter32
-      |  |  |  +--ro bsr?                          yang:counter32
-      |  |  |  +--ro candidate-rp-advertisement?   yang:counter32
-      |  |  |  +--ro hello?                        yang:counter32
-      |  |  |  +--ro join-prune?                   yang:counter32
-      |  |  |  +--ro register?                     yang:counter32
-      |  |  |  +--ro register-stop?                yang:counter32
-      |  |  |  +--ro state-refresh?                yang:counter32
+      |  |  |  +--ro assert?                       yang:counter64
+      |  |  |  +--ro bsr?                          yang:counter64
+      |  |  |  +--ro candidate-rp-advertisement?   yang:counter64
+      |  |  |  +--ro hello?                        yang:counter64
+      |  |  |  +--ro join-prune?                   yang:counter64
+      |  |  |  +--ro register?                     yang:counter64
+      |  |  |  +--ro register-stop?                yang:counter64
+      |  |  |  +--ro state-refresh?                yang:counter64
       |  |  +--ro queue
       |  |  |  +--ro size?       uint32
       |  |  |  +--ro overflow?   yang:counter32
       |  |  +--ro received
-      |  |  |  +--ro assert?                       yang:counter32
-      |  |  |  +--ro bsr?                          yang:counter32
-      |  |  |  +--ro candidate-rp-advertisement?   yang:counter32
-      |  |  |  +--ro hello?                        yang:counter32
-      |  |  |  +--ro join-prune?                   yang:counter32
-      |  |  |  +--ro register?                     yang:counter32
-      |  |  |  +--ro register-stop?                yang:counter32
-      |  |  |  +--ro state-refresh?                yang:counter32
+      |  |  |  +--ro assert?                       yang:counter64
+      |  |  |  +--ro bsr?                          yang:counter64
+      |  |  |  +--ro candidate-rp-advertisement?   yang:counter64
+      |  |  |  +--ro hello?                        yang:counter64
+      |  |  |  +--ro join-prune?                   yang:counter64
+      |  |  |  +--ro register?                     yang:counter64
+      |  |  |  +--ro register-stop?                yang:counter64
+      |  |  |  +--ro state-refresh?                yang:counter64
       |  |  +--ro sent
-      |  |     +--ro assert?                       yang:counter32
-      |  |     +--ro bsr?                          yang:counter32
-      |  |     +--ro candidate-rp-advertisement?   yang:counter32
-      |  |     +--ro hello?                        yang:counter32
-      |  |     +--ro join-prune?                   yang:counter32
-      |  |     +--ro register?                     yang:counter32
-      |  |     +--ro register-stop?                yang:counter32
-      |  |     +--ro state-refresh?                yang:counter32
+      |  |     +--ro assert?                       yang:counter64
+      |  |     +--ro bsr?                          yang:counter64
+      |  |     +--ro candidate-rp-advertisement?   yang:counter64
+      |  |     +--ro hello?                        yang:counter64
+      |  |     +--ro join-prune?                   yang:counter64
+      |  |     +--ro register?                     yang:counter64
+      |  |     +--ro register-stop?                yang:counter64
+      |  |     +--ro state-refresh?                yang:counter64
       |  +--ro topology-tree-info
       |  |  +--ro ipv4-route* [group source-addr is-rpt]
       |  |  |  +--ro group                 inet:ipv4-address
@@ -148,8 +156,8 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |  |  |  +--ro up-time?              uint32
       |  |  |  +--ro outgoing-interface* [name]
       |  |  |     +--ro name        if:interface-ref
-      |  |  |     +--ro expire?     yang:timeticks
-      |  |  |     +--ro up-time?    yang:timeticks
+      |  |  |     +--ro expire?     timer-value
+      |  |  |     +--ro up-time?    uint32
       |  |  |     +--ro jp-state?   enumeration
       |  |  +--ro ipv6-route* [group source-addr is-rpt]
       |  |     +--ro group                 inet:ipv6-address
@@ -165,18 +173,35 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |  |     +--ro up-time?              uint32
       |  |     +--ro outgoing-interface* [name]
       |  |        +--ro name        if:interface-ref
-      |  |        +--ro expire?     yang:timeticks
-      |  |        +--ro up-time?    yang:timeticks
+      |  |        +--ro expire?     timer-value
+      |  |        +--ro up-time?    uint32
       |  |        +--ro jp-state?   enumeration
       |  +--ro pim-rp:rp
+      |  |  +--ro pim-rp:static-rp
+      |  |  |  +--ro pim-rp:ipv4-rp* [ipv4-addr]
+      |  |  |  |  +--ro pim-rp:ipv4-addr    inet:ipv4-address
+      |  |  |  |  +--ro pim-bidir:bidir!
+      |  |  |  |  |  +--ro pim-bidir:policy-name?   string
+      |  |  |  |  |  +--ro pim-bidir:override?      boolean {static-rp-override}?
+      |  |  |  |  +--ro pim-sm:sm!
+      |  |  |  |     +--ro pim-sm:policy-name?   string
+      |  |  |  |     +--ro pim-sm:override?      boolean {static-rp-override}?
+      |  |  |  +--ro pim-rp:ipv6-rp* [ipv6-addr]
+      |  |  |     +--ro pim-rp:ipv6-addr    inet:ipv6-address
+      |  |  |     +--ro pim-bidir:bidir!
+      |  |  |     |  +--ro pim-bidir:policy-name?   string
+      |  |  |     |  +--ro pim-bidir:override?      boolean {static-rp-override}?
+      |  |  |     +--ro pim-sm:sm!
+      |  |  |        +--ro pim-sm:policy-name?   string
+      |  |  |        +--ro pim-sm:override?      boolean {static-rp-override}?
       |  |  +--ro pim-rp:bsr {bsr}?
       |  |  |  +--ro pim-rp:bsr-candidate!
-      |  |  |  |  +--ro (interface-or-address)?
-      |  |  |  |  |  +--:(interface) {candidate-interface}?
+      |  |  |  |  +--ro (pim-rp:interface-or-address)?
+      |  |  |  |  |  +--:(pim-rp:interface) {candidate-interface}?
       |  |  |  |  |  |  +--ro pim-rp:interface           if:interface-ref
-      |  |  |  |  |  +--:(ipv4-address) {candidate-ipv4}?
+      |  |  |  |  |  +--:(pim-rp:ipv4-address) {candidate-ipv4}?
       |  |  |  |  |  |  +--ro pim-rp:ipv4-address        inet:ipv4-address
-      |  |  |  |  |  +--:(ipv6-address) {candidate-ipv6}?
+      |  |  |  |  |  +--:(pim-rp:ipv6-address) {candidate-ipv6}?
       |  |  |  |  |     +--ro pim-rp:ipv6-address        inet:ipv6-address
       |  |  |  |  +--ro pim-rp:hash-mask-length    uint8
       |  |  |  |  +--ro pim-rp:priority            uint8
@@ -197,10 +222,10 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |  |  |  |  +--ro pim-rp:hash-mask-length?   uint8
       |  |  |  |  +--ro pim-rp:priority?           uint8
       |  |  |  |  +--ro pim-rp:up-time?            uint32
-      |  |  |  +--ro (election-state)? {bsr-election-state}?
-      |  |  |  |  +--:(candidate)
+      |  |  |  +--ro (pim-rp:election-state)? {bsr-election-state}?
+      |  |  |  |  +--:(pim-rp:candidate)
       |  |  |  |  |  +--ro pim-rp:candidate-bsr-state?               enumeration
-      |  |  |  |  +--:(non-candidate)
+      |  |  |  |  +--:(pim-rp:non-candidate)
       |  |  |  |     +--ro pim-rp:non-candidate-bsr-state?           enumeration
       |  |  |  +--ro pim-rp:bsr-next-bootstrap?                uint16
       |  |  |  +--ro pim-rp:rp
@@ -209,52 +234,91 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
       |  |  |  |  +--ro pim-rp:up-time?        uint32
       |  |  |  +--ro pim-rp:rp-candidate-next-advertisement?   uint16
       |  |  +--ro pim-rp:rp-list
-      |  |  |  +--ro pim-rp:ipv4-rp* [ipv4-addr]
+      |  |  |  +--ro pim-rp:ipv4-rp* [ipv4-addr mode]
       |  |  |  |  +--ro pim-rp:ipv4-addr           inet:ipv4-address
+      |  |  |  |  +--ro pim-rp:mode                identityref
       |  |  |  |  +--ro pim-rp:info-source-addr?   inet:ipv4-address
-      |  |  |  |  +--ro pim-rp:info-source-type?   enumeration
+      |  |  |  |  +--ro pim-rp:info-source-type?   identityref
       |  |  |  |  +--ro pim-rp:up-time?            uint32
-      |  |  |  |  +--ro pim-rp:expire?             uint16
-      |  |  |  +--ro pim-rp:ipv6-rp* [ipv6-addr]
+      |  |  |  |  +--ro pim-rp:expire?             pim-base:timer-value
+      |  |  |  +--ro pim-rp:ipv6-rp* [ipv6-addr mode]
       |  |  |     +--ro pim-rp:ipv6-addr           inet:ipv6-address
+      |  |  |     +--ro pim-rp:mode                identityref
       |  |  |     +--ro pim-rp:info-source-addr?   inet:ipv6-address
-      |  |  |     +--ro pim-rp:info-source-type?   enumeration
+      |  |  |     +--ro pim-rp:info-source-type?   identityref
       |  |  |     +--ro pim-rp:up-time?            uint32
-      |  |  |     +--ro pim-rp:expire?             uint16
+      |  |  |     +--ro pim-rp:expire?             pim-base:timer-value
       |  |  +--ro pim-rp:rp-mappings
-      |  |     +--ro pim-rp:ipv4-rp* [group rp-addr]
-      |  |     |  +--ro pim-rp:group               inet:ipv4-prefix
-      |  |     |  +--ro pim-rp:rp-addr             inet:ipv4-address
-      |  |     |  +--ro pim-rp:info-source-addr?   inet:ipv4-address
-      |  |     |  +--ro pim-rp:info-source-type?   enumeration
-      |  |     |  +--ro pim-rp:up-time?            uint32
-      |  |     |  +--ro pim-rp:expire?             uint16
-      |  |     +--ro pim-rp:ipv6-rp* [group rp-addr]
-      |  |        +--ro pim-rp:group               inet:ipv6-prefix
-      |  |        +--ro pim-rp:rp-addr             inet:ipv6-address
-      |  |        +--ro pim-rp:info-source-addr?   inet:ipv6-address
-      |  |        +--ro pim-rp:info-source-type?   enumeration
-      |  |        +--ro pim-rp:up-time?            uint32
-      |  |        +--ro pim-rp:expire?             uint16
+      |  |  |  +--ro pim-rp:ipv4-rp* [group rp-addr]
+      |  |  |  |  +--ro pim-rp:group      inet:ipv4-prefix
+      |  |  |  |  +--ro pim-rp:rp-addr    inet:ipv4-address
+      |  |  |  |  +--ro pim-rp:up-time?   uint32
+      |  |  |  |  +--ro pim-rp:expire?    pim-base:timer-value
+      |  |  |  +--ro pim-rp:ipv6-rp* [group rp-addr]
+      |  |  |     +--ro pim-rp:group      inet:ipv6-prefix
+      |  |  |     +--ro pim-rp:rp-addr    inet:ipv6-address
+      |  |  |     +--ro pim-rp:up-time?   uint32
+      |  |  |     +--ro pim-rp:expire?    pim-base:timer-value
+      |  |  +--ro pim-bidir:bidir
+      |  |     +--ro pim-bidir:df-election
+      |  |     |  +--ro pim-bidir:ipv4-rp* [ipv4-addr]
+      |  |     |  |  +--ro pim-bidir:ipv4-addr    inet:ipv4-address
+      |  |     |  +--ro pim-bidir:ipv6-rp* [ipv6-addr]
+      |  |     |     +--ro pim-bidir:ipv6-addr    inet:ipv6-address
+      |  |     +--ro pim-bidir:interface-df-election
+      |  |        +--ro pim-bidir:ipv4-rp* [ipv4-addr interface-name]
+      |  |        |  +--ro pim-bidir:ipv4-addr          inet:ipv4-address
+      |  |        |  +--ro pim-bidir:interface-name     if:interface-ref
+      |  |        |  +--ro pim-bidir:df-address?        inet:ipv4-address
+      |  |        |  +--ro pim-bidir:interface-state?   identityref
+      |  |        +--ro pim-bidir:ipv6-rp* [ipv6-addr interface-name]
+      |  |           +--ro pim-bidir:ipv6-addr          inet:ipv6-address
+      |  |           +--ro pim-bidir:interface-name     if:interface-ref
+      |  |           +--ro pim-bidir:df-address?        inet:ipv6-address
+      |  |           +--ro pim-bidir:interface-state?   identityref
       |  +--ro pim-bidir:bidir
       |  +--ro pim-dm:dm
       |  +--ro pim-sm:sm
+      |     +--ro pim-sm:asm
+      |     |  +--ro pim-sm:anycast-rp!
+      |     |  |  +--ro pim-sm:ipv4
+      |     |  |  |  +--ro pim-sm:ipv4-anycast-rp* [anycast-addr rp-addr]
+      |     |  |  |     +--ro pim-sm:anycast-addr    inet:ipv4-address
+      |     |  |  |     +--ro pim-sm:rp-addr         inet:ipv4-address
+      |     |  |  +--ro pim-sm:ipv6
+      |     |  |     +--ro pim-sm:ipv6-anycast-rip* [anycast-addr rp-addr]
+      |     |  |        +--ro pim-sm:anycast-addr    inet:ipv6-address
+      |     |  |        +--ro pim-sm:rp-addr         inet:ipv6-address
+      |     |  +--ro pim-sm:spt-switch
+      |     |     +--ro pim-sm:infinity! {spt-switch-infinity}?
+      |     |        +--ro pim-sm:policy-name?   string {spt-switch-policy}?
+      |     +--ro pim-sm:ssm!
+      |        +--ro pim-sm:range-poligy?   string
       +--ro interfaces
          +--ro interface* [interface]
             +--ro interface         if:interface-ref
             +--ro address-family* [address-family]
                +--ro address-family       identityref
+               +--ro bfd
+               |  +--ro enabled?                    boolean
+               |  +--ro local-multiplier?           bfd-multiplier
+               |  +--ro (interval-config-type)?
+               |     +--:(tx-rx-intervals)
+               |     |  +--ro desired-min-tx-interval     uint32
+               |     |  +--ro required-min-rx-interval    uint32
+               |     +--:(single-interval)
+               |        +--ro min-interval                uint32
                +--ro dr-priority?         uint32 {intf-dr-priority}?
-               +--ro hello-interval?      uint16 {intf-hello-interval}?
+               +--ro hello-interval?      timer-value {intf-hello-interval}?
                +--ro (hello-holdtime-or-multipler)?
                |  +--:(holdtime) {intf-hello-holdtime}?
-               |  |  +--ro hello-holdtime?      uint16
+               |  |  +--ro hello-holdtime?      timer-value
                |  +--:(multipler) {intf-hello-multipler}?
                |     +--ro hello-multipler?     uint8
-               +--ro jp-interval?         uint16 {intf-jp-interval}?
+               +--ro jp-interval?         timer-value {intf-jp-interval}?
                +--ro (jp-holdtime-or-multipler)?
                |  +--:(holdtime) {intf-jp-holdtime}?
-               |  |  +--ro jp-holdtime?         uint16
+               |  |  +--ro jp-holdtime?         timer-value
                |  +--:(multipler) {intf-jp-multipler}?
                |     +--ro jp-multipler?        uint8
                +--ro propagation-delay?   uint16 {intf-propagation-delay}?
@@ -266,34 +330,39 @@ augment /rt:routing-state/rt:routing-instance/rt:routing-protocols:
                |  +--ro address*   inet:ipv6-address
                |  +--ro dr-addr?   inet:ipv6-address
                +--ro oper-status?         enumeration
-               +--ro hello-expire?        uint32
+               +--ro hello-expire?        timer-value
                +--ro neighbor-ipv4* [address]
                |  +--ro address        inet:ipv4-address
                |  +--ro bfd-status?    enumeration
-               |  +--ro expire?        uint32
+               |  +--ro expire?        timer-value
                |  +--ro dr-priority?   uint32
                |  +--ro gen-id?        uint32
                |  +--ro up-time?       uint32
                +--ro neighbor-ipv6* [address]
-                  +--ro address        inet:ipv6-address
-                  +--ro bfd-status?    enumeration
-                  +--ro expire?        uint32
-                  +--ro dr-priority?   uint32
-                  +--ro gen-id?        uint32
-                  +--ro up-time?       uint32
+               |  +--ro address        inet:ipv6-address
+               |  +--ro bfd-status?    enumeration
+               |  +--ro expire?        timer-value
+               |  +--ro dr-priority?   uint32
+               |  +--ro gen-id?        uint32
+               |  +--ro up-time?       uint32
+               +--ro pim-bidir:bidir!
+               |  +--ro pim-bidir:df-election {intf-df-election}?
+               |     +--ro pim-bidir:offer-interval?     pim-base:timer-value
+               |     +--ro pim-bidir:backoff-interval?   pim-base:timer-value
+               |     +--ro pim-bidir:offer-multipler?    uint8
+               +--ro pim-sm:sm!
+                  +--ro pim-sm:passive?   empty
 notifications:
-   +---n pim-neighbor-event     
-   |  +--ro event-type?                   neighbor-event-type
-   |  +--ro routing-instance-state-ref?   rt:routing-instance-state-ref
-   |  +--ro interface-state-ref?          leafref
-   |  +--ro interface-af-state-ref?       leafref
-   |  +--ro neighbor-ipv4-state-ref?      leafref
-   |  +--ro neighbor-ipv6-state-ref?      leafref
-   |  +--ro up-time?                      uint32
-   +---n pim-interface-event    
-      +--ro event-type?                   interface-event-type
-      +--ro routing-instance-state-ref?   rt:routing-instance-state-ref
-      +--ro interface-state-ref?          leafref
+   +---n pim-neighbor-event
+   |  +--ro event-type?                neighbor-event-type
+   |  +--ro interface-state-ref?       leafref
+   |  +--ro interface-af-state-ref?    leafref
+   |  +--ro neighbor-ipv4-state-ref?   leafref
+   |  +--ro neighbor-ipv6-state-ref?   leafref
+   |  +--ro up-time?                   uint32
+   +---n pim-interface-event
+      +--ro event-type?            interface-event-type
+      +--ro interface-state-ref?   leafref
       +--ro ipv4
       |  +--ro address*   inet:ipv4-address
       |  +--ro dr-addr?   inet:ipv4-address
@@ -302,13 +371,11 @@ notifications:
          +--ro dr-addr?   inet:ipv6-address
 module: ietf-pim-rp
 notifications:
-   +---n pim-rp-event    
-      +--ro event-type?                   rp-event-type
-      +--ro routing-instance-state-ref?   rt:routing-instance-state-ref
-      +--ro instance-af-state-ref?        leafref
-      +--ro group?                        inet:ip-address
-      +--ro rp-address?                   inet:ip-address
-      +--ro is-rpt?                       boolean
-      +--ro mode?                         pim-base:pim-mode
-      +--ro message-origin?               inet:ip-address
-]]>
+   +---n pim-rp-event
+      +--ro event-type?              rp-event-type
+      +--ro instance-af-state-ref?   leafref
+      +--ro group?                   inet:ip-address
+      +--ro rp-address?              inet:ip-address
+      +--ro is-rpt?                  boolean
+      +--ro mode?                    pim-base:pim-mode
+      +--ro message-origin?          inet:ip-address
