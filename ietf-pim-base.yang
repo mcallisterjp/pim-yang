@@ -1,3 +1,6 @@
+<![CDATA[
+<CODE BEGINS> file "ietf-pim-base.yang"
+
 module ietf-pim-base {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
   // replace with IANA namespace when assigned
@@ -6,15 +9,15 @@ module ietf-pim-base {
   import ietf-inet-types {
     prefix "inet";
   }
-  
+
   import ietf-yang-types {
     prefix "yang";
   }
-  
+
   import ietf-interfaces {
     prefix "if";
   }
-  
+
   import ietf-routing {
     prefix "rt";
   }
@@ -22,7 +25,7 @@ module ietf-pim-base {
   import ietf-bfd {
     prefix "bfd";
   }
-  
+
   organization
     "IETF PIM Working Group";
 
@@ -35,13 +38,13 @@ module ietf-pim-base {
 
      WG Chair: Mike McBride
                <mailto:mmcbride7@gmail.com>
- 
+
      Editors:   ";
 
   description
     "The module defines a collection of YANG definitions common for
     all PIM modes.";
-  
+
   revision 2016-03-18 {
     description
       "Initial revision.";
@@ -64,47 +67,47 @@ module ietf-pim-base {
   }
 
   feature intf-dr-priority {
-    description 
+    description
       "Support configuration of interface dr priority.";
   }
 
   feature intf-hello-holdtime {
-    description 
+    description
       "Support configuration of interface hello holdtime.";
   }
 
   feature intf-hello-interval {
-    description 
+    description
       "Support configuration of interface hello interval.";
   }
 
   feature intf-hello-multipler {
-    description 
+    description
       "Support configuration of interface hello multipler.";
   }
 
   feature intf-jp-interval {
-    description 
+    description
       "Support configuration of interface join prune interval.";
   }
 
   feature intf-jp-holdtime {
-    description 
+    description
       "Support configuration of interface join prune holdtime.";
   }
 
   feature intf-jp-multipler {
-    description 
+    description
       "Support configuration of interface join prune multipler.";
   }
 
   feature intf-propagation-delay {
-    description 
+    description
       "Support configuration of interface propagation delay.";
   }
-  
+
   feature intf-override-interval {
-    description 
+    description
       "Support configuration of interface override interval.";
   }
 
@@ -113,7 +116,7 @@ module ietf-pim-base {
       "Per AF configuraiont for graceful restart support as per
       RFC5306.";
   }
-  
+
   /*
    * Typedefs
    */
@@ -180,7 +183,7 @@ module ietf-pim-base {
           "Any other PIM mode.";
       }
     }
-    description 
+    description
       "The PIM mode in which a group is operating.";
   }
 
@@ -213,11 +216,11 @@ module ietf-pim-base {
     uses graceful-restart-container {
       if-feature global-graceful-restart;
     }
-  } // global-attributes 
+  } // global-attributes
 
   grouping graceful-restart-container {
     description
-      "A grouping defining a container of graceful restart 
+      "A grouping defining a container of graceful restart
       attributes.";
     container graceful-restart {
       leaf enabled {
@@ -404,7 +407,7 @@ module ietf-pim-base {
   grouping multicast-route-attributes {
     description
       "A grouping defining multicast route attributes.";
-    
+
     leaf expire {
       type uint32;
       units seconds;
@@ -462,11 +465,11 @@ module ietf-pim-base {
         units seconds;
         description "";
       }
-      
+
       leaf jp-state {
         type enumeration {
           enum "no-info" {
-            description 
+            description
               "The interface has Join state and no timers running";
           }
           enum "join" {
@@ -476,7 +479,7 @@ module ietf-pim-base {
           enum "prune-pending" {
             description
               "The router has received a Prune on this interface from
-               a downstream neighbor and is waiting to see whether 
+               a downstream neighbor and is waiting to see whether
                the prune will be overridden by another downstream
                router.  For forwarding purposes, the Prune-Pending
                state functions exactly like the Join state.";
@@ -660,12 +663,12 @@ module ietf-pim-base {
       type uint32;
       description
         "The size of the input queue.";
-    }    
+    }
     leaf overflow {
       type yang:counter32;
       description
         "The number of the input queue overflows.";
-    }    
+    }
   } // statistics-queue
 
   grouping statistics-sent-received {
@@ -719,7 +722,7 @@ module ietf-pim-base {
    */
 
   augment "/rt:routing/rt:routing-protocols" {
-    description 
+    description
       "PIM augmentation to routing instance configuration.";
 
     container pim {
@@ -778,7 +781,7 @@ module ietf-pim-base {
         description
           "Each list entry for one address family.";
         uses rt:address-family;
-   
+
         uses statistics-container;
 
         container topology-tree-info {
@@ -864,7 +867,7 @@ module ietf-pim-base {
               "Each list entry for one address family.";
             uses rt:address-family;
             uses interface-config-attributes;
-            uses interface-state-attributes;            
+            uses interface-state-attributes;
           } // address-family
         } // interface
       } // interfaces
@@ -920,5 +923,8 @@ module ietf-pim-base {
         description "";
       }
     }
-  }  
+  }
 }
+
+<CODE ENDS>
+]]>

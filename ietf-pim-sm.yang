@@ -1,3 +1,6 @@
+<![CDATA[
+<CODE BEGINS>
+
 module ietf-pim-sm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-sm";
   // replace with IANA namespace when assigned
@@ -6,11 +9,11 @@ module ietf-pim-sm {
   import ietf-inet-types {
     prefix "inet";
   }
-  
+
   import ietf-routing {
     prefix "rt";
   }
-  
+
   import ietf-pim-base {
     prefix "pim-base";
   }
@@ -31,12 +34,12 @@ module ietf-pim-sm {
 
      WG Chair: Mike McBride
                <mailto:mmcbride7@gmail.com>
- 
+
      Editors:   ";
 
   description
     "The YANG module defines a sparse mode PIM model.";
-  
+
   revision 2016-03-18 {
     description
       "Initial revision.";
@@ -50,16 +53,16 @@ module ietf-pim-sm {
   feature spt-switch-infinity {
     description
       "This feature indicates that the system supports configuration
-      choice whether to trigger the switchover from the rpt to the 
+      choice whether to trigger the switchover from the rpt to the
       spt.";
   }
-  
+
   feature spt-switch-policy {
     description
       "This feature indicates that the system supports configuring
       policy for the switchover from the rpt to the spt.";
   }
-  
+
   /*
    * Identities
    */
@@ -78,40 +81,40 @@ module ietf-pim-sm {
     container sm {
       description
         "PIM SM configuration data.";
-      
+
       container asm {
-        description 
+        description
           "ASM (Any Source Multicast) attributes.";
-        
+
         container anycast-rp {
-          presence 
+          presence
             "Present to enable anycast RP.";
-          description 
+          description
             "Anycast RP attributes.";
-          
+
           container ipv4 {
             when "../../../../address-family = 'rt:ipv4'" {
               description
                 "Only applicable to ipv4 address family.";
             }
-            description 
-              "IPv4 attributes. Only applicable when 
+            description
+              "IPv4 attributes. Only applicable when
               pim-base:address-family is ipv4.";
             list ipv4-anycast-rp {
               key "anycast-addr rp-addr";
-              description 
+              description
                 "A list of anycast RP setttings.";
               leaf anycast-addr {
                 type inet:ipv4-address;
-                description 
+                description
                   "IP address of the anycast RP set. This IP address
                   is used by the multicast groups or sources to join
                   or register.";
               }
-              
+
               leaf rp-addr {
                 type inet:ipv4-address;
-                description 
+                description
                   "IP address of the router configured with anycast
                   RP. This is the IP address where the Register
                   messages are forwarded.";
@@ -123,21 +126,21 @@ module ietf-pim-sm {
               description
                 "Only applicable to ipv6 address family.";
             }
-            description 
-              "IPv6 attributes. Only applicable when 
+            description
+              "IPv6 attributes. Only applicable when
               pim-base:address-family is ipv6.";
             list ipv6-anycast-rip {
               key "anycast-addr rp-addr";
-              description 
+              description
                 "A list of anycast RP setttings.";
               leaf anycast-addr {
                 type inet:ipv6-address;
-                description 
+                description
                   "IP address of the anycast RP set. This IP address
                   is used by the multicast groups or sources to join
                   or register.";
               }
-              
+
               leaf rp-addr {
                 type inet:ipv6-address;
                 description
@@ -148,7 +151,7 @@ module ietf-pim-sm {
             }
           }
         }
-        
+
         container spt-switch {
           description
             "SPT (Shortest Path Tree) switching attributes.";
@@ -167,16 +170,16 @@ module ietf-pim-sm {
           } // infinity
         }
       } // asm
-      
+
       container ssm {
-        presence 
+        presence
           "Present to enable SSM (Source-Specific Multicast).";
-        description 
+        description
           "SSM (Source-Specific Multicast) attributes.";
-        
+
         leaf range-poligy {
           type string;
-          description 
+          description
             "Policy used to define SSM address range.";
         }
       } // ssm
@@ -193,11 +196,11 @@ module ietf-pim-sm {
 
       leaf passive {
         type empty;
-        description 
+        description
           "Specifies that no PIM messages are sent out of the PIM
           interface, but the interface can be included in a multicast
           forwarding entry.";
-      }      
+      }
     } // sm
   } // interface-sm-container
 
@@ -205,7 +208,7 @@ module ietf-pim-sm {
     description
       "Gouping that contains SM attributes for static RP.";
     container sm {
-      presence 
+      presence
         "Indicate the support of sparse mode.";
       description
         "PIM SM configuration data.";
@@ -293,3 +296,6 @@ module ietf-pim-sm {
    * Notifications
    */
 }
+
+<CODE ENDS>
+]]>

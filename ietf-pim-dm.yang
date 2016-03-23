@@ -1,3 +1,6 @@
+<![CDATA[
+<CODE BEGINS>
+
 module ietf-pim-dm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-dm";
   // replace with IANA namespace when assigned
@@ -6,7 +9,7 @@ module ietf-pim-dm {
   import ietf-routing {
     prefix "rt";
   }
-  
+
   import ietf-pim-base {
     prefix "pim-base";
   }
@@ -23,12 +26,12 @@ module ietf-pim-dm {
 
      WG Chair: Mike McBride
                <mailto:mmcbride7@gmail.com>
- 
+
      Editors:   ";
 
   description
     "The YANG module defines a DM (Dense Mode) PIM model.";
-  
+
   revision 2016-03-18 {
     description
       "Initial revision.";
@@ -39,7 +42,7 @@ module ietf-pim-dm {
   /*
    * Features
    */
-  
+
   /*
    * Identities
    */
@@ -97,3 +100,6 @@ module ietf-pim-dm {
    * Notifications
    */
 }
+
+<CODE ENDS>
+]]>

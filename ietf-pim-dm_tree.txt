@@ -1,7 +1,9 @@
 module: ietf-pim-dm
 augment /rt:routing/rt:routing-protocols/pim-base:pim/pim-base:address-family:
    +--rw dm!
-augment /rt:routing/rt:routing-protocols/pim-base:pim/pim-base:interfaces/pim-base:interface/pim-base:address-family:
+augment /rt:routing/rt:routing-protocols/pim-base:pim/pim-base:interfaces/
+pim-base:interface/pim-base:address-family:
    +--rw dm!
-augment /rt:routing-state/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing-state/rt:routing-protocols/pim-base:pim/
+pim-base:address-family:
    +--ro dm

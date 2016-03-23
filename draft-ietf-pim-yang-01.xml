@@ -49,7 +49,7 @@
 <?rfc compact="yes"?> <?rfc subcompact="no"?>
 
 <!-- other categories: bcp, exp, historic, std -->
-<rfc ipr="trust200902" category="std" docName="draft-ietf-pim-yang-00">
+<rfc ipr="trust200902" category="std" docName="draft-ietf-pim-yang-01">
 
   <front>
 
@@ -97,7 +97,48 @@
       </address>
     </author>
 
-    <date month='February' year="2016"/>
+    <author fullname="Mahesh Sivakumar" initials="M." surname="Sivakumar">
+      <organization>Cisco Systems</organization>
+      <address>
+        <postal>
+        <street>510 McCarthy Boulevard</street>
+        <city>Milpitas</city>
+        <region>California</region>
+        <country>USA</country>
+        </postal>
+        <email>masivaku@cisco.com</email>
+      </address>
+    </author>
+
+    <author fullname="Liu Yisong" initials="Y." surname="Liu">
+      <organization>Huawei Technologies</organization>
+      <address>
+        <postal>
+        <street>Huawei Administration Building</street>
+        <city>Longgang</city>
+        <region>Guangdong</region>
+        <code>518129</code>
+        <country>China</country>
+        </postal>
+        <email>liuyisong@huawei.com</email>
+      </address>
+    </author>
+
+    <author fullname="Hu Fangwei" initials="F." surname="Hu">
+      <organization>ZTE Corporation</organization>
+      <address>
+        <postal>
+        <street>889 Bibo Road</street>
+        <city>Shanghai</city>
+        <region>Shanghai</region>
+        <code>201203</code>
+        <country>China</country>
+        </postal>
+        <email>hu.fangwei@zte.com.cn</email>
+      </address>
+    </author>
+
+    <date month='March' year="2016"/>
     <area>Routing</area>
     <workgroup>PIM Working Group</workgroup>
 

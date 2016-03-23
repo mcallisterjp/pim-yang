@@ -6,11 +6,11 @@ module ietf-igmp-mld {
   import ietf-inet-types {
     prefix "inet";
   }
-  
+
   import ietf-yang-types {
     prefix "yang";
   }
-  
+
   import ietf-routing {
     prefix "rt";
   }
@@ -18,11 +18,11 @@ module ietf-igmp-mld {
   import ietf-interfaces {
     prefix "if";
   }
-  
+
   import ietf-ip {
     prefix ip;
   }
-  
+
   organization
     "IETF PIM Working Group";
 
@@ -35,13 +35,13 @@ module ietf-igmp-mld {
 
      WG Chair: Mike McBride
                <mailto:mmcbride7@gmail.com>
- 
+
      Editors:   ";
 
   description
     "The module defines a collection of YANG definitions common for
     IGMP.";
-  
+
   revision 2016-03-17 {
     description
       "Initial revision.";
@@ -53,7 +53,7 @@ module ietf-igmp-mld {
    * Features
    */
   feature global-admin-enable {
-    description 
+    description
       "Support global configuration to enable or disable protocol.";
   }
 
@@ -63,72 +63,72 @@ module ietf-igmp-mld {
   }
 
   feature global-max-entries {
-    description 
+    description
       "Support configuration of global max-entries.";
   }
 
   feature global-max-groups {
-    description 
+    description
       "Support configuration of global max-groups.";
   }
 
   feature intf-admin-enable {
-    description 
+    description
       "Support configuration of interface administrative enabling.";
   }
 
   feature intf-immediate-leave {
-    description 
+    description
       "Support configuration of interface immediate-leave.";
   }
 
   feature intf-join-group {
-    description 
+    description
       "Support configuration of interface join-group.";
   }
 
   feature intf-max-groups {
-    description 
+    description
       "Support configuration of interface max-groups.";
   }
 
   feature intf-max-group-sources {
-    description 
+    description
       "Support configuration of interface max-group-sources.";
   }
 
   feature intf-require-router-alert {
-    description 
+    description
       "Support configuration of interface require-router-alert.";
   }
 
   feature intf-source-policy {
-    description 
+    description
       "Support configuration of interface source policy.";
   }
 
   feature intf-ssm-map {
-    description 
+    description
       "Support configuration of interface ssm-map.";
   }
 
   feature intf-static-group {
-    description 
+    description
       "Support configuration of interface static-group.";
   }
 
   feature intf-verify-source-subnet {
-    description 
+    description
       "Support configuration of interface verify-source-subnet.";
   }
 
   feature per-interface-config {
-    description 
+    description
       "Support per interface configuration.";
   }
 
   feature rpc-clear-groups {
-    description 
+    description
       "Support rpc's to clear groups.";
   }
 
@@ -139,13 +139,13 @@ module ietf-igmp-mld {
     type union {
       type enumeration {
         enum 'policy' {
-          description 
+          description
           "Source address is specified in SSM map policy.";
         }
       }
       type inet:ipv4-address;
     }
-    description 
+    description
       "Multicast source IP address type for SSM map.";
   } // source-ipv4-addr-type
 
@@ -153,13 +153,13 @@ module ietf-igmp-mld {
     type union {
       type enumeration {
         enum 'policy' {
-          description 
+          description
           "Source address is specified in SSM map policy.";
         }
       }
       type inet:ipv6-address;
     }
-    description 
+    description
       "Multicast source IP address type for SSM map.";
   } // source-ipv6-addr-type
 
@@ -167,13 +167,13 @@ module ietf-igmp-mld {
     type union {
       type enumeration {
         enum '*' {
-          description 
+          description
           "Any source address.";
         }
       }
       type inet:ipv4-address;
     }
-    description 
+    description
       "Multicast source IP address type.";
   } // source-ipv4-addr-type
 
@@ -181,13 +181,13 @@ module ietf-igmp-mld {
     type union {
       type enumeration {
         enum '*' {
-          description 
+          description
           "Any source address.";
         }
       }
       type inet:ipv6-address;
     }
-    description 
+    description
       "Multicast source IP address type.";
   } // source-ipv6-addr-type
 
@@ -200,12 +200,12 @@ module ietf-igmp-mld {
    */
   grouping global-config-attributes {
     description "Global IGMP and MLD configuration.";
-    
+
     leaf enable {
       if-feature global-admin-enable;
       type boolean;
-      description 
-        "true to enable IGMP in the routing instance; 
+      description
+        "true to enable IGMP in the routing instance;
          false to disable IGMP in the routing instance.";
     }
 
@@ -225,7 +225,7 @@ module ietf-igmp-mld {
 
   grouping global-state-attributes {
     description "Global IGMP and MLD state attributes.";
-    
+
     leaf entries-count {
       type uint32;
       description
@@ -236,7 +236,7 @@ module ietf-igmp-mld {
       description
         "The number of groups that IGMP can join.";
     }
-    
+
     container statistics {
       description "Global statistics.";
 
@@ -309,15 +309,15 @@ module ietf-igmp-mld {
   } // global-statistics-sent-received
 
   grouping interfaces-config-attributes {
-    description 
-      "Configuration attributes applied to interfaces whose 
+    description
+      "Configuration attributes applied to interfaces whose
        per interface attributes are not existing.";
-    
+
     leaf last-member-query-interval {
       type uint16 {
         range "1..65535";
       }
-      description 
+      description
         "Last Member Query Interval, which may be tuned to modify the
          leave latency of the network.";
       reference "RFC3376. Sec. 8.8.";
@@ -332,7 +332,7 @@ module ietf-igmp-mld {
       type uint16;
       units seconds;
       default 125;
-      description 
+      description
         "The Query Interval is the interval between General Queries
          sent by the Querier.";
       reference "RFC3376. Sec. 4.1.7, 8.2, 8.14.2.";
@@ -340,7 +340,7 @@ module ietf-igmp-mld {
     leaf query-max-response-time {
       type uint16;
       units seconds;
-      description 
+      description
         "Query maximum response time specifies the maximum time
          allowed before sending a responding report.";
       reference "RFC3376. Sec. 4.1.1, 8.3, 8.14.3.";
@@ -356,7 +356,7 @@ module ietf-igmp-mld {
         range "2..7";
       }
       default 2;
-      description 
+      description
         "Querier's Robustness Variable allows tuning for the expected
          packet loss on a network.";
       reference "RFC3376. Sec. 4.1.6, 8.1, 8.14.1.";
@@ -372,13 +372,13 @@ module ietf-igmp-mld {
 
   grouping interface-config-attributes-igmp {
     description "Per interface configuration for IGMP.";
-    
+
     uses interface-config-attributes-igmp-mld;
 
     leaf-list join-group {
       if-feature intf-join-group;
       type inet:ipv4-address;
-      description 
+      description
         "The router joins this multicast group on the interface.";
     }
 
@@ -388,12 +388,12 @@ module ietf-igmp-mld {
       description "";
       leaf source-addr {
         type ssm-map-ipv4-addr-type;
-        description 
+        description
           "Multicast source IP address.";
       }
       leaf group-policy {
         type string;
-        description 
+        description
           "Name of the access policy used to filter IGMP
            membership.";
       }
@@ -402,36 +402,36 @@ module ietf-igmp-mld {
     list static-group {
       if-feature intf-static-group;
       key "group source-addr";
-      description 
+      description
         "A static multicast route, (*,G) or (S,G).";
-      
+
       leaf group {
         type inet:ipv4-address;
-        description 
+        description
           "Multicast group IP address.";
       }
       leaf source-addr {
         type source-ipv4-addr-type;
-        description 
+        description
           "Multicast source IP address.";
       }
     }
   } // interface-config-attributes-igmp
 
   grouping interface-config-attributes-igmp-mld {
-    description 
+    description
       "Per interface configuration for both IGMP and MLD.";
-    
+
     leaf enable {
       if-feature intf-admin-enable;
       type boolean;
-      description 
-        "true to enable IGMP on the interface; 
+      description
+        "true to enable IGMP on the interface;
          false to disable IGMP on the interface.";
     }
     leaf group-policy {
       type string;
-      description 
+      description
         "Name of the access policy used to filter IGMP membership.";
     }
     leaf immediate-leave {
@@ -449,7 +449,7 @@ module ietf-igmp-mld {
       type uint16 {
         range "1..65535";
       }
-      description 
+      description
         "Last Member Query Interval, which may be tuned to modify the
          leave latency of the network.";
       reference "RFC3376. Sec. 8.8.";
@@ -470,7 +470,7 @@ module ietf-igmp-mld {
       type uint16;
       units seconds;
       default 125;
-      description 
+      description
         "The Query Interval is the interval between General Queries
          sent by the Querier.";
       reference "RFC3376. Sec. 4.1.7, 8.2, 8.14.2.";
@@ -478,7 +478,7 @@ module ietf-igmp-mld {
     leaf query-max-response-time {
       type uint16;
       units seconds;
-      description 
+      description
         "Query maximum response time specifies the maximum time
          allowed before sending a responding report.";
       reference "RFC3376. Sec. 4.1.1, 8.3, 8.14.3.";
@@ -494,7 +494,7 @@ module ietf-igmp-mld {
         range "2..7";
       }
       default 2;
-      description 
+      description
         "Querier's Robustness Variable allows tuning for the expected
          packet loss on a network.";
       reference "RFC3376. Sec. 4.1.6, 8.1, 8.14.1.";
@@ -502,13 +502,13 @@ module ietf-igmp-mld {
     leaf source-policy {
       if-feature intf-source-policy;
       type string;
-      description 
+      description
         "Name of the access policy used to filter sources.";
     }
     leaf verify-source-subnet {
       if-feature intf-verify-source-subnet;
       type empty;
-      description 
+      description
         "If present, the interface accepts packets with matching
          source IP subnet only.";
     }
@@ -523,13 +523,13 @@ module ietf-igmp-mld {
 
   grouping interface-config-attributes-mld {
     description "Per interface configuration for mld.";
-    
+
     uses interface-config-attributes-igmp-mld;
 
     leaf-list join-group {
       if-feature intf-join-group;
       type inet:ipv6-address;
-      description 
+      description
         "The router joins this multicast group on the interface.";
     }
 
@@ -539,12 +539,12 @@ module ietf-igmp-mld {
       description "";
       leaf source-addr {
         type ssm-map-ipv6-addr-type;
-        description 
+        description
           "Multicast source IP address.";
       }
       leaf group-policy {
         type string;
-        description 
+        description
           "Name of the access policy used to filter IGMP
            membership.";
       }
@@ -553,26 +553,26 @@ module ietf-igmp-mld {
     list static-group {
       if-feature intf-static-group;
       key "group source-addr";
-      description 
+      description
         "A static multicast route, (*,G) or (S,G).";
-      
+
       leaf group {
         type inet:ipv6-address;
-        description 
+        description
           "Multicast group IP address.";
       }
       leaf source-addr {
         type source-ipv6-addr-type;
-        description 
+        description
           "Multicast source IP address.";
       }
     }
   } // interface-config-attributes-mld
 
   grouping interface-state-attributes-igmp {
-    description 
+    description
       "Per interface state attributes for IGMP.";
-    
+
     uses interface-state-attributes-igmp-mld;
 
     leaf dr {
@@ -586,7 +586,7 @@ module ietf-igmp-mld {
     leaf-list joined-group {
       if-feature intf-join-group;
       type inet:ipv4-address;
-      description 
+      description
         "The routers that joined this multicast group.";
     }
 
@@ -596,13 +596,13 @@ module ietf-igmp-mld {
 
       leaf address {
         type inet:ipv4-address;
-        description 
+        description
           "";
       }
       uses interface-state-group-attributes-igmp-mld;
       leaf-list host {
         type inet:ipv4-address;
-        description 
+        description
           "";
       }
       leaf last-reporter {
@@ -627,9 +627,9 @@ module ietf-igmp-mld {
   } // interface-state-attributes-igmp
 
   grouping interface-state-attributes-igmp-mld {
-    description 
+    description
       "Per interface state attributes for both IGMP and MLD.";
-    
+
     leaf oper-status {
       type enumeration {
         enum up {
@@ -646,9 +646,9 @@ module ietf-igmp-mld {
   } // interface-config-attributes-igmp-mld
 
   grouping interface-state-attributes-mld {
-    description 
+    description
       "Per interface state attributes for MLD.";
-    
+
     uses interface-state-attributes-igmp-mld;
 
     leaf querier {
@@ -658,7 +658,7 @@ module ietf-igmp-mld {
     leaf-list joined-group {
       if-feature intf-join-group;
       type inet:ipv6-address;
-      description 
+      description
         "The routers that joined this multicast group.";
     }
 
@@ -668,13 +668,13 @@ module ietf-igmp-mld {
 
       leaf address {
         type inet:ipv6-address;
-        description 
+        description
           "";
       }
       uses interface-state-group-attributes-igmp-mld;
       leaf-list host {
         type inet:ipv6-address;
-        description 
+        description
           "";
       }
       leaf last-reporter {
@@ -699,10 +699,10 @@ module ietf-igmp-mld {
   } // interface-state-attributes-mld
 
   grouping interface-state-group-attributes-igmp-mld {
-    description 
+    description
       "Per interface state attributes for both IGMP and MLD
        groups.";
-    
+
     leaf expire {
       type uint32;
       units seconds;
@@ -724,7 +724,7 @@ module ietf-igmp-mld {
     leaf host-count {
       type uint32;
         description "";
-    }      
+    }
     leaf up-time {
       type uint32;
       units seconds;
@@ -733,10 +733,10 @@ module ietf-igmp-mld {
   } // interface-state-group-attributes-igmp-mld
 
   grouping interface-state-source-attributes-igmp-mld {
-    description 
+    description
       "Per interface state attributes for both IGMP and MLD
        groups.";
-    
+
     leaf expire {
       type uint32;
       units seconds;
@@ -753,7 +753,7 @@ module ietf-igmp-mld {
    * Configuration data nodes
    */
   augment "/rt:routing/rt:routing-protocols" {
-    description 
+    description
       "IGMP and MLD augmentation to routing instance configuration.";
 
     container igmp {
@@ -936,7 +936,7 @@ module ietf-igmp-mld {
     if-feature rpc-clear-groups;
     description
       "Clears the specified IGMP cache tables.";
-    
+
     input {
       leaf interface {
         type leafref {
@@ -945,14 +945,14 @@ module ietf-igmp-mld {
         }
         description
           "Name of the IGMP interface.
-           If it is not specified, groups from all interfaces are 
+           If it is not specified, groups from all interfaces are
            cleared.";
       }
       leaf group {
         type inet:ipv4-address;
-        description 
+        description
           "Multicast group IP address.
-           If it is not specified, all IGMP group tables are 
+           If it is not specified, all IGMP group tables are
            cleared.";
       }
     }
@@ -962,7 +962,7 @@ module ietf-igmp-mld {
     if-feature rpc-clear-groups;
     description
       "Clears the specified MLD cache tables.";
-    
+
     input {
       leaf interface {
         type leafref {
@@ -971,14 +971,14 @@ module ietf-igmp-mld {
         }
         description
           "Name of the MLD interface.
-           If it is not specified, groups from all interfaces are 
+           If it is not specified, groups from all interfaces are
            cleared.";
       }
       leaf group {
         type inet:ipv4-address;
-        description 
+        description
           "Multicast group IP address.
-           If it is not specified, all MLD group tables are 
+           If it is not specified, all MLD group tables are
            cleared.";
       }
     }

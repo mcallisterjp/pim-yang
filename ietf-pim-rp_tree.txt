@@ -29,7 +29,8 @@ augment /rt:routing/rt:routing-protocols/pim-base:pim/pim-base:address-family:
             +--rw ipv6-address    inet:ipv6-address
             +--rw policy?         string
             +--rw mode?           identityref
-augment /rt:routing-state/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing-state/rt:routing-protocols/pim-base:pim/
+pim-base:address-family:
    +--ro rp
       +--ro static-rp
       |  +--ro ipv4-rp* [ipv4-addr]
