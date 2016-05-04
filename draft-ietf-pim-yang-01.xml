@@ -57,7 +57,7 @@
       A YANG data model for Protocol-Independent Multicast (PIM)
     </title>
 
-    <author fullname="Liu Xufeng" initials="X." surname="Liu">
+    <author fullname="Xufeng Liu" initials="X." surname="Liu">
       <organization>Ericsson</organization>
       <address>
         <postal>
@@ -110,7 +110,7 @@
       </address>
     </author>
 
-    <author fullname="Liu Yisong" initials="Y." surname="Liu">
+    <author fullname="Yisong Liu" initials="Y." surname="Liu">
       <organization>Huawei Technologies</organization>
       <address>
         <postal>
@@ -124,7 +124,7 @@
       </address>
     </author>
 
-    <author fullname="Hu Fangwei" initials="F." surname="Hu">
+    <author fullname="Fangwei Hu" initials="F." surname="Hu">
       <organization>ZTE Corporation</organization>
       <address>
         <postal>

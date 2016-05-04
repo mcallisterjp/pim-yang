@@ -3775,7 +3775,7 @@ Internet-Draft                  PIM YANG                      March 2016
 
 Authors' Addresses
 
-   Liu Xufeng
+   Xufeng Liu
    Ericsson
    1595 Spring Hill Road, Suite 500
    Vienna  VA 22182
@@ -3819,7 +3819,7 @@ Internet-Draft                  PIM YANG                      March 2016
    EMail: masivaku@cisco.com
 
 
-   Liu Yisong
+   Yisong Liu
    Huawei Technologies
    Huawei Administration Building
    Longgang, Guangdong  518129
@@ -3828,7 +3828,7 @@ Internet-Draft                  PIM YANG                      March 2016
    EMail: liuyisong@huawei.com
 
 
-   Hu Fangwei
+   Fangwei Hu
    ZTE Corporation
    889 Bibo Road
    Shanghai, Shanghai  201203
