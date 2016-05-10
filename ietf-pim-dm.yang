@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS>
+<CODE BEGINS> file "ietf-pim-dm@2016-03-18.yang"
 
 module ietf-pim-dm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-dm";
