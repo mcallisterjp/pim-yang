@@ -1,0 +1,151 @@
+module: ietf-msdp
+augment /rt:routing/rt:routing-protocols:
+   +--rw msdp!
+      +--rw global
+      |  +--rw default-peer! {global-default-peer}?
+      |  |  +--rw peer-addr        leafref
+      |  |  +--rw prefix-policy?   string {global-default-peer-policy}?
+      |  +--rw originating-rp
+      |  |  +--rw interface?   if:interface-ref
+      |  +--rw sa-filter
+      |  |  +--rw in?    string
+      |  |  +--rw out?   string
+      |  +--rw ttl-threshold?    uint8
+      +--rw peers
+         +--rw peer* [address]
+            +--rw address                   inet:ipv4-address
+            +--rw authentication
+            |  +--rw (authentication-type)?
+            |     +--:(key-chain) {peer-key-chain}?
+            |     |  +--rw key-chain?      key-chain:key-chain-ref
+            |     +--:(password) {peer-key-chain}?
+            |        +--rw key?            string
+            |        +--rw (algorithm)?
+            |           +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
+            |           |  +--rw hmac-sha1-12?   empty
+            |           +--:(md5)
+            |           |  +--rw md5?            empty
+            |           +--:(sha-1)
+            |           |  +--rw sha-1?          empty
+            |           +--:(hmac-sha-1)
+            |           |  +--rw hmac-sha-1?     empty
+            |           +--:(hmac-sha-256)
+            |           |  +--rw hmac-sha-256?   empty
+            |           +--:(hmac-sha-384)
+            |           |  +--rw hmac-sha-384?   empty
+            |           +--:(hmac-sha-512)
+            |              +--rw hmac-sha-512?   empty
+            +--rw enable?                   boolean {peer-admin-enable}?
+            +--rw description?              string {peer-description}?
+            +--rw local-source-interface?   if:interface-ref
+            +--rw mesh-group?               string
+            +--rw peer-as?                  string {peer-as}?
+            +--rw sa-filter
+            |  +--rw in?    string
+            |  +--rw out?   string
+            +--rw timer
+            |  +--rw connect-retry-interval?   uint16 {peer-timer-connect-retry}?
+            |  +--rw holdtime-interval?        uint16 {peer-timer-holdtime}?
+            |  +--rw keepalive-interval?       uint16 {peer-timer-keepalive}?
+            +--rw ttl-threshold?            uint8
+augment /rt:routing-state/rt:routing-protocols:
+   +--ro msdp
+      +--ro global
+      |  +--ro default-peer! {global-default-peer}?
+      |  |  +--ro peer-addr        leafref
+      |  |  +--ro prefix-policy?   string {global-default-peer-policy}?
+      |  +--ro originating-rp
+      |  |  +--ro interface?   if:interface-ref
+      |  +--ro sa-filter
+      |  |  +--ro in?    string
+      |  |  +--ro out?   string
+      |  +--ro ttl-threshold?    uint8
+      +--ro peers
+      |  +--ro peer* [address]
+      |     +--ro address                   inet:ipv4-address
+      |     +--ro authentication
+      |     |  +--ro (authentication-type)?
+      |     |     +--:(key-chain) {peer-key-chain}?
+      |     |     |  +--ro key-chain?      key-chain:key-chain-ref
+      |     |     +--:(password) {peer-key-chain}?
+      |     |        +--ro key?            string
+      |     |        +--ro (algorithm)?
+      |     |           +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
+      |     |           |  +--ro hmac-sha1-12?   empty
+      |     |           +--:(md5)
+      |     |           |  +--ro md5?            empty
+      |     |           +--:(sha-1)
+      |     |           |  +--ro sha-1?          empty
+      |     |           +--:(hmac-sha-1)
+      |     |           |  +--ro hmac-sha-1?     empty
+      |     |           +--:(hmac-sha-256)
+      |     |           |  +--ro hmac-sha-256?   empty
+      |     |           +--:(hmac-sha-384)
+      |     |           |  +--ro hmac-sha-384?   empty
+      |     |           +--:(hmac-sha-512)
+      |     |              +--ro hmac-sha-512?   empty
+      |     +--ro enable?                   boolean {peer-admin-enable}?
+      |     +--ro description?              string {peer-description}?
+      |     +--ro local-source-interface?   if:interface-ref
+      |     +--ro mesh-group?               string
+      |     +--ro peer-as?                  string {peer-as}?
+      |     +--ro sa-filter
+      |     |  +--ro in?    string
+      |     |  +--ro out?   string
+      |     +--ro timer
+      |     |  +--ro connect-retry-interval?   uint16 {peer-timer-connect-retry}?
+      |     |  +--ro holdtime-interval?        uint16 {peer-timer-holdtime}?
+      |     |  +--ro keepalive-interval?       uint16 {peer-timer-keepalive}?
+      |     +--ro ttl-threshold?            uint8
+      |     +--ro session-state?            enumeration
+      |     +--ro elapsed-time?             uint32
+      |     +--ro connect-retry-expire?     uint32
+      |     +--ro hold-expire?              uint32
+      |     +--ro is-default-peer?          boolean
+      |     +--ro keepalive-expire?         uint32
+      |     +--ro reset-count?              uint32
+      |     +--ro statistics
+      |        +--ro discontinuity-time?   yang:date-and-time
+      |        +--ro error
+      |        |  +--ro rpf-failure?   uint32
+      |        +--ro queue
+      |        |  +--ro size-in?    uint32
+      |        |  +--ro size-out?   uint32
+      |        +--ro received
+      |        |  +--ro keepalive?      yang:counter64
+      |        |  +--ro notification?   yang:counter64
+      |        |  +--ro sa-message?     yang:counter64
+      |        |  +--ro sa-response?    yang:counter64
+      |        |  +--ro sa-request?     yang:counter64
+      |        |  +--ro total?          yang:counter64
+      |        +--ro sent
+      |           +--ro keepalive?      yang:counter64
+      |           +--ro notification?   yang:counter64
+      |           +--ro sa-message?     yang:counter64
+      |           +--ro sa-response?    yang:counter64
+      |           +--ro sa-request?     yang:counter64
+      |           +--ro total?          yang:counter64
+      +--ro sa-cache
+         +--ro entry* [group source-addr]
+            +--ro group                inet:ipv4-address
+            +--ro source-addr          union
+            +--ro origin-rp* [rp-address]
+            |  +--ro rp-address       inet:ip-address
+            |  +--ro is-local-rp?     boolean
+            |  +--ro sa-adv-expire?   uint32
+            +--ro up-time?             uint32
+            +--ro expire?              uint32
+            +--ro holddown-interval?   uint32
+            +--ro peer-learned-from?   inet:ipv4-address
+            +--ro rpf-peer?            inet:ipv4-address
+rpcs:
+   +---x msdp-clear-peer
+   |  +---w input
+   |     +---w peer-address?   inet:ipv4-address
+   +---x msdp-clear-sa-cache
+      +---w input
+         +---w entry!
+         |  +---w group          inet:ipv4-address
+         |  +---w source-addr?   union
+         +---w peer-address?   inet:ipv4-address
+         +---w peer-as?        string
