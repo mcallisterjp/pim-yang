@@ -235,13 +235,7 @@ module ietf-msdp {
         "true to enable peer; 
          false to disable peer.";
     }
-    leaf description {
-      if-feature peer-description;
-      type string;
-      description
-        "";
-    }
-    leaf local-source-interface {
+    leaf connect-source {
       type if:interface-ref;
       must "/if:interfaces/if:interface[if:name = current()]/"
         + "ip:ipv4" {
@@ -249,8 +243,15 @@ module ietf-msdp {
           "The interface must have IPv4 enabled.";
       }
       description
-        "Reference to an entry in the global interface
+        "The interface is to be the source for the TCP connection.
+         It is a reference to an entry in the global interface
          list.";
+    }
+    leaf description {
+      if-feature peer-description;
+      type string;
+      description
+        "";
     }
     leaf mesh-group {
       type string;

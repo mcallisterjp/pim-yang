@@ -13,7 +13,7 @@ augment /rt:routing/rt:routing-protocols:
       |  +--rw ttl-threshold?    uint8
       +--rw peers
          +--rw peer* [address]
-            +--rw address                   inet:ipv4-address
+            +--rw address           inet:ipv4-address
             +--rw authentication
             |  +--rw (authentication-type)?
             |     +--:(key-chain) {peer-key-chain}?
@@ -35,11 +35,11 @@ augment /rt:routing/rt:routing-protocols:
             |           |  +--rw hmac-sha-384?   empty
             |           +--:(hmac-sha-512)
             |              +--rw hmac-sha-512?   empty
-            +--rw enable?                   boolean {peer-admin-enable}?
-            +--rw description?              string {peer-description}?
-            +--rw local-source-interface?   if:interface-ref
-            +--rw mesh-group?               string
-            +--rw peer-as?                  string {peer-as}?
+            +--rw enable?           boolean {peer-admin-enable}?
+            +--rw connect-source?   if:interface-ref
+            +--rw description?      string {peer-description}?
+            +--rw mesh-group?       string
+            +--rw peer-as?          string {peer-as}?
             +--rw sa-filter
             |  +--rw in?    string
             |  +--rw out?   string
@@ -47,7 +47,7 @@ augment /rt:routing/rt:routing-protocols:
             |  +--rw connect-retry-interval?   uint16 {peer-timer-connect-retry}?
             |  +--rw holdtime-interval?        uint16 {peer-timer-holdtime}?
             |  +--rw keepalive-interval?       uint16 {peer-timer-keepalive}?
-            +--rw ttl-threshold?            uint8
+            +--rw ttl-threshold?    uint8
 augment /rt:routing-state/rt:routing-protocols:
    +--ro msdp
       +--ro global
@@ -62,7 +62,7 @@ augment /rt:routing-state/rt:routing-protocols:
       |  +--ro ttl-threshold?    uint8
       +--ro peers
       |  +--ro peer* [address]
-      |     +--ro address                   inet:ipv4-address
+      |     +--ro address                 inet:ipv4-address
       |     +--ro authentication
       |     |  +--ro (authentication-type)?
       |     |     +--:(key-chain) {peer-key-chain}?
@@ -84,11 +84,11 @@ augment /rt:routing-state/rt:routing-protocols:
       |     |           |  +--ro hmac-sha-384?   empty
       |     |           +--:(hmac-sha-512)
       |     |              +--ro hmac-sha-512?   empty
-      |     +--ro enable?                   boolean {peer-admin-enable}?
-      |     +--ro description?              string {peer-description}?
-      |     +--ro local-source-interface?   if:interface-ref
-      |     +--ro mesh-group?               string
-      |     +--ro peer-as?                  string {peer-as}?
+      |     +--ro enable?                 boolean {peer-admin-enable}?
+      |     +--ro connect-source?         if:interface-ref
+      |     +--ro description?            string {peer-description}?
+      |     +--ro mesh-group?             string
+      |     +--ro peer-as?                string {peer-as}?
       |     +--ro sa-filter
       |     |  +--ro in?    string
       |     |  +--ro out?   string
@@ -96,14 +96,14 @@ augment /rt:routing-state/rt:routing-protocols:
       |     |  +--ro connect-retry-interval?   uint16 {peer-timer-connect-retry}?
       |     |  +--ro holdtime-interval?        uint16 {peer-timer-holdtime}?
       |     |  +--ro keepalive-interval?       uint16 {peer-timer-keepalive}?
-      |     +--ro ttl-threshold?            uint8
-      |     +--ro session-state?            enumeration
-      |     +--ro elapsed-time?             uint32
-      |     +--ro connect-retry-expire?     uint32
-      |     +--ro hold-expire?              uint32
-      |     +--ro is-default-peer?          boolean
-      |     +--ro keepalive-expire?         uint32
-      |     +--ro reset-count?              uint32
+      |     +--ro ttl-threshold?          uint8
+      |     +--ro session-state?          enumeration
+      |     +--ro elapsed-time?           uint32
+      |     +--ro connect-retry-expire?   uint32
+      |     +--ro hold-expire?            uint32
+      |     +--ro is-default-peer?        boolean
+      |     +--ro keepalive-expire?       uint32
+      |     +--ro reset-count?            uint32
       |     +--ro statistics
       |        +--ro discontinuity-time?   yang:date-and-time
       |        +--ro error
