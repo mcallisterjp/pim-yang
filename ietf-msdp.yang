@@ -45,7 +45,7 @@ module ietf-msdp {
   description
     "The module defines the YANG definitions for MSDP.";
   
-  revision 2016-06-06 {
+  revision 2016-06-08 {
     description
       "Initial revision.";
     reference
@@ -57,6 +57,11 @@ module ietf-msdp {
   /*
    * Features
    */
+  feature global-connect-source {
+    description 
+      "Support configuration of global connect-source.";
+  }
+
   feature global-default-peer {
     description 
       "Support configuration of global default peer.";
@@ -77,6 +82,11 @@ module ietf-msdp {
       "Support configuration of global ttl-threshold.";
   }
 
+  feature rpc-clear-sa-cache {
+    description 
+      "Support the rpc to clear SA cache.";
+  }
+
   feature peer-admin-enable {
     description 
       "Support configuration of peer administrative enabling.";
@@ -85,6 +95,11 @@ module ietf-msdp {
   feature peer-as {
     description 
       "Support configuration of peer AS number.";
+  }
+
+  feature peer-connect-source {
+    description 
+      "Support configuration of global connect-source.";
   }
 
   feature peer-description {
@@ -158,9 +173,28 @@ module ietf-msdp {
     }
   } // authentication-container
 
+  grouping connect-source {
+    description "Attribute to configure connect-source.";    
+    leaf connect-source {
+      type if:interface-ref;
+      must "/if:interfaces/if:interface[if:name = current()]/"
+        + "ip:ipv4" {
+        description
+          "The interface must have IPv4 enabled.";
+      }
+      description
+        "The interface is to be the source for the TCP connection.
+         It is a reference to an entry in the global interface
+         list.";
+    }
+  } // connect-source
+
   grouping global-config-attributes {
     description "Global MSDP configuration.";
     
+    uses connect-source {
+      if-feature global-connect-source;
+    }
     container default-peer {
       if-feature global-default-peer;
       presence "";
@@ -235,17 +269,8 @@ module ietf-msdp {
         "true to enable peer; 
          false to disable peer.";
     }
-    leaf connect-source {
-      type if:interface-ref;
-      must "/if:interfaces/if:interface[if:name = current()]/"
-        + "ip:ipv4" {
-        description
-          "The interface must have IPv4 enabled.";
-      }
-      description
-        "The interface is to be the source for the TCP connection.
-         It is a reference to an entry in the global interface
-         list.";
+    uses connect-source {
+      if-feature peer-connect-source;
     }
     leaf description {
       if-feature peer-description;
@@ -643,6 +668,7 @@ module ietf-msdp {
   }
 
   rpc msdp-clear-sa-cache {
+    if-feature rpc-clear-sa-cache;
     description
       "Clears MSDP source active (SA) cache entries.";
     input {
