@@ -18,24 +18,28 @@ augment /rt:routing/rt:routing-protocols:
             +--rw authentication
             |  +--rw (authentication-type)?
             |     +--:(key-chain) {peer-key-chain}?
-            |     |  +--rw key-chain?      key-chain:key-chain-ref
+            |     |  +--rw key-chain?          key-chain:key-chain-ref
             |     +--:(password) {peer-key-chain}?
-            |        +--rw key?            string
+            |        +--rw key?                string
             |        +--rw (algorithm)?
             |           +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-            |           |  +--rw hmac-sha1-12?   empty
+            |           |  +--rw hmac-sha1-12?       empty
+            |           +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
+            |           |  +--rw aes-cmac-prf-128?   empty
             |           +--:(md5)
-            |           |  +--rw md5?            empty
+            |           |  +--rw md5?                empty
             |           +--:(sha-1)
-            |           |  +--rw sha-1?          empty
+            |           |  +--rw sha-1?              empty
             |           +--:(hmac-sha-1)
-            |           |  +--rw hmac-sha-1?     empty
+            |           |  +--rw hmac-sha-1?         empty
             |           +--:(hmac-sha-256)
-            |           |  +--rw hmac-sha-256?   empty
+            |           |  +--rw hmac-sha-256?       empty
             |           +--:(hmac-sha-384)
-            |           |  +--rw hmac-sha-384?   empty
+            |           |  +--rw hmac-sha-384?       empty
             |           +--:(hmac-sha-512)
-            |              +--rw hmac-sha-512?   empty
+            |           |  +--rw hmac-sha-512?       empty
+            |           +--:(clear-text) {clear-text}?
+            |              +--rw clear-text?         empty
             +--rw enable?           boolean {peer-admin-enable}?
             +--rw connect-source?   if:interface-ref
             +--rw description?      string {peer-description}?
@@ -50,7 +54,7 @@ augment /rt:routing/rt:routing-protocols:
             |  +--rw keepalive-interval?       uint16 {peer-timer-keepalive}?
             +--rw ttl-threshold?    uint8
 augment /rt:routing-state/rt:routing-protocols:
-   +--ro msdp
+   +--ro msdp!
       +--ro global
       |  +--ro connect-source?   if:interface-ref
       |  +--ro default-peer! {global-default-peer}?
@@ -68,24 +72,28 @@ augment /rt:routing-state/rt:routing-protocols:
       |     +--ro authentication
       |     |  +--ro (authentication-type)?
       |     |     +--:(key-chain) {peer-key-chain}?
-      |     |     |  +--ro key-chain?      key-chain:key-chain-ref
+      |     |     |  +--ro key-chain?          key-chain:key-chain-ref
       |     |     +--:(password) {peer-key-chain}?
-      |     |        +--ro key?            string
+      |     |        +--ro key?                string
       |     |        +--ro (algorithm)?
       |     |           +--:(hmac-sha-1-12) {crypto-hmac-sha-1-12}?
-      |     |           |  +--ro hmac-sha1-12?   empty
+      |     |           |  +--ro hmac-sha1-12?       empty
+      |     |           +--:(aes-cmac-prf-128) {aes-cmac-prf-128}?
+      |     |           |  +--ro aes-cmac-prf-128?   empty
       |     |           +--:(md5)
-      |     |           |  +--ro md5?            empty
+      |     |           |  +--ro md5?                empty
       |     |           +--:(sha-1)
-      |     |           |  +--ro sha-1?          empty
+      |     |           |  +--ro sha-1?              empty
       |     |           +--:(hmac-sha-1)
-      |     |           |  +--ro hmac-sha-1?     empty
+      |     |           |  +--ro hmac-sha-1?         empty
       |     |           +--:(hmac-sha-256)
-      |     |           |  +--ro hmac-sha-256?   empty
+      |     |           |  +--ro hmac-sha-256?       empty
       |     |           +--:(hmac-sha-384)
-      |     |           |  +--ro hmac-sha-384?   empty
+      |     |           |  +--ro hmac-sha-384?       empty
       |     |           +--:(hmac-sha-512)
-      |     |              +--ro hmac-sha-512?   empty
+      |     |           |  +--ro hmac-sha-512?       empty
+      |     |           +--:(clear-text) {clear-text}?
+      |     |              +--ro clear-text?         empty
       |     +--ro enable?                 boolean {peer-admin-enable}?
       |     +--ro connect-source?         if:interface-ref
       |     +--ro description?            string {peer-description}?

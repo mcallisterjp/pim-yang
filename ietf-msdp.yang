@@ -6,11 +6,11 @@ module ietf-msdp {
   import ietf-yang-types {
     prefix "yang";
   }
-  
+
   import ietf-inet-types {
     prefix "inet";
   }
-  
+
   import ietf-routing {
     prefix "rt";
   }
@@ -18,34 +18,32 @@ module ietf-msdp {
   import ietf-interfaces {
     prefix "if";
   }
-  
+
   import ietf-ip {
     prefix "ip";
   }
 
-  import ietf-key-chain {
+  import ietf-routing-key-chain {
     prefix "key-chain";
   }
-  
+
   organization
-    "IETF PIM Working Group";
+    "IETF PIM( Protocols for IP Multicast ) Working Group";
 
   contact
     "WG Web:   <http://tools.ietf.org/wg/pim/>
      WG List:  <mailto:pim@ietf.org>
-
      WG Chair: Stig Venaas
                <mailto:stig@venaas.com>
-
      WG Chair: Mike McBride
                <mailto:mmcbride7@gmail.com>
- 
+
      Editors:   ";
 
   description
     "The module defines the YANG definitions for MSDP.";
-  
-  revision 2016-06-08 {
+
+  revision 2016-06-26 {
     description
       "Initial revision.";
     reference
@@ -58,77 +56,77 @@ module ietf-msdp {
    * Features
    */
   feature global-connect-source {
-    description 
+    description
       "Support configuration of global connect-source.";
   }
 
   feature global-default-peer {
-    description 
+    description
       "Support configuration of global default peer.";
   }
 
   feature global-default-peer-policy {
-    description 
+    description
       "Support configuration of global default peer.";
   }
 
   feature global-sa-filter {
-    description 
+    description
       "Support configuration of global SA filter.";
   }
 
   feature global-ttl-threshold {
-    description 
+    description
       "Support configuration of global ttl-threshold.";
   }
 
   feature rpc-clear-sa-cache {
-    description 
+    description
       "Support the rpc to clear SA cache.";
   }
 
   feature peer-admin-enable {
-    description 
+    description
       "Support configuration of peer administrative enabling.";
   }
 
   feature peer-as {
-    description 
+    description
       "Support configuration of peer AS number.";
   }
 
   feature peer-connect-source {
-    description 
+    description
       "Support configuration of global connect-source.";
   }
 
   feature peer-description {
-    description 
+    description
       "Support configuration of peer description.";
   }
 
   feature peer-key-chain {
-    description 
+    description
       "Support configuration of peer key-chain.";
   }
 
   feature peer-password {
-    description 
+    description
       "Support configuration of peer key-chain.";
   }
 
   feature peer-timer-connect-retry {
-    description 
+    description
       "Support configuration of peer timer for connect-retry.";
   }
 
   feature peer-timer-keepalive {
-    description 
+    description
       "Support configuration of peer timer for keepalive.";
   }
 
   feature peer-timer-holdtime {
-    description 
+    description
       "Support configuration of peer timer for holdtime.";
   }
 
@@ -174,7 +172,7 @@ module ietf-msdp {
   } // authentication-container
 
   grouping connect-source {
-    description "Attribute to configure connect-source.";    
+    description "Attribute to configure connect-source.";
     leaf connect-source {
       type if:interface-ref;
       must "/if:interfaces/if:interface[if:name = current()]/"
@@ -191,7 +189,7 @@ module ietf-msdp {
 
   grouping global-config-attributes {
     description "Global MSDP configuration.";
-    
+
     uses connect-source {
       if-feature global-connect-source;
     }
@@ -199,7 +197,7 @@ module ietf-msdp {
       if-feature global-default-peer;
       presence "";
       description
-        "The default peer accepts all MSDP SA messages. 
+        "The default peer accepts all MSDP SA messages.
          A default peer is needed in topologies where MSDP peers do
          not coexist with BGP peers. The reverse path forwarding
          (RPF) check on SA messages can fail, and no SA messages are
@@ -218,7 +216,7 @@ module ietf-msdp {
         type string;
         description
           "If specified, only those SA entries whose RP is permitted
-           in the prefix list are allowed; 
+           in the prefix list are allowed;
            if not specified, all SA messages from the default peer
            are accepted.";
       }
@@ -226,7 +224,7 @@ module ietf-msdp {
 
     container originating-rp {
       description
-        "";
+        "The container of originating-rp.";
       leaf interface {
         type if:interface-ref;
         must "/if:interfaces/if:interface[if:name = current()]/"
@@ -257,16 +255,16 @@ module ietf-msdp {
   grouping global-state-attributes {
     description "Global MSDP state attributes.";
   } // global-state-attributes
-    
+
   grouping peer-config-attributes {
     description "Per peer configuration for MSDP.";
-    
+
     uses authentication-container;
     leaf enable {
       if-feature peer-admin-enable;
       type boolean;
-      description 
-        "true to enable peer; 
+      description
+        "true to enable peer;
          false to disable peer.";
     }
     uses connect-source {
@@ -276,7 +274,7 @@ module ietf-msdp {
       if-feature peer-description;
       type string;
       description
-        "";
+        "The peer description.";
     }
     leaf mesh-group {
       type string;
@@ -304,14 +302,16 @@ module ietf-msdp {
         type uint16;
         units seconds;
         must ". > 3";
-        description "";
+        default 75;
+        description "The SA-Hold-Down-Period of this msdp peer.";
       }
       leaf keepalive-interval {
         if-feature peer-timer-keepalive;
         type uint16;
         units seconds;
         must ". > 1 and . < ../holdtime-interval";
-        description "";
+        default 60;
+        description "The keepalive timer of this msdp peer.";
       }
     } // timer
     uses ttl-threshold;
@@ -319,7 +319,7 @@ module ietf-msdp {
 
   grouping peer-state-attributes {
     description "Per peer state attributes for MSDP.";
-    
+
     leaf session-state {
       type enumeration {
         enum disabled  {
@@ -351,41 +351,41 @@ module ietf-msdp {
     leaf connect-retry-expire {
       type uint32;
       units seconds;
-      description "";
+      description "Connect retry expire time of peer connection.";
     }
     leaf hold-expire {
       type uint32;
       units seconds;
-      description "";
+      description "Hold expire time of peer connection.";
     }
     leaf is-default-peer {
       type boolean;
-      description "";
+      description "If this peer is default peer.";
     }
     leaf keepalive-expire {
       type uint32;
       units seconds;
-      description "";
+      description "Keepalive expire time of this peer.";
     }
     leaf reset-count {
       type uint32;
-      description "";
+      description "The reset count of this peer.";
     }
     uses statistics-container;
   } // peer-config-attributes
 
   grouping sa-cache-state-attributes {
     description "SA cache state attributes for MSDP.";
-    
+
     leaf up-time {
       type uint32;
       units seconds;
-      description "";
+      description "The up time of this sa cache.";
     }
     leaf expire {
       type uint32;
       units seconds;
-      description "";
+      description "If this cache has expired.";
     }
     leaf holddown-interval {
       type uint32;
@@ -394,7 +394,7 @@ module ietf-msdp {
     }
     leaf peer-learned-from {
       type inet:ipv4-address;
-      description 
+      description
         "The address of peer that we learned this SA from .";
     }
     leaf rpf-peer {
@@ -487,12 +487,12 @@ module ietf-msdp {
       type uint32;
       description
         "The size of the input queue.";
-    }    
+    }
     leaf size-out {
       type uint32;
       description
         "The size of the output queue.";
-    }    
+    }
   } // statistics-queue
 
   grouping statistics-sent-received {
@@ -535,7 +535,7 @@ module ietf-msdp {
    * Configuration data nodes
    */
   augment "/rt:routing/rt:routing-protocols" {
-    description 
+    description
       "MSDP augmentation to routing instance configuration.";
 
     container msdp {
@@ -572,10 +572,11 @@ module ietf-msdp {
    * Operational state data nodes
    */
   augment "/rt:routing-state/rt:routing-protocols" {
-    description 
+    description
       "MSDP augmentation to routing instance state.";
 
     container msdp {
+      presence "Container for MSDP protocol.";
       description
         "MSDP state data.";
 
@@ -597,7 +598,7 @@ module ietf-msdp {
           leaf address {
             type inet:ipv4-address;
             description
-              "";
+              "The address of peer";
           }
           uses peer-config-attributes;
           uses peer-state-attributes;
@@ -605,20 +606,20 @@ module ietf-msdp {
       } // peers
 
       container sa-cache {
-        description 
-          "";
+        description
+          "The sa cache information.";
         list entry {
           key "group source-addr";
           description "";
           leaf group {
             type inet:ipv4-address;
-            description "";
+            description "The group address of this sa cache.";
           }
           leaf source-addr {
             type union {
               type enumeration {
                 enum '*' {
-                  description "";
+                  description "The source addr of this sa cache.";
                 }
               }
               type inet:ipv4-address;
@@ -631,7 +632,7 @@ module ietf-msdp {
               "";
             leaf rp-address {
               type inet:ip-address;
-              description "";
+              description "The rp address.";
             }
             leaf is-local-rp {
               type boolean;
@@ -640,7 +641,7 @@ module ietf-msdp {
             leaf sa-adv-expire {
               type uint32;
               units seconds;
-              description 
+              description
                 "Periodic SA advertisement timer exipiring time on
                  a local RP.";
             }
@@ -704,7 +705,7 @@ module ietf-msdp {
       leaf peer-as {
         type string;
         description
-          "ASN from which MSDP SA cache entries have been learned. 
+          "ASN from which MSDP SA cache entries have been learned.
            If this is not provided, entries learned from all AS's
            are cleared.";
       }
