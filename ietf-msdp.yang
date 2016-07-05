@@ -23,7 +23,7 @@ module ietf-msdp {
     prefix "ip";
   }
 
-  import ietf-routing-key-chain {
+  import ietf-key-chain {
     prefix "key-chain";
   }
 
@@ -43,7 +43,7 @@ module ietf-msdp {
   description
     "The module defines the YANG definitions for MSDP.";
 
-  revision 2016-06-26 {
+  revision 2016-07-05 {
     description
       "Initial revision.";
     reference
