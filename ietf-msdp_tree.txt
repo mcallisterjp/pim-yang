@@ -1,5 +1,5 @@
 module: ietf-msdp
-augment /rt:routing/rt:routing-protocols:
+augment /rt:routing/rt:control-plane-protocols:
    +--rw msdp!
       +--rw global
       |  +--rw connect-source?   if:interface-ref
@@ -55,7 +55,7 @@ augment /rt:routing/rt:routing-protocols:
             |  +--rw holdtime-interval?        uint16 {peer-timer-holdtime}?
             |  +--rw keepalive-interval?       uint16 {peer-timer-keepalive}?
             +--rw ttl-threshold?    uint8
-augment /rt:routing-state/rt:routing-protocols:
+augment /rt:routing-state/rt:control-plane-protocols:
    +--ro msdp!
       +--ro global
       |  +--ro connect-source?   if:interface-ref
