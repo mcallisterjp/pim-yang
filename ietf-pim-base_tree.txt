@@ -1,6 +1,6 @@
 module: ietf-pim-base
-augment /rt:routing/rt:routing-protocols:
-   +--rw pim
+augment /rt:routing/rt:control-plane-protocols:
+   +--rw pim!
       +--rw graceful-restart
       |  +--rw enabled?    boolean
       |  +--rw duration?   uint16
@@ -16,7 +16,7 @@ augment /rt:routing/rt:routing-protocols:
                +--rw address-family       identityref
                +--rw bfd
                |  +--rw enabled?                    boolean
-               |  +--rw local-multiplier?           multiplier
+               |  +--rw local-multiplier?           bfd-multiplier
                |  +--rw (interval-config-type)?
                |     +--:(tx-rx-intervals)
                |     |  +--rw desired-min-tx-interval     uint32
@@ -38,7 +38,7 @@ augment /rt:routing/rt:routing-protocols:
                |     +--rw jp-multipler?        uint8
                +--rw propagation-delay?   uint16 {intf-propagation-delay}?
                +--rw override-interval?   uint16 {intf-override-interval}?
-augment /rt:routing-state/rt:routing-protocols:
+augment /rt:routing-state/rt:control-plane-protocols:
    +--ro pim
       +--ro address-family* [address-family]
       |  +--ro address-family        identityref
@@ -75,11 +75,11 @@ augment /rt:routing-state/rt:routing-protocols:
       |  |     +--ro register-stop?                yang:counter64
       |  |     +--ro state-refresh?                yang:counter64
       |  +--ro topology-tree-info
-      |     +--ro ipv4-route* [group source-addr is-rpt]
+      |     +--ro ipv4-route* [group source-address is-rpt]
       |     |  +--ro group                 inet:ipv4-address
-      |     |  +--ro source-addr           union
+      |     |  +--ro source-address        union
       |     |  +--ro is-rpt                boolean
-      |     |  +--ro expire?               uint32
+      |     |  +--ro expiration?           uint32
       |     |  +--ro incoming-interface?   if:interface-ref
       |     |  +--ro mode?                 pim-mode
       |     |  +--ro msdp-learned?         boolean
@@ -88,15 +88,15 @@ augment /rt:routing-state/rt:routing-protocols:
       |     |  +--ro spt-bit?              boolean
       |     |  +--ro up-time?              uint32
       |     |  +--ro outgoing-interface* [name]
-      |     |     +--ro name        if:interface-ref
-      |     |     +--ro expire?     timer-value
-      |     |     +--ro up-time?    uint32
-      |     |     +--ro jp-state?   enumeration
-      |     +--ro ipv6-route* [group source-addr is-rpt]
+      |     |     +--ro name          if:interface-ref
+      |     |     +--ro expiration?   timer-value
+      |     |     +--ro up-time?      uint32
+      |     |     +--ro jp-state?     enumeration
+      |     +--ro ipv6-route* [group source-address is-rpt]
       |        +--ro group                 inet:ipv6-address
-      |        +--ro source-addr           union
+      |        +--ro source-address        union
       |        +--ro is-rpt                boolean
-      |        +--ro expire?               uint32
+      |        +--ro expiration?           uint32
       |        +--ro incoming-interface?   if:interface-ref
       |        +--ro mode?                 pim-mode
       |        +--ro msdp-learned?         boolean
@@ -105,10 +105,10 @@ augment /rt:routing-state/rt:routing-protocols:
       |        +--ro spt-bit?              boolean
       |        +--ro up-time?              uint32
       |        +--ro outgoing-interface* [name]
-      |           +--ro name        if:interface-ref
-      |           +--ro expire?     timer-value
-      |           +--ro up-time?    uint32
-      |           +--ro jp-state?   enumeration
+      |           +--ro name          if:interface-ref
+      |           +--ro expiration?   timer-value
+      |           +--ro up-time?      uint32
+      |           +--ro jp-state?     enumeration
       +--ro interfaces
          +--ro interface* [interface]
             +--ro interface         if:interface-ref
@@ -116,7 +116,7 @@ augment /rt:routing-state/rt:routing-protocols:
                +--ro address-family       identityref
                +--ro bfd
                |  +--ro enabled?                    boolean
-               |  +--ro local-multiplier?           multiplier
+               |  +--ro local-multiplier?           bfd-multiplier
                |  +--ro (interval-config-type)?
                |     +--:(tx-rx-intervals)
                |     |  +--ro desired-min-tx-interval     uint32
@@ -139,24 +139,24 @@ augment /rt:routing-state/rt:routing-protocols:
                +--ro propagation-delay?   uint16 {intf-propagation-delay}?
                +--ro override-interval?   uint16 {intf-override-interval}?
                +--ro ipv4
-               |  +--ro address*   inet:ipv4-address
-               |  +--ro dr-addr?   inet:ipv4-address
+               |  +--ro address*      inet:ipv4-address
+               |  +--ro dr-address?   inet:ipv4-address
                +--ro ipv6
-               |  +--ro address*   inet:ipv6-address
-               |  +--ro dr-addr?   inet:ipv6-address
+               |  +--ro address*      inet:ipv6-address
+               |  +--ro dr-address?   inet:ipv6-address
                +--ro oper-status?         enumeration
-               +--ro hello-expire?        timer-value
+               +--ro hello-expiration?    timer-value
                +--ro neighbor-ipv4* [address]
                |  +--ro address        inet:ipv4-address
                |  +--ro bfd-status?    enumeration
-               |  +--ro expire?        timer-value
+               |  +--ro expiration?    timer-value
                |  +--ro dr-priority?   uint32
                |  +--ro gen-id?        uint32
                |  +--ro up-time?       uint32
                +--ro neighbor-ipv6* [address]
                   +--ro address        inet:ipv6-address
                   +--ro bfd-status?    enumeration
-                  +--ro expire?        timer-value
+                  +--ro expiration?    timer-value
                   +--ro dr-priority?   uint32
                   +--ro gen-id?        uint32
                   +--ro up-time?       uint32
@@ -172,8 +172,8 @@ notifications:
       +--ro event-type?            interface-event-type
       +--ro interface-state-ref?   leafref
       +--ro ipv4
-      |  +--ro address*   inet:ipv4-address
-      |  +--ro dr-addr?   inet:ipv4-address
+      |  +--ro address*      inet:ipv4-address
+      |  +--ro dr-address?   inet:ipv4-address
       +--ro ipv6
-         +--ro address*   inet:ipv6-address
-         +--ro dr-addr?   inet:ipv6-address
+         +--ro address*      inet:ipv6-address
+         +--ro dr-address?   inet:ipv6-address

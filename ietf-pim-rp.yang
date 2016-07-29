@@ -1,6 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-rp@2016-03-18.yang"
-
+<CODE BEGINS> file "ietf-pim-rp@2016-07-26.yang"
 module ietf-pim-rp {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-rp";
   // replace with IANA namespace when assigned
@@ -35,12 +34,28 @@ module ietf-pim-rp {
      WG Chair: Mike McBride
                <mailto:mmcbride7@gmail.com>
 
-     Editors:   ";
+     Editor:   Xufeng Liu
+               <mailto:xliu@kuatrotech.com>
+
+     Editor:   Pete McAllister
+               <mailto:pete.mcallister@metaswitch.com>
+
+     Editor:   Anish Peter
+               <mailto:anishp@juniper.net>
+
+     Editor:   Mahesh Sivakumar
+               <mailto:masivaku@cisco.com>
+
+     Editor:   Yisong Liu
+               <mailto:liuyisong@huawei.com>
+
+     Editor:   Fangwei Hu
+               <mailto:hu.fangwei@zte.com.cn>";
 
   description
     "The YANG module defines a PIM RP (Rendezvous Point) model.";
 
-  revision 2016-03-18 {
+  revision 2016-07-26 {
     description
       "Initial revision.";
     reference
@@ -64,25 +79,25 @@ module ietf-pim-rp {
   feature static-rp-override {
     description
       "This feature indicates that the system supports configuration
-      of static RP override.";
+       of static RP override.";
   }
 
   feature candidate-interface {
     description
       "This feature indicates that the system supports using
-      an interface to configure a BSR or RP candidate.";
+       an interface to configure a BSR or RP candidate.";
   }
 
   feature candidate-ipv4 {
     description
       "This feature indicates that the system supports using
-      an IPv4 address to configure a BSR or RP candidate.";
+       an IPv4 address to configure a BSR or RP candidate.";
   }
 
   feature candidate-ipv6 {
     description
       "This feature indicates that the system supports using
-      an IPv6 address to configure a BSR or RP candidate.";
+       an IPv6 address to configure a BSR or RP candidate.";
   }
 
 
@@ -117,7 +132,7 @@ module ietf-pim-rp {
   identity rp-mode {
     description
       "The mode of an RP, which can be SM (Sparse Mode) or
-      BIDIR (bi-directional).";
+       BIDIR (bi-directional).";
   }
 
   identity rp-info-source-type {
@@ -160,7 +175,7 @@ module ietf-pim-rp {
           }
         }
         case ipv4-address {
-          when "../../../../address-family = 'rt:ipv4'" {
+          when "../../../pim-base:address-family = 'rt:ipv4'" {
             description
               "Only applicable to ipv4 address family.";
           }
@@ -173,7 +188,7 @@ module ietf-pim-rp {
           }
         }
         case ipv6-address {
-          when "../../../../address-family = 'rt:ipv6'" {
+          when "../../../pim-base:address-family = 'rt:ipv6'" {
             description
               "Only applicable to ipv6 address family.";
           }
@@ -194,7 +209,7 @@ module ietf-pim-rp {
         mandatory true;
         description
           "Value contained in BSR messages used by all routers to
-          hash (map) to an RP.";
+           hash (map) to an RP.";
       }
 
       leaf priority {
@@ -223,7 +238,7 @@ module ietf-pim-rp {
     }
 
     list rp-candidate-ipv4-address {
-      when "../../../address-family = 'rt:ipv4'" {
+      when "../../../pim-base:address-family = 'rt:ipv4'" {
         description
           "Only applicable to ipv4 address family.";
       }
@@ -240,7 +255,7 @@ module ietf-pim-rp {
     }
 
     list rp-candidate-ipv6-address {
-      when "../../../address-family = 'rt:ipv6'" {
+      when "../../../pim-base:address-family = 'rt:ipv6'" {
         description
           "Only applicable to ipv6 address family.";
       }
@@ -263,24 +278,24 @@ module ietf-pim-rp {
     container bsr {
       description
         "BSR information.";
-      leaf addr {
+      leaf address {
         type inet:ip-address;
         description "BSR address";
       }
       leaf hash-mask-length {
         type uint8;
-        description "";
+        description "Hash mask length.";
       }
       leaf priority {
         type uint8 {
           range "0..255";
         }
-        description "";
+        description "Priority.";
       }
       leaf up-time {
         type uint32;
         units seconds;
-        description "";
+        description "Up time duration.";
       }
     }
     choice election-state {
@@ -349,7 +364,7 @@ module ietf-pim-rp {
     leaf bsr-next-bootstrap {
       type uint16;
       units seconds;
-      description "";
+      description "The time when next bootstrap will be sent.";
     }
 
     container rp {
@@ -357,22 +372,23 @@ module ietf-pim-rp {
         "State information of the RP.";
       leaf rp-address {
         type inet:ip-address;
-        description "";
+        description "RP address.";
       }
       leaf group-policy {
         type string;
-        description "";
+        description "Group policy.";
       }
       leaf up-time {
         type uint32;
         units seconds;
-        description "";
+        description "Up time duration.";
       }
     }
     leaf rp-candidate-next-advertisement {
       type uint16;
       units seconds;
-      description "";
+      description
+        "When the next advertisement will be sent as RP candidate";
     }
   } // bsr-state-attributes
 
@@ -382,11 +398,11 @@ module ietf-pim-rp {
     leaf up-time {
       type uint32;
       units seconds;
-      description "";
+      description "Up time duration.";
     }
-    leaf expire {
+    leaf expiration {
       type pim-base:timer-value;
-      description "";
+      description "Expiration time.";
     }
   } // rp-mapping-state-attributes
 
@@ -397,16 +413,16 @@ module ietf-pim-rp {
       type identityref {
         base rp-info-source-type;
       }
-      description "";
+      description "The information source of an RP.";
     } // info-source-type
     leaf up-time {
       type uint32;
       units seconds;
-      description "";
+      description "Up time duration.";
     }
-    leaf expire {
+    leaf expiration {
       type pim-base:timer-value;
-      description "";
+      description "Expiration time.";
     }
   } // rp-state-attributes
 
@@ -423,8 +439,8 @@ module ietf-pim-rp {
       type boolean;
       description
         "When there is a conflict between static RP and dynamic
-        RP, setting this attribute to 'true' will ask the
-        system to use static RP.";
+         RP, setting this attribute to 'true' will ask the
+         system to use static RP.";
     }
   } // static-rp-attributes
 
@@ -435,14 +451,14 @@ module ietf-pim-rp {
       description
         "Containing static RP attributes.";
       list ipv4-rp {
-        when "../../../address-family = 'rt:ipv4'" {
+        when "../../../pim-base:address-family = 'rt:ipv4'" {
           description
             "Only applicable to ipv4 address family.";
         }
-        key "ipv4-addr";
+        key "ipv4-address";
         description
           "A list of IPv4 RP addresses.";
-        leaf ipv4-addr {
+        leaf ipv4-address {
           type inet:ipv4-address;
           description
             "Specifies a static RP address.";
@@ -450,14 +466,14 @@ module ietf-pim-rp {
       }
 
       list ipv6-rp {
-        when "../../../address-family = 'rt:ipv6'" {
+        when "../../../pim-base:address-family = 'rt:ipv6'" {
           description
             "Only applicable to ipv6 address family.";
         }
-        key "ipv6-addr";
+        key "ipv6-address";
         description
           "A list of IPv6 RP addresses.";
-        leaf ipv6-addr {
+        leaf ipv6-address {
           type inet:ipv6-address;
           description
             "Specifies a static RP address.";
@@ -487,7 +503,7 @@ module ietf-pim-rp {
    * Configuration data nodes
    */
 
-  augment "/rt:routing/rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing/rt:control-plane-protocols/pim-base:pim/"
     + "pim-base:address-family" {
     description "PIM RP augmentation.";
 
@@ -510,8 +526,8 @@ module ietf-pim-rp {
    * Operational state data nodes
    */
 
-  augment "/rt:routing-state/rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
+  augment "/rt:routing-state/rt:control-plane-protocols/"
+    + "pim-base:pim/pim-base:address-family" {
     description
       "PIM SM state.";
 
@@ -533,14 +549,14 @@ module ietf-pim-rp {
         description
           "Containing a list RPs.";
         list ipv4-rp {
-          when "../../../address-family = 'rt:ipv4'" {
+          when "../../../pim-base:address-family = 'rt:ipv4'" {
             description
               "Only applicable to ipv4 address family.";
           }
-          key "ipv4-addr mode";
+          key "ipv4-address mode";
           description
             "A list of IPv4 RP addresses.";
-          leaf ipv4-addr {
+          leaf ipv4-address {
             type inet:ipv4-address;
             description
               "RP address.";
@@ -552,7 +568,7 @@ module ietf-pim-rp {
             description
               "RP mode.";
           }
-          leaf info-source-addr {
+          leaf info-source-address {
             type inet:ipv4-address;
             description
               "The address where RP information is learned.";
@@ -561,14 +577,14 @@ module ietf-pim-rp {
         }
 
         list ipv6-rp {
-          when "../../../address-family = 'rt:ipv6'" {
+          when "../../../pim-base:address-family = 'rt:ipv6'" {
             description
               "Only applicable to ipv6 address family.";
           }
-          key "ipv6-addr mode";
+          key "ipv6-address mode";
           description
             "A list of IPv6 RP addresses.";
-          leaf ipv6-addr {
+          leaf ipv6-address {
             type inet:ipv6-address;
             description
               "RP address.";
@@ -580,7 +596,7 @@ module ietf-pim-rp {
             description
               "RP mode.";
           }
-          leaf info-source-addr {
+          leaf info-source-address {
             type inet:ipv6-address;
             description
               "The address where RP information is learned.";
@@ -593,11 +609,11 @@ module ietf-pim-rp {
         description
           "Containing a list group-to-RP mappings.";
         list ipv4-rp {
-          when "../../../address-family = 'rt:ipv4'" {
+          when "../../../pim-base:address-family = 'rt:ipv4'" {
             description
               "Only applicable to ipv4 address family.";
           }
-          key "group rp-addr";
+          key "group rp-address";
           description
             "A list of group-to-RP mappings.";
           leaf group {
@@ -605,7 +621,7 @@ module ietf-pim-rp {
             description
               "Group prefix.";
           }
-          leaf rp-addr {
+          leaf rp-address {
             type inet:ipv4-address;
             description
               "RP address.";
@@ -614,11 +630,11 @@ module ietf-pim-rp {
         }
 
         list ipv6-rp {
-          when "../../../address-family = 'rt:ipv6'" {
+          when "../../../pim-base:address-family = 'rt:ipv6'" {
             description
               "Only applicable to ipv6 address family.";
           }
-          key "group rp-addr";
+          key "group rp-address";
           description
             "A list of IPv6 RP addresses.";
           leaf group {
@@ -626,7 +642,7 @@ module ietf-pim-rp {
             description
               "Group prefix.";
           }
-          leaf rp-addr {
+          leaf rp-address {
             type inet:ipv6-address;
             description
               "RP address.";
@@ -653,26 +669,25 @@ module ietf-pim-rp {
     uses pim-base:pim-instance-af-state-ref;
     leaf group {
       type inet:ip-address;
-      description "";
+      description "Group address.";
     }
     leaf rp-address {
       type inet:ip-address;
-      description "";
+      description "RP address.";
     }
     leaf is-rpt {
       type boolean;
-      description "";
+      description "'true' if the tree is RPT.";
     }
     leaf mode {
       type pim-base:pim-mode;
-      description "";
+      description "PIM mode.";
     }
     leaf message-origin {
       type inet:ip-address;
-      description "";
+      description "Where the message is originated.";
     }
   }
 }
-
 <CODE ENDS>
 ]]>

@@ -1,11 +1,11 @@
 module: ietf-pim-rp
-augment /rt:routing/rt:routing-protocols/pim-base:pim/pim-base:address-family:
+augment /rt:routing/rt:control-plane-protocols/pim-base:pim/pim-base:address-family:
    +--rw rp
       +--rw static-rp
-      |  +--rw ipv4-rp* [ipv4-addr]
-      |  |  +--rw ipv4-addr    inet:ipv4-address
-      |  +--rw ipv6-rp* [ipv6-addr]
-      |     +--rw ipv6-addr    inet:ipv6-address
+      |  +--rw ipv4-rp* [ipv4-address]
+      |  |  +--rw ipv4-address    inet:ipv4-address
+      |  +--rw ipv6-rp* [ipv6-address]
+      |     +--rw ipv6-address    inet:ipv6-address
       +--rw bsr {bsr}?
          +--rw bsr-candidate!
          |  +--rw (interface-or-address)?
@@ -29,14 +29,13 @@ augment /rt:routing/rt:routing-protocols/pim-base:pim/pim-base:address-family:
             +--rw ipv6-address    inet:ipv6-address
             +--rw policy?         string
             +--rw mode?           identityref
-augment /rt:routing-state/rt:routing-protocols/pim-base:pim/
-pim-base:address-family:
+augment /rt:routing-state/rt:control-plane-protocols/pim-base:pim/pim-base:address-family:
    +--ro rp
       +--ro static-rp
-      |  +--ro ipv4-rp* [ipv4-addr]
-      |  |  +--ro ipv4-addr    inet:ipv4-address
-      |  +--ro ipv6-rp* [ipv6-addr]
-      |     +--ro ipv6-addr    inet:ipv6-address
+      |  +--ro ipv4-rp* [ipv4-address]
+      |  |  +--ro ipv4-address    inet:ipv4-address
+      |  +--ro ipv6-rp* [ipv6-address]
+      |     +--ro ipv6-address    inet:ipv6-address
       +--ro bsr {bsr}?
       |  +--ro bsr-candidate!
       |  |  +--ro (interface-or-address)?
@@ -61,7 +60,7 @@ pim-base:address-family:
       |  |  +--ro policy?         string
       |  |  +--ro mode?           identityref
       |  +--ro bsr
-      |  |  +--ro addr?               inet:ip-address
+      |  |  +--ro address?            inet:ip-address
       |  |  +--ro hash-mask-length?   uint8
       |  |  +--ro priority?           uint8
       |  |  +--ro up-time?            uint32
@@ -77,31 +76,31 @@ pim-base:address-family:
       |  |  +--ro up-time?        uint32
       |  +--ro rp-candidate-next-advertisement?   uint16
       +--ro rp-list
-      |  +--ro ipv4-rp* [ipv4-addr mode]
-      |  |  +--ro ipv4-addr           inet:ipv4-address
-      |  |  +--ro mode                identityref
-      |  |  +--ro info-source-addr?   inet:ipv4-address
-      |  |  +--ro info-source-type?   identityref
-      |  |  +--ro up-time?            uint32
-      |  |  +--ro expire?             pim-base:timer-value
-      |  +--ro ipv6-rp* [ipv6-addr mode]
-      |     +--ro ipv6-addr           inet:ipv6-address
-      |     +--ro mode                identityref
-      |     +--ro info-source-addr?   inet:ipv6-address
-      |     +--ro info-source-type?   identityref
-      |     +--ro up-time?            uint32
-      |     +--ro expire?             pim-base:timer-value
+      |  +--ro ipv4-rp* [ipv4-address mode]
+      |  |  +--ro ipv4-address           inet:ipv4-address
+      |  |  +--ro mode                   identityref
+      |  |  +--ro info-source-address?   inet:ipv4-address
+      |  |  +--ro info-source-type?      identityref
+      |  |  +--ro up-time?               uint32
+      |  |  +--ro expiration?            pim-base:timer-value
+      |  +--ro ipv6-rp* [ipv6-address mode]
+      |     +--ro ipv6-address           inet:ipv6-address
+      |     +--ro mode                   identityref
+      |     +--ro info-source-address?   inet:ipv6-address
+      |     +--ro info-source-type?      identityref
+      |     +--ro up-time?               uint32
+      |     +--ro expiration?            pim-base:timer-value
       +--ro rp-mappings
-         +--ro ipv4-rp* [group rp-addr]
-         |  +--ro group      inet:ipv4-prefix
-         |  +--ro rp-addr    inet:ipv4-address
-         |  +--ro up-time?   uint32
-         |  +--ro expire?    pim-base:timer-value
-         +--ro ipv6-rp* [group rp-addr]
-            +--ro group      inet:ipv6-prefix
-            +--ro rp-addr    inet:ipv6-address
-            +--ro up-time?   uint32
-            +--ro expire?    pim-base:timer-value
+         +--ro ipv4-rp* [group rp-address]
+         |  +--ro group         inet:ipv4-prefix
+         |  +--ro rp-address    inet:ipv4-address
+         |  +--ro up-time?      uint32
+         |  +--ro expiration?   pim-base:timer-value
+         +--ro ipv6-rp* [group rp-address]
+            +--ro group         inet:ipv6-prefix
+            +--ro rp-address    inet:ipv6-address
+            +--ro up-time?      uint32
+            +--ro expiration?   pim-base:timer-value
 notifications:
    +---n pim-rp-event
       +--ro event-type?              rp-event-type

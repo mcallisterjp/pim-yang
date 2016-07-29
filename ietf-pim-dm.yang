@@ -1,6 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-dm@2016-03-18.yang"
-
+<CODE BEGINS> file "ietf-pim-dm@2016-07-26.yang"
 module ietf-pim-dm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-dm";
   // replace with IANA namespace when assigned
@@ -27,12 +26,28 @@ module ietf-pim-dm {
      WG Chair: Mike McBride
                <mailto:mmcbride7@gmail.com>
 
-     Editors:   ";
+     Editor:   Xufeng Liu
+               <mailto:xliu@kuatrotech.com>
+
+     Editor:   Pete McAllister
+               <mailto:pete.mcallister@metaswitch.com>
+
+     Editor:   Anish Peter
+               <mailto:anishp@juniper.net>
+
+     Editor:   Mahesh Sivakumar
+               <mailto:masivaku@cisco.com>
+
+     Editor:   Yisong Liu
+               <mailto:liuyisong@huawei.com>
+
+     Editor:   Fangwei Hu
+               <mailto:hu.fangwei@zte.com.cn>";
 
   description
     "The YANG module defines a DM (Dense Mode) PIM model.";
 
-  revision 2016-03-18 {
+  revision 2016-07-26 {
     description
       "Initial revision.";
     reference
@@ -55,7 +70,7 @@ module ietf-pim-dm {
    * Configuration data nodes
    */
 
-  augment "/rt:routing/rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing/rt:control-plane-protocols/pim-base:pim/"
     + "pim-base:address-family" {
     description "PIM DM augmentation.";
 
@@ -66,7 +81,7 @@ module ietf-pim-dm {
     } // Dm
   } // augment
 
-  augment "/rt:routing/rt:routing-protocols/pim-base:pim/"
+  augment "/rt:routing/rt:control-plane-protocols/pim-base:pim/"
     + "pim-base:interfaces/pim-base:interface/"
     + "pim-base:address-family" {
     description "PIM DM augmentation to PIM base interface.";
@@ -82,8 +97,8 @@ module ietf-pim-dm {
    * Operational state data nodes
    */
 
-  augment "/rt:routing-state/rt:routing-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
+  augment "/rt:routing-state/rt:control-plane-protocols/"
+    + "pim-base:pim/pim-base:address-family" {
     description
       "PIM DM state.";
     container dm {
@@ -100,6 +115,5 @@ module ietf-pim-dm {
    * Notifications
    */
 }
-
 <CODE ENDS>
 ]]>

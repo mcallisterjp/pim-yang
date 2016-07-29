@@ -1,6 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-base@2016-03-18.yang"
-
+<CODE BEGINS> file "ietf-pim-base@2016-07-26.yang"
 module ietf-pim-base {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
   // replace with IANA namespace when assigned
@@ -39,13 +38,29 @@ module ietf-pim-base {
      WG Chair: Mike McBride
                <mailto:mmcbride7@gmail.com>
 
-     Editors:   ";
+     Editor:   Xufeng Liu
+               <mailto:xliu@kuatrotech.com>
+
+     Editor:   Pete McAllister
+               <mailto:pete.mcallister@metaswitch.com>
+
+     Editor:   Anish Peter
+               <mailto:anishp@juniper.net>
+
+     Editor:   Mahesh Sivakumar
+               <mailto:masivaku@cisco.com>
+
+     Editor:   Yisong Liu
+               <mailto:liuyisong@huawei.com>
+
+     Editor:   Fangwei Hu
+               <mailto:hu.fangwei@zte.com.cn>";
 
   description
     "The module defines a collection of YANG definitions common for
-    all PIM modes.";
+     all PIM modes.";
 
-  revision 2016-03-18 {
+  revision 2016-07-26 {
     description
       "Initial revision.";
     reference
@@ -63,7 +78,7 @@ module ietf-pim-base {
   feature global-graceful-restart {
     description
       "Global configuraiont for graceful restart support as per
-      RFC5306.";
+       RFC5306.";
   }
 
   feature intf-dr-priority {
@@ -114,7 +129,7 @@ module ietf-pim-base {
   feature per-af-graceful-restart {
     description
       "Per AF configuraiont for graceful restart support as per
-      RFC5306.";
+       RFC5306.";
   }
 
   /*
@@ -320,33 +335,33 @@ module ietf-pim-base {
     description
       "A grouping defining interface attributes.";
     container ipv4 {
-      when "../../../address-family = 'rt:ipv4'" {
+      when "../address-family = 'rt:ipv4'" {
         description
-          "Only applicable to ipv4 address family.";
+          "Only applicable to IPv4 address family.";
       }
-      description "";
+      description "Interface state attributes for IPv4.";
       leaf-list address {
         type inet:ipv4-address;
-        description "";
+        description "List of addresses.";
       }
-      leaf dr-addr {
+      leaf dr-address {
         type inet:ipv4-address;
-        description "";
+        description "Designated Router (DR) address.";
       }
     }
     container ipv6 {
-      when "../../../address-family = 'rt:ipv6'" {
+      when "../address-family = 'rt:ipv6'" {
         description
-          "Only applicable to ipv6 address family.";
+          "Only applicable to IPv6 address family.";
       }
-      description "";
+      description "Interface state attributes for IPv6.";
       leaf-list address {
         type inet:ipv6-address;
-        description "";
+        description "List of addresses.";
       }
-      leaf dr-addr {
+      leaf dr-address {
         type inet:ipv6-address;
-        description "";
+        description "Designated Router (DR) address.";
       }
     }
     uses interface-state-af-attributes;
@@ -367,38 +382,38 @@ module ietf-pim-base {
           "The interface does not pass any packets.";
         }
       }
-      description "";
+      description "Operational status.";
     }
 
-    leaf hello-expire {
+    leaf hello-expiration {
       type timer-value;
       description "Hello interval exiration time.";
     }
 
     list neighbor-ipv4 {
-      when "../../../address-family = 'rt:ipv4'" {
+      when "../address-family = 'rt:ipv4'" {
         description
-          "Only applicable to ipv4 address family.";
+          "Only applicable to IPv4 address family.";
       }
       key "address";
-      description "";
+      description "Neighbor state information.";
       leaf address {
         type inet:ipv4-address;
-        description "";
+        description "Neighbor address.";
       }
       uses neighbor-state-af-attributes;
     } // list neighbor-ipv4
 
     list neighbor-ipv6 {
-      when "../../../address-family = 'rt:ipv6'" {
+      when "../address-family = 'rt:ipv6'" {
         description
-          "Only applicable to ipv6 address family.";
+          "Only applicable to IPv6 address family.";
       }
       key "address";
-      description "";
+      description "Neighbor state information.";
       leaf address {
         type inet:ipv6-address;
-        description "";
+        description "Neighbor address.";
       }
       uses neighbor-state-af-attributes;
     } // list neighbor-ipv4
@@ -408,10 +423,10 @@ module ietf-pim-base {
     description
       "A grouping defining multicast route attributes.";
 
-    leaf expire {
+    leaf expiration {
       type uint32;
       units seconds;
-      description "";
+      description "When the route will expire.";
     }
     leaf incoming-interface {
       type if:interface-ref;
@@ -421,28 +436,28 @@ module ietf-pim-base {
     }
     leaf mode {
       type pim-mode;
-      description "";
+      description "PIM mode.";
     }
     leaf msdp-learned {
       type boolean;
-      description "";
+      description "'true' if route is learned from MSDP.";
     }
     leaf rp-address {
       type inet:ip-address;
-      description "";
+      description "RP address.";
     }
     leaf rpf-neighbor {
       type inet:ip-address;
-      description "";
+      description "RPF neighbor address.";
     }
     leaf spt-bit {
       type boolean;
-      description "";
+      description "'true' if SPT bit is set.";
     }
     leaf up-time {
       type uint32;
       units seconds;
-      description "";
+      description "Up time duration.";
     }
     list outgoing-interface {
       key "name";
@@ -452,10 +467,10 @@ module ietf-pim-base {
       leaf name {
         type if:interface-ref;
         description
-          "Interface name";
+          "Interface name.";
       }
 
-      leaf expire {
+      leaf expiration {
         type timer-value;
         description "Expiring information.";
       }
@@ -463,7 +478,7 @@ module ietf-pim-base {
       leaf up-time {
         type uint32;
         units seconds;
-        description "";
+        description "Up time duration.";
       }
 
       leaf jp-state {
@@ -485,7 +500,7 @@ module ietf-pim-base {
                state functions exactly like the Join state.";
           }
         }
-        description "";
+        description "Join-prune state.";
       }
     }
   } // multicast-route-attributes
@@ -497,16 +512,16 @@ module ietf-pim-base {
       type enumeration {
         enum up {
           description
-          "";
+            "BFD is up.";
         }
         enum down {
           description
-          "";
+            "BFD is down.";
         }
       }
-      description "";
+      description "BFD status.";
     }
-    leaf expire {
+    leaf expiration {
       type timer-value;
       description "Neighbor expiring information.";
     }
@@ -521,7 +536,7 @@ module ietf-pim-base {
     leaf up-time {
       type uint32;
       units seconds;
-      description "";
+      description "Up time duration.";
     }
   } // neighbor-state-af-attributes
 
@@ -538,8 +553,9 @@ module ietf-pim-base {
       "An absolute reference to a PIM instance address family.";
     leaf instance-af-state-ref {
       type leafref {
-        path "/rt:routing-state/rt:routing-protocols/pim-base:pim/"
-          + "pim-base:address-family/pim-base:address-family";
+        path "/rt:routing-state/rt:control-plane-protocols/"
+          + "pim-base:pim/pim-base:address-family/"
+          + "pim-base:address-family";
       }
       description
         "Reference to a PIM instance address family.";
@@ -551,8 +567,8 @@ module ietf-pim-base {
       "An absolute reference to a PIM interface state.";
     leaf interface-state-ref {
       type leafref {
-        path "/rt:routing-state/rt:routing-protocols/pim-base:pim/"
-          + "pim-base:interfaces/pim-base:interface/"
+        path "/rt:routing-state/rt:control-plane-protocols/"
+          + "pim-base:pim/pim-base:interfaces/pim-base:interface/"
           + "pim-base:interface";
       }
       description
@@ -566,9 +582,8 @@ module ietf-pim-base {
     uses pim-interface-state-ref;
     leaf interface-af-state-ref {
       type leafref {
-        path "/rt:routing-state/"
-          + "rt:routing-protocols/pim-base:pim/pim-base:interfaces/"
-          + "pim-base:interface"
+        path "/rt:routing-state/rt:control-plane-protocols/"
+          + "pim-base:pim/pim-base:interfaces/pim-base:interface"
           + "[pim-base:interface = "
           + "current()/../interface-state-ref]/"
           + "pim-base:address-family/pim-base:address-family";
@@ -578,12 +593,11 @@ module ietf-pim-base {
     }
     leaf neighbor-ipv4-state-ref {
       when "../interface-af-state-ref = 'rt:ipv4'" {
-        description "";
+        description "Only applicable to IPv4 address family.";
       }
       type leafref {
-        path "/rt:routing-state/"
-          + "rt:routing-protocols/pim-base:pim/pim-base:interfaces/"
-          + "pim-base:interface"
+        path "/rt:routing-state/rt:control-plane-protocols/"
+          + "pim-base:pim/pim-base:interfaces/pim-base:interface"
           + "[pim-base:interface = "
           + "current()/../interface-state-ref]/"
           + "pim-base:address-family"
@@ -596,12 +610,11 @@ module ietf-pim-base {
     }
     leaf neighbor-ipv6-state-ref {
       when "../interface-af-state-ref = 'rt:ipv6'" {
-        description "";
+        description "Only applicable to IPv6 address family.";
       }
       type leafref {
-        path "/rt:routing-state/"
-          + "rt:routing-protocols/pim-base:pim/pim-base:interfaces/"
-          + "pim-base:interface"
+        path "/rt:routing-state/rt:control-plane-protocols/"
+          + "pim-base:pim/pim-base:interfaces/pim-base:interface"
           + "[pim-base:interface = "
           + "current()/../interface-state-ref]/"
           + "pim-base:address-family"
@@ -618,31 +631,31 @@ module ietf-pim-base {
     description
       "A container defining statistics attributes.";
     container statistics {
-      description "";
+      description "A container defining statistics attributes.";
       leaf discontinuity-time {
         type yang:date-and-time;
         description
           "The time on the most recent occasion at which any one
-          or more of the statistic counters suffered a
-          discontinuity. If no such discontinuities have occurred
-          since the last re-initialization of the local
-          management subsystem, then this node contains the time
-          the local management subsystem re-initialized itself.";
+           or more of the statistic counters suffered a
+           discontinuity. If no such discontinuities have occurred
+           since the last re-initialization of the local
+           management subsystem, then this node contains the time
+           the local management subsystem re-initialized itself.";
       }
       container error {
-        description "";
+        description "Containing error statistics.";
         uses statistics-error;
       }
       container queue {
-        description "";
+        description "Containing queue statistics.";
         uses statistics-queue;
       }
       container received {
-        description "";
+        description "Containing statistics of received messages.";
         uses statistics-sent-received;
       }
       container sent {
-        description "";
+        description "Containing statistics of sent messages.";
         uses statistics-sent-received;
       }
     }
@@ -651,7 +664,7 @@ module ietf-pim-base {
   grouping statistics-error {
     description
       "A grouping defining error statistics
-      attributes.";
+       attributes.";
     uses statistics-sent-received;
   } // statistics-error
 
@@ -721,11 +734,12 @@ module ietf-pim-base {
    * Configuration data nodes
    */
 
-  augment "/rt:routing/rt:routing-protocols" {
+  augment "/rt:routing/rt:control-plane-protocols" {
     description
       "PIM augmentation to routing instance configuration.";
 
     container pim {
+      presence "Container for PIM protocol.";
       description
         "PIM configuration data.";
 
@@ -769,7 +783,7 @@ module ietf-pim-base {
    * Operational state data nodes
    */
 
-  augment "/rt:routing-state/rt:routing-protocols" {
+  augment "/rt:routing-state/rt:control-plane-protocols" {
     description
       "PIM augmentation to routing instance state.";
     container pim {
@@ -785,32 +799,32 @@ module ietf-pim-base {
         uses statistics-container;
 
         container topology-tree-info {
-          description "";
+          description "Containing topology tree information.";
           list ipv4-route {
             when "../../../address-family = 'rt:ipv4'" {
               description
-                "Only applicable to ipv4 address family.";
+                "Only applicable to IPv4 address family.";
             }
-            key "group source-addr is-rpt";
-            description "";
+            key "group source-address is-rpt";
+            description "A list of IPv4 routes.";
             leaf group {
               type inet:ipv4-address;
-              description "";
+              description "Group address.";
             }
-            leaf source-addr {
+            leaf source-address {
               type union {
                 type enumeration {
                   enum '*' {
-                    description "";
+                    description "Use '*' to indicate any address.";
                   }
                 }
                 type inet:ipv4-address;
               }
-              description "";
+              description "Source address.";
             }
             leaf is-rpt {
               type boolean;
-              description "";
+              description "'true' if the tree is RPT.";
             }
 
             uses multicast-route-attributes;
@@ -819,28 +833,28 @@ module ietf-pim-base {
           list ipv6-route {
             when "../../../address-family = 'rt:ipv6'" {
               description
-                "Only applicable to ipv4 address family.";
+                "Only applicable to IPv6 address family.";
             }
-            key "group source-addr is-rpt";
-            description "";
+            key "group source-address is-rpt";
+            description "A list of IPv6 routes.";
             leaf group {
               type inet:ipv6-address;
-              description "";
+              description "Group address.";
             }
-            leaf source-addr {
+            leaf source-address {
               type union {
                 type enumeration {
                   enum '*' {
-                    description "";
+                    description "Use '*' to indicate any address.";
                   }
                 }
                 type inet:ipv4-address;
               }
-              description "";
+              description "Source address.";
             }
             leaf is-rpt {
               type boolean;
-              description "";
+              description "'true' if the tree is RPT.";
             }
 
             uses multicast-route-attributes;
@@ -891,7 +905,7 @@ module ietf-pim-base {
     leaf up-time {
       type uint32;
       units seconds;
-      description "";
+      description "Up time duration.";
     }
   }
   notification pim-interface-event {
@@ -902,29 +916,28 @@ module ietf-pim-base {
     }
     uses pim-interface-state-ref;
     container ipv4 {
-      description "";
+      description "Containing IPv4 information.";
       leaf-list address {
         type inet:ipv4-address;
-        description "";
+        description "List of addresses.";
       }
-      leaf dr-addr {
+      leaf dr-address {
         type inet:ipv4-address;
-        description "";
+        description "Designated Router (DR) address.";
       }
     }
     container ipv6 {
-      description "";
+      description "Containing IPv6 information.";
       leaf-list address {
         type inet:ipv6-address;
-        description "";
+        description "List of addresses.";
       }
-      leaf dr-addr {
+      leaf dr-address {
         type inet:ipv6-address;
-        description "";
+        description "Designated Router (DR) address.";
       }
     }
   }
 }
-
 <CODE ENDS>
 ]]>
