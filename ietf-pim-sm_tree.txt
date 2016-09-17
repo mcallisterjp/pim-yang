@@ -8,14 +8,14 @@ augment /rt:routing/rt:control-plane-protocols/pim-base:pim/pim-base:address-fam
       |  |  |     +--rw anycast-address    inet:ipv4-address
       |  |  |     +--rw rp-address         inet:ipv4-address
       |  |  +--rw ipv6
-      |  |     +--rw ipv6-anycast-rip* [anycast-address rp-address]
+      |  |     +--rw ipv6-anycast-rp* [anycast-address rp-address]
       |  |        +--rw anycast-address    inet:ipv6-address
       |  |        +--rw rp-address         inet:ipv6-address
       |  +--rw spt-switch
       |     +--rw infinity! {spt-switch-infinity}?
       |        +--rw policy-name?   string {spt-switch-policy}?
       +--rw ssm!
-         +--rw range-poligy?   string
+         +--rw range-policy?   string
 augment /rt:routing/rt:control-plane-protocols/pim-base:pim/pim-base:interfaces/pim-base:interface/pim-base:address-family:
    +--rw sm!
       +--rw passive?   empty
@@ -36,14 +36,14 @@ augment /rt:routing-state/rt:control-plane-protocols/pim-base:pim/pim-base:addre
       |  |  |     +--ro anycast-address    inet:ipv4-address
       |  |  |     +--ro rp-address         inet:ipv4-address
       |  |  +--ro ipv6
-      |  |     +--ro ipv6-anycast-rip* [anycast-address rp-address]
+      |  |     +--ro ipv6-anycast-rp* [anycast-address rp-address]
       |  |        +--ro anycast-address    inet:ipv6-address
       |  |        +--ro rp-address         inet:ipv6-address
       |  +--ro spt-switch
       |     +--ro infinity! {spt-switch-infinity}?
       |        +--ro policy-name?   string {spt-switch-policy}?
       +--ro ssm!
-         +--ro range-poligy?   string
+         +--ro range-policy?   string
 augment /rt:routing-state/rt:control-plane-protocols/pim-base:pim/pim-base:interfaces/pim-base:interface/pim-base:address-family:
    +--ro sm!
       +--ro passive?   empty

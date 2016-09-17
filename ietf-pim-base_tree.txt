@@ -48,6 +48,7 @@ augment /rt:routing-state/rt:control-plane-protocols:
       |  |  |  +--ro assert?                       yang:counter64
       |  |  |  +--ro bsr?                          yang:counter64
       |  |  |  +--ro candidate-rp-advertisement?   yang:counter64
+      |  |  |  +--ro df-election?                  yang:counter64
       |  |  |  +--ro hello?                        yang:counter64
       |  |  |  +--ro join-prune?                   yang:counter64
       |  |  |  +--ro register?                     yang:counter64
@@ -60,6 +61,7 @@ augment /rt:routing-state/rt:control-plane-protocols:
       |  |  |  +--ro assert?                       yang:counter64
       |  |  |  +--ro bsr?                          yang:counter64
       |  |  |  +--ro candidate-rp-advertisement?   yang:counter64
+      |  |  |  +--ro df-election?                  yang:counter64
       |  |  |  +--ro hello?                        yang:counter64
       |  |  |  +--ro join-prune?                   yang:counter64
       |  |  |  +--ro register?                     yang:counter64
@@ -69,6 +71,7 @@ augment /rt:routing-state/rt:control-plane-protocols:
       |  |     +--ro assert?                       yang:counter64
       |  |     +--ro bsr?                          yang:counter64
       |  |     +--ro candidate-rp-advertisement?   yang:counter64
+      |  |     +--ro df-election?                  yang:counter64
       |  |     +--ro hello?                        yang:counter64
       |  |     +--ro join-prune?                   yang:counter64
       |  |     +--ro register?                     yang:counter64

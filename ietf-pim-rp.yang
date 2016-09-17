@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-rp@2016-07-26.yang"
+<CODE BEGINS> file "ietf-pim-rp@2016-09-09.yang"
 module ietf-pim-rp {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-rp";
   // replace with IANA namespace when assigned
@@ -55,7 +55,7 @@ module ietf-pim-rp {
   description
     "The YANG module defines a PIM RP (Rendezvous Point) model.";
 
-  revision 2016-07-26 {
+  revision 2016-09-09 {
     description
       "Initial revision.";
     reference
@@ -155,7 +155,7 @@ module ietf-pim-rp {
    */
   grouping bsr-config-attributes {
     description
-      "Gouring of BSR config attributes.";
+      "Grouping of BSR config attributes.";
     container bsr-candidate {
       presence
         "Present to serve as a BSR candidate";
@@ -274,7 +274,7 @@ module ietf-pim-rp {
 
   grouping bsr-state-attributes {
     description
-      "Gouring of BSR state attributes.";
+      "Grouping of BSR state attributes.";
     container bsr {
       description
         "BSR information.";
@@ -394,7 +394,7 @@ module ietf-pim-rp {
 
   grouping rp-mapping-state-attributes {
     description
-      "Gouring of RP mapping attributes.";
+      "Grouping of RP mapping attributes.";
     leaf up-time {
       type uint32;
       units seconds;
@@ -408,7 +408,7 @@ module ietf-pim-rp {
 
   grouping rp-state-attributes {
     description
-      "Gouring of RP state attributes.";
+      "Grouping of RP state attributes.";
     leaf info-source-type {
       type identityref {
         base rp-info-source-type;
@@ -428,7 +428,7 @@ module ietf-pim-rp {
 
   grouping static-rp-attributes {
     description
-      "Gouring of static RP attributes, used in augmenting modules.";
+      "Grouping of static RP attributes, used in augmenting modules.";
     leaf policy-name {
       type string;
       description
@@ -446,7 +446,7 @@ module ietf-pim-rp {
 
   grouping static-rp-container {
     description
-      "Gouring of static RP container.";
+      "Grouping of static RP container.";
     container static-rp {
       description
         "Containing static RP attributes.";
@@ -484,7 +484,7 @@ module ietf-pim-rp {
 
   grouping rp-candidate-attributes {
     description
-      "Gouring of RP candidate attributes.";
+      "Grouping of RP candidate attributes.";
     leaf policy {
       type string;
       description
@@ -547,7 +547,7 @@ module ietf-pim-rp {
 
       container rp-list {
         description
-          "Containing a list RPs.";
+          "Containing a list of RPs.";
         list ipv4-rp {
           when "../../../pim-base:address-family = 'rt:ipv4'" {
             description
@@ -607,7 +607,7 @@ module ietf-pim-rp {
 
       container rp-mappings {
         description
-          "Containing a list group-to-RP mappings.";
+          "Containing a list of group-to-RP mappings.";
         list ipv4-rp {
           when "../../../pim-base:address-family = 'rt:ipv4'" {
             description

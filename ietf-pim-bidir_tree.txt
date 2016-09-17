@@ -1,6 +1,6 @@
 module: ietf-pim-bidir
 augment /rt:routing/rt:control-plane-protocols/pim-base:pim/pim-base:address-family:
-   +--rw bidir
+   +--rw bidir!
 augment /rt:routing/rt:control-plane-protocols/pim-base:pim/pim-base:interfaces/pim-base:interface/pim-base:address-family:
    +--rw bidir!
       +--rw df-election {intf-df-election}?

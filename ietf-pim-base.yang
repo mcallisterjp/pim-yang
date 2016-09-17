@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-base@2016-07-26.yang"
+<CODE BEGINS> file "ietf-pim-base@2016-09-09.yang"
 module ietf-pim-base {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
   // replace with IANA namespace when assigned
@@ -60,7 +60,7 @@ module ietf-pim-base {
     "The module defines a collection of YANG definitions common for
      all PIM modes.";
 
-  revision 2016-07-26 {
+  revision 2016-09-09 {
     description
       "Initial revision.";
     reference
@@ -77,7 +77,7 @@ module ietf-pim-base {
 
   feature global-graceful-restart {
     description
-      "Global configuraiont for graceful restart support as per
+      "Global configuration for graceful restart support as per
        RFC5306.";
   }
 
@@ -128,7 +128,7 @@ module ietf-pim-base {
 
   feature per-af-graceful-restart {
     description
-      "Per AF configuraiont for graceful restart support as per
+      "Per AF configuration for graceful restart support as per
        RFC5306.";
   }
 
@@ -387,7 +387,7 @@ module ietf-pim-base {
 
     leaf hello-expiration {
       type timer-value;
-      description "Hello interval exiration time.";
+      description "Hello interval expiration time.";
     }
 
     list neighbor-ipv4 {
@@ -702,6 +702,11 @@ module ietf-pim-base {
       type yang:counter64;
       description
         "The number of Candidate-RP-advertisement messages.";
+    }
+    leaf df-election {
+      type yang:counter64;
+      description
+        "The number of DF election messages.";
     }
     leaf hello {
       type yang:counter64;

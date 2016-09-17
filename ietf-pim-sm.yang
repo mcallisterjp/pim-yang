@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-sm@2016-07-26.yang"
+<CODE BEGINS> file "ietf-pim-sm@2016-09-09.yang"
 module ietf-pim-sm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-sm";
   // replace with IANA namespace when assigned
@@ -55,7 +55,7 @@ module ietf-pim-sm {
   description
     "The YANG module defines a sparse mode PIM model.";
 
-  revision 2016-07-26 {
+  revision 2016-09-09 {
     description
       "Initial revision.";
     reference
@@ -92,7 +92,7 @@ module ietf-pim-sm {
    */
   grouping af-sm-container {
     description
-      "Gouping of address family SM container.";
+      "Grouping of address family SM container.";
     container sm {
       description
         "PIM SM configuration data.";
@@ -118,7 +118,7 @@ module ietf-pim-sm {
             list ipv4-anycast-rp {
               key "anycast-address rp-address";
               description
-                "A list of anycast RP setttings.";
+                "A list of anycast RP settings.";
               leaf anycast-address {
                 type inet:ipv4-address;
                 description
@@ -144,10 +144,10 @@ module ietf-pim-sm {
             description
               "IPv6 attributes. Only applicable when
                pim-base:address-family is ipv6.";
-            list ipv6-anycast-rip {
+            list ipv6-anycast-rp {
               key "anycast-address rp-address";
               description
-                "A list of anycast RP setttings.";
+                "A list of anycast RP settings.";
               leaf anycast-address {
                 type inet:ipv6-address;
                 description
@@ -192,7 +192,7 @@ module ietf-pim-sm {
         description
           "SSM (Source-Specific Multicast) attributes.";
 
-        leaf range-poligy {
+        leaf range-policy {
           type string;
           description
             "Policy used to define SSM address range.";
@@ -203,7 +203,7 @@ module ietf-pim-sm {
 
   grouping interface-sm-container {
     description
-      "Gouping of interface SM container.";
+      "Grouping of interface SM container.";
     container sm {
       presence "Present to enable sparse-mode.";
       description
@@ -221,7 +221,7 @@ module ietf-pim-sm {
 
   grouping static-rp-sm-container {
     description
-      "Gouping that contains SM attributes for static RP.";
+      "Grouping that contains SM attributes for static RP.";
     container sm {
       presence
         "Indicate the support of sparse mode.";

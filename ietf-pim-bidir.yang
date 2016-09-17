@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-bidir@2016-07-26.yang"
+<CODE BEGINS> file "ietf-pim-bidir@2016-09-09.yang"
 module ietf-pim-bidir {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-bidir";
   // replace with IANA namespace when assigned
@@ -60,7 +60,7 @@ module ietf-pim-bidir {
     "The YANG module defines a BIDIR (Bidirectional) mode PIM
      model.";
 
-  revision 2016-07-26 {
+  revision 2016-09-09 {
     description
       "Initial revision.";
     reference
@@ -95,7 +95,7 @@ module ietf-pim-bidir {
   identity df-state-offer {
     base df-state;
     description
-      "Initial election state..";
+      "Initial election state.";
   }
 
   identity df-state-lose {
@@ -115,7 +115,7 @@ module ietf-pim-bidir {
     base df-state;
     description
       "The router is the acting DF but another router has made a
-       bid to take over..";
+       bid to take over.";
   }
 
   /*
@@ -127,7 +127,7 @@ module ietf-pim-bidir {
    */
   grouping static-rp-bidir-container {
     description
-      "Gouping that contains BIDIR attributes for static RP.";
+      "Grouping that contains BIDIR attributes for static RP.";
     container bidir {
       presence
         "Indicate the support of BIDIR mode.";
@@ -147,6 +147,7 @@ module ietf-pim-bidir {
     description "PIM BIDIR augmentation.";
 
     container bidir {
+      presence "Present to enable BIDIR mode.";
       description
         "PIM BIDIR configuration data.";
     } // bidir
@@ -172,7 +173,7 @@ module ietf-pim-bidir {
         }
         leaf backoff-interval {
           type pim-base:timer-value;
-          description "Backoff interval";
+          description "Back off interval";
         }
         leaf offer-multipler {
           type uint8;
@@ -233,7 +234,7 @@ module ietf-pim-bidir {
         }
         leaf backoff-interval {
           type pim-base:timer-value;
-          description "Backoff interval";
+          description "Back off interval";
         }
         leaf offer-multipler {
           type uint8;
