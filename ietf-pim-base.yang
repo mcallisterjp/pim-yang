@@ -127,8 +127,8 @@ module ietf-pim-base {
 
   feature per-af-graceful-restart {
     description
-      "Per AF configuration for graceful restart support as per
-       RFC5306.";
+      "Per address family configuration for graceful restart support
+       as per RFC5306.";
   }
 
   /*
@@ -372,7 +372,7 @@ module ietf-pim-base {
 
   grouping interface-state-af-attributes {
     description
-      "A grouping defining interface per af attributes.";
+      "A grouping defining interface per address family attributes.";
 
     leaf oper-status {
       type enumeration {
@@ -509,7 +509,7 @@ module ietf-pim-base {
 
   grouping neighbor-state-af-attributes {
     description
-      "A grouping defining neighbor per af attributes.";
+      "A grouping defining neighbor per address family attributes.";
     leaf bfd-status {
       type enumeration {
         enum up {
