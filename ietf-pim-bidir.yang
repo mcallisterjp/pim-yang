@@ -1,8 +1,7 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-bidir@2016-09-09.yang"
+<CODE BEGINS> file "ietf-pim-bidir@2016-09-22.yang"
 module ietf-pim-bidir {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-bidir";
-  // replace with IANA namespace when assigned
   prefix pim-bidir;
 
   import ietf-inet-types {
@@ -60,7 +59,7 @@ module ietf-pim-bidir {
     "The YANG module defines a BIDIR (Bidirectional) mode PIM
      model.";
 
-  revision 2016-09-09 {
+  revision 2016-09-22 {
     description
       "Initial revision.";
     reference
@@ -125,6 +124,45 @@ module ietf-pim-bidir {
   /*
    * Groupings
    */
+  grouping df-election-container {
+    description
+      "Grouping that contains DF election attributes.";
+    container df-election {
+      if-feature intf-df-election;
+      description
+        "DF election attributes.";
+      leaf offer-interval {
+        type pim-base:timer-value;
+        description 
+          "Offer interval specifies the interval between repeated
+           DF election messages.";
+      }
+      leaf backoff-interval {
+        type pim-base:timer-value;
+        description 
+          "This is the interval that the acting DF waits between
+           receiving a better DF Offer and sending the Pass message
+           to transfer DF responsibility";
+      }
+      leaf offer-multiplier {
+        type uint8;
+        description 
+          "This is number of transmission attempts for DF election
+           messages.
+           When a DF election Offer or Winner message fails to be
+           received, the message is retransmitted. 
+           The offer-multiplier sets the minimum number of DF
+           election messages that must fail to be received for DF
+           election to fail.
+           If a router receives from a neighbor a better offer than
+           its own, the router stops participating in the election
+           for a period of offer-multiplier * offer-interval. 
+           Eventually, all routers except the best candidate stop
+           sending Offer messages.";
+      }
+    } // df-election
+  } // df-election-container
+
   grouping static-rp-bidir-container {
     description
       "Grouping that contains BIDIR attributes for static RP.";
@@ -163,23 +201,7 @@ module ietf-pim-bidir {
       description
         "PIM BIDIR configuration data.";
 
-      container df-election {
-        if-feature intf-df-election;
-        description
-          "DF election attributes.";
-        leaf offer-interval {
-          type pim-base:timer-value;
-          description "Offer interval";
-        }
-        leaf backoff-interval {
-          type pim-base:timer-value;
-          description "Back off interval";
-        }
-        leaf offer-multipler {
-          type uint8;
-          description "Offer multipler";
-        }
-      } // df-election
+      uses df-election-container;
     } // bidir
   } // augment
 
@@ -224,23 +246,7 @@ module ietf-pim-bidir {
       description
         "PIM BIDIR configuration data.";
 
-      container df-election {
-        if-feature intf-df-election;
-        description
-          "DF election attributes.";
-        leaf offer-interval {
-          type pim-base:timer-value;
-          description "Offer interval";
-        }
-        leaf backoff-interval {
-          type pim-base:timer-value;
-          description "Back off interval";
-        }
-        leaf offer-multipler {
-          type uint8;
-          description "Offer multipler";
-        }
-      } // df-election
+      uses df-election-container;
     } // bidir
   } // augment
 
@@ -273,7 +279,7 @@ module ietf-pim-bidir {
         list ipv4-rp {
           when "../../../../pim-base:address-family = 'rt:ipv4'" {
             description
-              "Only applicable to ipv4 address family.";
+              "Only applicable to IPv4 address family.";
           }
           key "ipv4-address";
           description
@@ -287,7 +293,7 @@ module ietf-pim-bidir {
         list ipv6-rp {
           when "../../../../pim-base:address-family = 'rt:ipv6'" {
             description
-              "Only applicable to ipv6 address family.";
+              "Only applicable to IPv6 address family.";
           }
           key "ipv6-address";
           description
@@ -306,7 +312,7 @@ module ietf-pim-bidir {
         list ipv4-rp {
           when "../../../../pim-base:address-family = 'rt:ipv4'" {
             description
-              "Only applicable to ipv4 address family.";
+              "Only applicable to IPv4 address family.";
           }
           key "ipv4-address interface-name";
           description
@@ -337,7 +343,7 @@ module ietf-pim-bidir {
         list ipv6-rp {
           when "../../../../pim-base:address-family = 'rt:ipv6'" {
             description
-              "Only applicable to ipv6 address family.";
+              "Only applicable to IPv6 address family.";
           }
           key "ipv6-address interface-name";
           description

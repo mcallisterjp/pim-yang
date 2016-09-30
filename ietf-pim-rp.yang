@@ -1,8 +1,7 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-rp@2016-09-09.yang"
+<CODE BEGINS> file "ietf-pim-rp@2016-09-22.yang"
 module ietf-pim-rp {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-rp";
-  // replace with IANA namespace when assigned
   prefix pim-rp;
 
   import ietf-inet-types {
@@ -55,7 +54,7 @@ module ietf-pim-rp {
   description
     "The YANG module defines a PIM RP (Rendezvous Point) model.";
 
-  revision 2016-09-09 {
+  revision 2016-09-22 {
     description
       "Initial revision.";
     reference
@@ -177,7 +176,7 @@ module ietf-pim-rp {
         case ipv4-address {
           when "../../../pim-base:address-family = 'rt:ipv4'" {
             description
-              "Only applicable to ipv4 address family.";
+              "Only applicable to IPv4 address family.";
           }
           if-feature candidate-ipv4;
           leaf ipv4-address {
@@ -190,7 +189,7 @@ module ietf-pim-rp {
         case ipv6-address {
           when "../../../pim-base:address-family = 'rt:ipv6'" {
             description
-              "Only applicable to ipv6 address family.";
+              "Only applicable to IPv6 address family.";
           }
           if-feature candidate-ipv6;
           leaf ipv6-address {
@@ -204,7 +203,7 @@ module ietf-pim-rp {
 
       leaf hash-mask-length{
         type uint8 {
-          range "0..32";
+          range "0..128";
         }
         mandatory true;
         description
@@ -240,7 +239,7 @@ module ietf-pim-rp {
     list rp-candidate-ipv4-address {
       when "../../../pim-base:address-family = 'rt:ipv4'" {
         description
-          "Only applicable to ipv4 address family.";
+          "Only applicable to IPv4 address family.";
       }
       if-feature candidate-ipv4;
       key "ipv4-address";
@@ -257,7 +256,7 @@ module ietf-pim-rp {
     list rp-candidate-ipv6-address {
       when "../../../pim-base:address-family = 'rt:ipv6'" {
         description
-          "Only applicable to ipv6 address family.";
+          "Only applicable to IPv6 address family.";
       }
       if-feature candidate-ipv6;
       key "ipv6-address";
@@ -283,7 +282,9 @@ module ietf-pim-rp {
         description "BSR address";
       }
       leaf hash-mask-length {
-        type uint8;
+        type uint8 {
+          range "0..128";
+        }
         description "Hash mask length.";
       }
       leaf priority {
@@ -453,7 +454,7 @@ module ietf-pim-rp {
       list ipv4-rp {
         when "../../../pim-base:address-family = 'rt:ipv4'" {
           description
-            "Only applicable to ipv4 address family.";
+            "Only applicable to IPv4 address family.";
         }
         key "ipv4-address";
         description
@@ -468,7 +469,7 @@ module ietf-pim-rp {
       list ipv6-rp {
         when "../../../pim-base:address-family = 'rt:ipv6'" {
           description
-            "Only applicable to ipv6 address family.";
+            "Only applicable to IPv6 address family.";
         }
         key "ipv6-address";
         description
@@ -551,7 +552,7 @@ module ietf-pim-rp {
         list ipv4-rp {
           when "../../../pim-base:address-family = 'rt:ipv4'" {
             description
-              "Only applicable to ipv4 address family.";
+              "Only applicable to IPv4 address family.";
           }
           key "ipv4-address mode";
           description
@@ -579,7 +580,7 @@ module ietf-pim-rp {
         list ipv6-rp {
           when "../../../pim-base:address-family = 'rt:ipv6'" {
             description
-              "Only applicable to ipv6 address family.";
+              "Only applicable to IPv6 address family.";
           }
           key "ipv6-address mode";
           description
@@ -611,7 +612,7 @@ module ietf-pim-rp {
         list ipv4-rp {
           when "../../../pim-base:address-family = 'rt:ipv4'" {
             description
-              "Only applicable to ipv4 address family.";
+              "Only applicable to IPv4 address family.";
           }
           key "group rp-address";
           description
@@ -632,7 +633,7 @@ module ietf-pim-rp {
         list ipv6-rp {
           when "../../../pim-base:address-family = 'rt:ipv6'" {
             description
-              "Only applicable to ipv6 address family.";
+              "Only applicable to IPv6 address family.";
           }
           key "group rp-address";
           description

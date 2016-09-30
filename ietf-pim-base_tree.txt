@@ -24,20 +24,24 @@ augment /rt:routing/rt:control-plane-protocols:
                |     +--:(single-interval)
                |        +--rw min-interval                uint32
                +--rw dr-priority?         uint32 {intf-dr-priority}?
-               +--rw hello-interval?      timer-value {intf-hello-interval}?
-               +--rw (hello-holdtime-or-multipler)?
+               +--rw hello-interval?      timer-value 
+{intf-hello-interval}?
+               +--rw (hello-holdtime-or-multiplier)?
                |  +--:(holdtime) {intf-hello-holdtime}?
                |  |  +--rw hello-holdtime?      timer-value
-               |  +--:(multipler) {intf-hello-multipler}?
-               |     +--rw hello-multipler?     uint8
-               +--rw jp-interval?         timer-value {intf-jp-interval}?
-               +--rw (jp-holdtime-or-multipler)?
+               |  +--:(multiplier) {intf-hello-multiplier}?
+               |     +--rw hello-multiplier?    uint8
+               +--rw jp-interval?         timer-value 
+{intf-jp-interval}?
+               +--rw (jp-holdtime-or-multiplier)?
                |  +--:(holdtime) {intf-jp-holdtime}?
                |  |  +--rw jp-holdtime?         timer-value
-               |  +--:(multipler) {intf-jp-multipler}?
-               |     +--rw jp-multipler?        uint8
-               +--rw propagation-delay?   uint16 {intf-propagation-delay}?
-               +--rw override-interval?   uint16 {intf-override-interval}?
+               |  +--:(multiplier) {intf-jp-multiplier}?
+               |     +--rw jp-multiplier?       uint8
+               +--rw propagation-delay?   uint16 
+{intf-propagation-delay}?
+               +--rw override-interval?   uint16 
+{intf-override-interval}?
 augment /rt:routing-state/rt:control-plane-protocols:
    +--ro pim
       +--ro address-family* [address-family]
@@ -82,7 +86,7 @@ augment /rt:routing-state/rt:control-plane-protocols:
       |     |  +--ro group                 inet:ipv4-address
       |     |  +--ro source-address        union
       |     |  +--ro is-rpt                boolean
-      |     |  +--ro expiration?           uint32
+      |     |  +--ro expiration?           timer-value
       |     |  +--ro incoming-interface?   if:interface-ref
       |     |  +--ro mode?                 pim-mode
       |     |  +--ro msdp-learned?         boolean
@@ -99,7 +103,7 @@ augment /rt:routing-state/rt:control-plane-protocols:
       |        +--ro group                 inet:ipv6-address
       |        +--ro source-address        union
       |        +--ro is-rpt                boolean
-      |        +--ro expiration?           uint32
+      |        +--ro expiration?           timer-value
       |        +--ro incoming-interface?   if:interface-ref
       |        +--ro mode?                 pim-mode
       |        +--ro msdp-learned?         boolean
@@ -127,20 +131,24 @@ augment /rt:routing-state/rt:control-plane-protocols:
                |     +--:(single-interval)
                |        +--ro min-interval                uint32
                +--ro dr-priority?         uint32 {intf-dr-priority}?
-               +--ro hello-interval?      timer-value {intf-hello-interval}?
-               +--ro (hello-holdtime-or-multipler)?
+               +--ro hello-interval?      timer-value 
+{intf-hello-interval}?
+               +--ro (hello-holdtime-or-multiplier)?
                |  +--:(holdtime) {intf-hello-holdtime}?
                |  |  +--ro hello-holdtime?      timer-value
-               |  +--:(multipler) {intf-hello-multipler}?
-               |     +--ro hello-multipler?     uint8
-               +--ro jp-interval?         timer-value {intf-jp-interval}?
-               +--ro (jp-holdtime-or-multipler)?
+               |  +--:(multiplier) {intf-hello-multiplier}?
+               |     +--ro hello-multiplier?    uint8
+               +--ro jp-interval?         timer-value 
+{intf-jp-interval}?
+               +--ro (jp-holdtime-or-multiplier)?
                |  +--:(holdtime) {intf-jp-holdtime}?
                |  |  +--ro jp-holdtime?         timer-value
-               |  +--:(multipler) {intf-jp-multipler}?
-               |     +--ro jp-multipler?        uint8
-               +--ro propagation-delay?   uint16 {intf-propagation-delay}?
-               +--ro override-interval?   uint16 {intf-override-interval}?
+               |  +--:(multiplier) {intf-jp-multiplier}?
+               |     +--ro jp-multiplier?       uint8
+               +--ro propagation-delay?   uint16 
+{intf-propagation-delay}?
+               +--ro override-interval?   uint16 
+{intf-override-interval}?
                +--ro ipv4
                |  +--ro address*      inet:ipv4-address
                |  +--ro dr-address?   inet:ipv4-address

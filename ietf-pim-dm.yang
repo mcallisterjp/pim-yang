@@ -1,8 +1,7 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-dm@2016-09-09.yang"
+<CODE BEGINS> file "ietf-pim-dm@2016-09-22.yang"
 module ietf-pim-dm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-dm";
-  // replace with IANA namespace when assigned
   prefix pim-dm;
 
   import ietf-routing {
@@ -47,7 +46,7 @@ module ietf-pim-dm {
   description
     "The YANG module defines a DM (Dense Mode) PIM model.";
 
-  revision 2016-09-09 {
+  revision 2016-09-22 {
     description
       "Initial revision.";
     reference

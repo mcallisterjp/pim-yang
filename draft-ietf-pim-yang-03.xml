@@ -6,8 +6,6 @@
       "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3569.xml">
     <!ENTITY rfc3973 SYSTEM
       "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3973.xml">
-    <!ENTITY rfc4601 SYSTEM
-      "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4601.xml">
     <!ENTITY rfc4610 SYSTEM
       "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4610.xml">
     <!ENTITY rfc5015 SYSTEM
@@ -20,6 +18,8 @@
       "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6087.xml">
     <!ENTITY rfc6241 SYSTEM
       "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6241.xml">
+    <!ENTITY rfc7761 SYSTEM
+      "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7761.xml">
     <!ENTITY I-D.ietf-netmod-rfc6087bis SYSTEM
       "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-netmod-rfc6087bis.xml">
     <!ENTITY I-D.ietf-netmod-routing-cfg SYSTEM
@@ -196,28 +196,25 @@
     <section title="Design of Data Model">
       <section title="Scope of model">
         <t>
-          The model covers PIM Sparse Mode <xref target="RFC4601"/>, including the
+          The model covers PIM Sparse Mode <xref target="RFC7761"/>, including the
           Source-Specific subset <xref target="RFC3569"/>, Dense Mode
           <xref target="RFC3973"/>, and Bi-directional PIM <xref target="RFC5015"/>.
         </t>
         <t>
           The PIM extensions represented in the model include BSR
-          <xref target="RFC5059"/> and Anycast RP <xref target="RFC4610"/>.
+          <xref target="RFC5059"/> and Anycast-RP <xref target="RFC4610"/>.
         </t>
         <t>
-          The representation of some of these features is not completely specified
-          in this draft of the data model. This model is being circulated in its
-          current form for early oversight and review of the basic hierarchy.
-        </t>
-        <t>
-          The operational state fields and notifications of this model are also
-          incomplete, though the structure of what has been written may be taken as
-          representative of the structure of the model when complete.
+	  The data model can be used to configure and manage these
+	  protocol features. The operational state data and statistics
+	  can be retrieved by this model. The protocol specific
+	  notifications are also defined in the model.
         </t>
         <t>
           This model does not cover other multicast protocols such as IGMP/MLD,
-          MSDP, mVPN, or m-LDP in-band signalling. It does not cover any configuration
-          required to generate the MRIB. These will be covered by future Internet Drafts.
+          MSDP, mVPN, or m-LDP in-band signalling. It does not cover
+	  any configuration required to generate the MRIB. These will
+	  be specified in separate documents.
         </t>
       </section>
       <section title="Optional capabilities">
@@ -284,9 +281,9 @@
       </section>
       <section title="Position of address family in hierarchy">
         <t>
-          The current draft contains address-family as a node in the hierarchy
+          This document contains address-family as a node in the hierarchy
           multiple times: both under the interface list, and under the PIM instance.
-          This is similar to the IS-IS yang draft model.
+          This is similar to other protocol Yang models such as IS-IS.
         </t>
         <t>
           The reasoning for this is to make it easier for implementations in which
@@ -318,18 +315,19 @@
           model fits in the overall routing hierarchy:
           <list style='numbers'>
             <t>
-              Our current direction is to agree to a routing-instance-centric (VRF)
-              model as opposed to protocol-centric mainly because it fits well into
+              This data model agrees to a routing-instance-centric (VRF)
+              model view as opposed to protocol-centric mainly because it fits well into
               the routing-instance model, and it is easier to map from the VRF-centric
               to the protocol-centric than the other way around due to forward
               references.
             </t>
             <t>
-              The PIM base model will augment "/rt:routing/rt:routing-instance/
-              rt:routing-protocols:” as opposed to augmenting "/rt:routing/
-              rt:routing-instance/rt:routing-protocols:/rt:routing-protocol” as the
-              latter would allow multiple protocol instances per VRF, which does not
-              make sense for PIM.
+              The PIM base model augments 
+              "/rt:routing/rt:control-plane-protocols” as opposed to
+	      augmenting "/rt:routing/rt:control-plane-protocols/
+              rt:control-plane-protocol” as the
+              latter would allow multiple protocol instances per VRF,
+	      which does not make sense for PIM.
             </t>
           </list>
         </t>
@@ -404,18 +402,113 @@
 
     <section title="Security Considerations">
       <t>
-        The data model defined does not introduce any security implications.
+	Configuration and state data defined in this document are
+	designed to be accessed via a management protocol with secure
+	transport layer, such as NETCONF [RFC6241]. The NETCONF access
+	control model [RFC6536] provides the 
+	means to restrict access for specific users to a pre-
+	configured subset of all available operations and contents.
       </t>
       <t>
-        This draft does not change any underlying security issues inherent in
-        <xref target="I-D.ietf-netmod-routing-cfg"/>.
+	The models defined in this document contain a number of
+	configuration data nodes that are writable, creatable, and
+	deletable.
+	Unauthorised access to the configuration data can adversely
+	affect the routing subsystem of both the local device and the
+	network.  This may lead to network malfunctions, delivery of
+	packets to inappropriate destinations and other problems.
       </t>
     </section>
 
     <section title="IANA Considerations">
       <t>
-        TBD
+        RFC Ed.: In this section, replace all occurrences of 'XXXX' with the
+	actual RFC number (and remove this note).
       </t>
+      <t>
+	This document registers the following namespace URIs in the IETF XML
+	registry [RFC3688]:
+      </t>
+      <figure><artwork>
+   --------------------------------------------------------------------
+   URI: urn:ietf:params:xml:ns:yang:ietf-pim-base
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   --------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+   --------------------------------------------------------------------
+   URI: urn:ietf:params:xml:ns:yang:ietf-pim-bidir
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   --------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+   --------------------------------------------------------------------
+   URI: urn:ietf:params:xml:ns:yang:ietf-pim-dm
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   --------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+   --------------------------------------------------------------------
+   URI: urn:ietf:params:xml:ns:yang:ietf-pim-rp
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   --------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+   --------------------------------------------------------------------
+   URI: urn:ietf:params:xml:ns:yang:ietf-pim-sm
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+   --------------------------------------------------------------------
+      </artwork></figure>
+
+      <t>
+	This document registers the following YANG modules in the YANG Module
+	Names registry [RFC6020]:
+      </t>
+      <figure><artwork>
+   --------------------------------------------------------------------
+   name:         ietf-pim-base
+   namespace:    urn:ietf:params:xml:ns:yang:ietf-pim-base
+   prefix:       pim-base
+   reference:    RFC XXXX
+   --------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+   --------------------------------------------------------------------
+   name:         ietf-pim-bidir
+   namespace:    urn:ietf:params:xml:ns:yang:ietf-pim-bidir
+   prefix:       pim-bidir
+   reference:    RFC XXXX
+   --------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+   --------------------------------------------------------------------
+   name:         ietf-pim-dm
+   namespace:    urn:ietf:params:xml:ns:yang:ietf-pim-dm
+   prefix:       pim-dm
+   reference:    RFC XXXX
+   --------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+   --------------------------------------------------------------------
+   name:         ietf-pim-rp
+   namespace:    urn:ietf:params:xml:ns:yang:ietf-pim-rp
+   prefix:       pim-rp
+   reference:    RFC XXXX
+   --------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+   --------------------------------------------------------------------
+   name:         ietf-pim-sm
+   namespace:    urn:ietf:params:xml:ns:yang:ietf-pim-sm
+   prefix:       pim-sm
+   reference:    RFC XXXX
+   --------------------------------------------------------------------
+      </artwork></figure>
     </section>
 
     <section title='Acknowledgements'>
@@ -440,11 +533,11 @@
     <references title="Informative References">
       &rfc3569;
       &rfc3973;
-      &rfc4601;
       &rfc4610;
       &rfc5015;
       &rfc5059;
       &rfc6087;
+      &rfc7761;
       &I-D.ietf-netmod-routing-cfg;
     </references>
 

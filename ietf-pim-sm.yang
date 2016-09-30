@@ -1,8 +1,7 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-sm@2016-09-09.yang"
+<CODE BEGINS> file "ietf-pim-sm@2016-09-22.yang"
 module ietf-pim-sm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-sm";
-  // replace with IANA namespace when assigned
   prefix pim-sm;
 
   import ietf-inet-types {
@@ -55,7 +54,7 @@ module ietf-pim-sm {
   description
     "The YANG module defines a sparse mode PIM model.";
 
-  revision 2016-09-09 {
+  revision 2016-09-22 {
     description
       "Initial revision.";
     reference
@@ -68,14 +67,14 @@ module ietf-pim-sm {
   feature spt-switch-infinity {
     description
       "This feature indicates that the system supports configuration
-       choice whether to trigger the switchover from the rpt to the
-       spt.";
+       choice whether to trigger the switchover from the RPT to the
+       SPT.";
   }
 
   feature spt-switch-policy {
     description
       "This feature indicates that the system supports configuring
-       policy for the switchover from the rpt to the spt.";
+       policy for the switchover from the RPT to the SPT.";
   }
 
   /*
@@ -84,7 +83,7 @@ module ietf-pim-sm {
   identity sm {
     base pim-rp:rp-mode;
     description
-      "SM (Spars Mode).";
+      "SM (Sparse Mode).";
   }
 
   /*
@@ -110,11 +109,11 @@ module ietf-pim-sm {
           container ipv4 {
             when "../../../../pim-base:address-family = 'rt:ipv4'" {
               description
-                "Only applicable to ipv4 address family.";
+                "Only applicable to IPv4 address family.";
             }
             description
               "IPv4 attributes. Only applicable when
-               pim-base:address-family is ipv4.";
+               pim-base:address-family is IPv4.";
             list ipv4-anycast-rp {
               key "anycast-address rp-address";
               description
@@ -139,11 +138,11 @@ module ietf-pim-sm {
           container ipv6 {
             when "../../../../pim-base:address-family = 'rt:ipv6'" {
               description
-                "Only applicable to ipv6 address family.";
+                "Only applicable to IPv6 address family.";
             }
             description
               "IPv6 attributes. Only applicable when
-               pim-base:address-family is ipv6.";
+               pim-base:address-family is IPv6.";
             list ipv6-anycast-rp {
               key "anycast-address rp-address";
               description
@@ -172,10 +171,12 @@ module ietf-pim-sm {
             "SPT (Shortest Path Tree) switching attributes.";
           container infinity {
             if-feature spt-switch-infinity;
-            presence "Present if spt-switch is set to infinity.";
+            presence 
+              "Present if SPT switchover threshold is set to
+               infinity, according to the policy specified below.";
             description
-              "The receiver's dr never triggers the
-               switchover from the rpt to the spt.";
+              "The receiver's DR never triggers the
+               switchover from the RPT to the SPT.";
             leaf policy-name {
               if-feature spt-switch-policy;
               type string;
@@ -212,9 +213,9 @@ module ietf-pim-sm {
       leaf passive {
         type empty;
         description
-          "Specifies that no PIM messages are sent out of the PIM
-           interface, but the interface can be included in a multicast
-           forwarding entry.";
+          "Specifies that no PIM messages are sent or accepted on
+           this PIM interface, but the interface can be included in a
+           multicast forwarding entry.";
       }
     } // sm
   } // interface-sm-container

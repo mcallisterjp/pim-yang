@@ -1,8 +1,7 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-base@2016-09-09.yang"
+<CODE BEGINS> file "ietf-pim-base@2016-09-22.yang"
 module ietf-pim-base {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
-  // replace with IANA namespace when assigned
   prefix pim-base;
 
   import ietf-inet-types {
@@ -60,7 +59,7 @@ module ietf-pim-base {
     "The module defines a collection of YANG definitions common for
      all PIM modes.";
 
-  revision 2016-09-09 {
+  revision 2016-09-22 {
     description
       "Initial revision.";
     reference
@@ -83,7 +82,7 @@ module ietf-pim-base {
 
   feature intf-dr-priority {
     description
-      "Support configuration of interface dr priority.";
+      "Support configuration of interface DR priority.";
   }
 
   feature intf-hello-holdtime {
@@ -96,9 +95,9 @@ module ietf-pim-base {
       "Support configuration of interface hello interval.";
   }
 
-  feature intf-hello-multipler {
+  feature intf-hello-multiplier {
     description
-      "Support configuration of interface hello multipler.";
+      "Support configuration of interface hello multiplier.";
   }
 
   feature intf-jp-interval {
@@ -111,9 +110,9 @@ module ietf-pim-base {
       "Support configuration of interface join prune holdtime.";
   }
 
-  feature intf-jp-multipler {
+  feature intf-jp-multiplier {
     description
-      "Support configuration of interface join prune multipler.";
+      "Support configuration of interface join prune multiplier.";
   }
 
   feature intf-propagation-delay {
@@ -278,8 +277,8 @@ module ietf-pim-base {
       type timer-value;
       description "Hello interval";
     }
-    choice hello-holdtime-or-multipler {
-      description "Use holdtime or multipler";
+    choice hello-holdtime-or-multiplier {
+      description "Use holdtime or multiplier";
       case holdtime {
         if-feature intf-hello-holdtime;
         leaf hello-holdtime {
@@ -287,11 +286,13 @@ module ietf-pim-base {
           description "Hello holdtime";
         }
       }
-      case multipler {
-        if-feature intf-hello-multipler;
-        leaf hello-multipler {
+      case multiplier {
+        if-feature intf-hello-multiplier;
+        leaf hello-multiplier {
           type uint8;
-          description "Hello multipler";
+          description 
+            "Hello multiplier is the number by which the hello
+             interval is multplied to obtain the hold time";
         }
       }
     }
@@ -300,8 +301,8 @@ module ietf-pim-base {
       type timer-value;
       description "Join prune interval";
     }
-    choice jp-holdtime-or-multipler {
-      description "Use holdtime or multipler";
+    choice jp-holdtime-or-multiplier {
+      description "Use holdtime or multiplier";
       case holdtime {
         if-feature intf-jp-holdtime;
         leaf jp-holdtime {
@@ -309,11 +310,13 @@ module ietf-pim-base {
           description "Join prune holdtime";
         }
       }
-      case multipler {
-        if-feature intf-jp-multipler;
-        leaf jp-multipler {
+      case multiplier {
+        if-feature intf-jp-multiplier;
+        leaf jp-multiplier {
           type uint8;
-          description "Join prune multipler";
+          description 
+            "Join prune multiplier is the number by which the join
+             prune interval is multplied to obtain the hold time";
         }
       }
     }
@@ -416,7 +419,7 @@ module ietf-pim-base {
         description "Neighbor address.";
       }
       uses neighbor-state-af-attributes;
-    } // list neighbor-ipv4
+    } // list neighbor-ipv6
   } // interface-state-af-attributes
 
   grouping multicast-route-attributes {
@@ -424,8 +427,7 @@ module ietf-pim-base {
       "A grouping defining multicast route attributes.";
 
     leaf expiration {
-      type uint32;
-      units seconds;
+      type timer-value;
       description "When the route will expire.";
     }
     leaf incoming-interface {
@@ -696,7 +698,7 @@ module ietf-pim-base {
     leaf bsr {
       type yang:counter64;
       description
-        "The number of bsr messages.";
+        "The number of BSR messages.";
     }
     leaf candidate-rp-advertisement {
       type yang:counter64;
