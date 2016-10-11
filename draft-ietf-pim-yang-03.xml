@@ -49,7 +49,7 @@
 <?rfc compact="yes"?> <?rfc subcompact="no"?>
 
 <!-- other categories: bcp, exp, historic, std -->
-<rfc ipr="trust200902" category="std" docName="draft-ietf-pim-yang-02">
+<rfc ipr="trust200902" category="std" docName="draft-ietf-pim-yang-03">
 
   <front>
 
@@ -58,12 +58,12 @@
     </title>
 
     <author fullname="Xufeng Liu" initials="X." surname="Liu">
-      <organization>Ericsson</organization>
+      <organization>Kuatro Technologies</organization>
       <address>
         <postal>
-          <street>1595 Spring Hill Road, Suite 500</street>
-          <city>Vienna</city>
-          <code>VA 22182</code>
+          <street>8281 Greensboro Drive, Suite 200</street>
+          <city>McLean</city>
+          <code>VA 22102</code>
           <country>USA</country>
         </postal>
         <email>xliu@kuatrotech.com</email>
