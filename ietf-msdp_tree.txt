@@ -11,6 +11,7 @@ augment /rt:routing/rt:control-plane-protocols:
       |  +--rw sa-filter
       |  |  +--rw in?    string
       |  |  +--rw out?   string
+      |  +--rw sa-limit?         uint32 {global-sa-limit}?
       |  +--rw ttl-threshold?    uint8
       +--rw peers
          +--rw peer* [address]
@@ -50,6 +51,7 @@ augment /rt:routing/rt:control-plane-protocols:
             +--rw sa-filter
             |  +--rw in?    string
             |  +--rw out?   string
+            +--rw sa-limit?         uint32 {peer-sa-limit}?
             +--rw timer
             |  +--rw connect-retry-interval?   uint16 {peer-timer-connect-retry}?
             |  +--rw holdtime-interval?        uint16 {peer-timer-holdtime}?
@@ -67,6 +69,7 @@ augment /rt:routing-state/rt:control-plane-protocols:
       |  +--ro sa-filter
       |  |  +--ro in?    string
       |  |  +--ro out?   string
+      |  +--ro sa-limit?         uint32 {global-sa-limit}?
       |  +--ro ttl-threshold?    uint8
       +--ro peers
       |  +--ro peer* [address]
@@ -106,6 +109,7 @@ augment /rt:routing-state/rt:control-plane-protocols:
       |     +--ro sa-filter
       |     |  +--ro in?    string
       |     |  +--ro out?   string
+      |     +--ro sa-limit?               uint32 {peer-sa-limit}?
       |     +--ro timer
       |     |  +--ro connect-retry-interval?   uint16 {peer-timer-connect-retry}?
       |     |  +--ro holdtime-interval?        uint16 {peer-timer-holdtime}?

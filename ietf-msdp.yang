@@ -1,6 +1,5 @@
 module ietf-msdp {
   namespace "urn:ietf:params:xml:ns:yang:ietf-msdp";
-  // replace with IANA namespace when assigned
   prefix msdp;
 
   import ietf-yang-types {
@@ -43,7 +42,7 @@ module ietf-msdp {
   description
     "The module defines the YANG definitions for MSDP.";
 
-  revision 2016-07-06 {
+  revision 2016-10-18 {
     description
       "Initial revision.";
     reference
@@ -73,6 +72,11 @@ module ietf-msdp {
   feature global-sa-filter {
     description
       "Support configuration of global SA filter.";
+  }
+
+  feature global-sa-limit {
+    description
+      "Support configuration of global limit on SA entries.";
   }
 
   feature global-ttl-threshold {
@@ -115,6 +119,11 @@ module ietf-msdp {
       "Support configuration of peer key-chain.";
   }
 
+  feature peer-sa-limit {
+    description
+      "Support configuration of per peer limit on SA entries.";
+  }
+
   feature peer-timer-connect-retry {
     description
       "Support configuration of peer timer for connect-retry.";
@@ -129,14 +138,6 @@ module ietf-msdp {
     description
       "Support configuration of peer timer for holdtime.";
   }
-
-  /*
-   * Typedefs
-   */
-
-  /*
-   * Identities
-   */
 
   /*
    * Groupings
@@ -247,6 +248,13 @@ module ietf-msdp {
     uses sa-filter-container {
       if-feature global-sa-filter;
     }
+    leaf sa-limit {
+      if-feature global-sa-limit;
+      type uint32;
+      description 
+        "A limit on the number of SA entries accepted. By default,
+         there is no limit.";
+    }
     uses ttl-threshold {
       if-feature global-ttl-threshold;
     }
@@ -288,6 +296,13 @@ module ietf-msdp {
         "Peer's autonomous system number (ASN).";
     }
     uses sa-filter-container;
+    leaf sa-limit {
+      if-feature peer-sa-limit;
+      type uint32;
+      description 
+        "A limit on the number of SA entries accepted from this peer.
+         By default, there is no limit.";
+    }
     container timer {
       description "Timer attributes.";
       leaf connect-retry-interval {
@@ -711,8 +726,4 @@ module ietf-msdp {
       }
     }
   }
-
-  /*
-   * Notifications
-   */
 }
