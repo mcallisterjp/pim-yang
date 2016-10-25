@@ -1,5 +1,5 @@
 module: ietf-igmp-mld
-augment /rt:routing/rt:routing-protocols:
+augment /rt:routing/rt:control-plane-protocols:
    +--rw igmp
    |  +--rw global
    |  |  +--rw enable?        boolean {global-admin-enable}?
@@ -70,7 +70,7 @@ augment /rt:routing/rt:routing-protocols:
             +--rw static-group* [group source-addr] {intf-static-group}?
                +--rw group          inet:ipv6-address
                +--rw source-addr    source-ipv6-addr-type
-augment /rt:routing-state/rt:routing-protocols:
+augment /rt:routing-state/rt:control-plane-protocols:
    +--ro igmp
    |  +--ro global
    |  |  +--ro enable?          boolean {global-admin-enable}?
