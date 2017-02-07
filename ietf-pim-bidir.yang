@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-bidir@2016-09-22.yang"
+<CODE BEGINS> file "ietf-pim-bidir@2017-02-09.yang"
 module ietf-pim-bidir {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-bidir";
   prefix pim-bidir;
@@ -56,10 +56,10 @@ module ietf-pim-bidir {
                <mailto:hu.fangwei@zte.com.cn>";
 
   description
-    "The YANG module defines a BIDIR (Bidirectional) mode PIM
-     model.";
+    "The YANG module defines a PIM (Protocol Independent Multicast)
+     BIDIR (Bidirectional) mode model.";
 
-  revision 2016-09-22 {
+  revision 2017-02-09 {
     description
       "Initial revision.";
     reference
@@ -85,7 +85,7 @@ module ietf-pim-bidir {
 
   identity df-state {
     description
-      "DF election state type.";
+      "DF (Designated Forwarder) election state type.";
     reference
       "RFC5015: Bidirectional Protocol Independent Multicast
        (BIDIR-PIM).";
@@ -94,14 +94,17 @@ module ietf-pim-bidir {
   identity df-state-offer {
     base df-state;
     description
-      "Initial election state.";
+      "Initial election state. When in the Offer state, a router
+       thinks it can eventually become the winner and periodically
+       generates Offer messages.";
   }
 
   identity df-state-lose {
     base df-state;
     description
       "There either is a different election winner or that no
-       router on the link has a path to the RPA.";
+       router on the link has a path to the RPA (Rendezvous-Point
+       Address).";
   }
 
   identity df-state-win {
@@ -126,37 +129,38 @@ module ietf-pim-bidir {
    */
   grouping df-election-container {
     description
-      "Grouping that contains DF election attributes.";
+      "Grouping that contains DF (Designated Forwarder) election
+       attributes.";
     container df-election {
       if-feature intf-df-election;
       description
         "DF election attributes.";
       leaf offer-interval {
         type pim-base:timer-value;
-        description 
+        description
           "Offer interval specifies the interval between repeated
            DF election messages.";
       }
       leaf backoff-interval {
         type pim-base:timer-value;
-        description 
+        description
           "This is the interval that the acting DF waits between
            receiving a better DF Offer and sending the Pass message
            to transfer DF responsibility";
       }
       leaf offer-multiplier {
         type uint8;
-        description 
+        description
           "This is number of transmission attempts for DF election
            messages.
            When a DF election Offer or Winner message fails to be
-           received, the message is retransmitted. 
+           received, the message is retransmitted.
            The offer-multiplier sets the minimum number of DF
            election messages that must fail to be received for DF
            election to fail.
            If a router receives from a neighbor a better offer than
            its own, the router stops participating in the election
-           for a period of offer-multiplier * offer-interval. 
+           for a period of offer-multiplier * offer-interval.
            Eventually, all routers except the best candidate stop
            sending Offer messages.";
       }
@@ -165,7 +169,8 @@ module ietf-pim-bidir {
 
   grouping static-rp-bidir-container {
     description
-      "Grouping that contains BIDIR attributes for static RP.";
+      "Grouping that contains BIDIR (Bidirectional) attributes for
+       static RP (Rendezvous-Point).";
     container bidir {
       presence
         "Indicate the support of BIDIR mode.";
@@ -180,9 +185,9 @@ module ietf-pim-bidir {
    * Configuration data nodes
    */
 
-  augment "/rt:routing/rt:control-plane-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
-    description "PIM BIDIR augmentation.";
+  augment "/rt:routing/rt:control-plane-protocols/"
+    + "pim-base:pim/pim-base:address-family" {
+    description "PIM BIDIR (Bidirectional) augmentation.";
 
     container bidir {
       presence "Present to enable BIDIR mode.";
@@ -191,8 +196,8 @@ module ietf-pim-bidir {
     } // bidir
   } // augment
 
-  augment "/rt:routing/rt:control-plane-protocols/pim-base:pim/"
-    + "pim-base:interfaces/pim-base:interface/"
+  augment "/rt:routing/rt:control-plane-protocols/"
+    + "pim-base:pim/pim-base:interfaces/pim-base:interface/"
     + "pim-base:address-family" {
     description "PIM BIDIR augmentation.";
 
@@ -205,16 +210,16 @@ module ietf-pim-bidir {
     } // bidir
   } // augment
 
-  augment "/rt:routing/rt:control-plane-protocols/pim-base:pim/"
-    + "pim-base:address-family/pim-rp:rp/"
+  augment "/rt:routing/rt:control-plane-protocols/"
+    + "pim-base:pim/pim-base:address-family/pim-rp:rp/"
     + "pim-rp:static-rp/pim-rp:ipv4-rp" {
     description "PIM BIDIR augmentation.";
 
     uses static-rp-bidir-container;
   } // augment
 
-  augment "/rt:routing/rt:control-plane-protocols/pim-base:pim/"
-    + "pim-base:address-family/pim-rp:rp/"
+  augment "/rt:routing/rt:control-plane-protocols/"
+    + "pim-base:pim/pim-base:address-family/pim-rp:rp/"
     + "pim-rp:static-rp/pim-rp:ipv6-rp" {
     description "PIM BIDIR augmentation.";
 
@@ -231,6 +236,7 @@ module ietf-pim-bidir {
       "PIM BIDIR state.";
 
     container bidir {
+      presence "Present to enable BIDIR mode.";
       description
         "PIM BIDIR state data.";
     } // bidir
@@ -374,14 +380,6 @@ module ietf-pim-bidir {
       } // interface-df-election
     }
   } // augment
-
-  /*
-   * RPCs
-   */
-
-  /*
-   * Notifications
-   */
 }
 <CODE ENDS>
 ]]>

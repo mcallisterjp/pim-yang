@@ -113,7 +113,8 @@ notifications:
    +---n pim-rp-event
       +--ro event-type?              rp-event-type
       +--ro instance-af-state-ref?   leafref
-      +--ro group?                   inet:ip-address
+      +--ro group?                   
+rt-types:ip-multicast-group-address
       +--ro rp-address?              inet:ip-address
       +--ro is-rpt?                  boolean
       +--ro mode?                    pim-base:pim-mode

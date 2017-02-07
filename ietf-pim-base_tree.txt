@@ -14,15 +14,8 @@ augment /rt:routing/rt:control-plane-protocols:
             +--rw interface         if:interface-ref
             +--rw address-family* [address-family]
                +--rw address-family       identityref
-               +--rw bfd
-               |  +--rw enabled?                    boolean
-               |  +--rw local-multiplier?           bfd-multiplier
-               |  +--rw (interval-config-type)?
-               |     +--:(tx-rx-intervals)
-               |     |  +--rw desired-min-tx-interval     uint32
-               |     |  +--rw required-min-rx-interval    uint32
-               |     +--:(single-interval)
-               |        +--rw min-interval                uint32
+               +--rw bfd {bfd}?
+               |  +--rw enable?   boolean
                +--rw dr-priority?         uint32 {intf-dr-priority}?
                +--rw hello-interval?      timer-value 
 {intf-hello-interval}?
@@ -30,14 +23,16 @@ augment /rt:routing/rt:control-plane-protocols:
                |  +--:(holdtime) {intf-hello-holdtime}?
                |  |  +--rw hello-holdtime?      timer-value
                |  +--:(multiplier) {intf-hello-multiplier}?
-               |     +--rw hello-multiplier?    uint8
+               |     +--rw hello-multiplier?    
+rt-types:timer-multiplier
                +--rw jp-interval?         timer-value 
 {intf-jp-interval}?
                +--rw (jp-holdtime-or-multiplier)?
                |  +--:(holdtime) {intf-jp-holdtime}?
                |  |  +--rw jp-holdtime?         timer-value
                |  +--:(multiplier) {intf-jp-multiplier}?
-               |     +--rw jp-multiplier?       uint8
+               |     +--rw jp-multiplier?       
+rt-types:timer-multiplier
                +--rw propagation-delay?   uint16 
 {intf-propagation-delay}?
                +--rw override-interval?   uint16 
@@ -83,8 +78,10 @@ augment /rt:routing-state/rt:control-plane-protocols:
       |  |     +--ro state-refresh?                yang:counter64
       |  +--ro topology-tree-info
       |     +--ro ipv4-route* [group source-address is-rpt]
-      |     |  +--ro group                 inet:ipv4-address
-      |     |  +--ro source-address        union
+      |     |  +--ro group                 
+rt-types:ipv4-multicast-group-address
+      |     |  +--ro source-address        
+rt-types:ipv4-multicast-source-address
       |     |  +--ro is-rpt                boolean
       |     |  +--ro expiration?           timer-value
       |     |  +--ro incoming-interface?   if:interface-ref
@@ -100,8 +97,10 @@ augment /rt:routing-state/rt:control-plane-protocols:
       |     |     +--ro up-time?      uint32
       |     |     +--ro jp-state?     enumeration
       |     +--ro ipv6-route* [group source-address is-rpt]
-      |        +--ro group                 inet:ipv6-address
-      |        +--ro source-address        union
+      |        +--ro group                 
+rt-types:ipv6-multicast-group-address
+      |        +--ro source-address        
+rt-types:ipv6-multicast-source-address
       |        +--ro is-rpt                boolean
       |        +--ro expiration?           timer-value
       |        +--ro incoming-interface?   if:interface-ref
@@ -121,15 +120,8 @@ augment /rt:routing-state/rt:control-plane-protocols:
             +--ro interface         if:interface-ref
             +--ro address-family* [address-family]
                +--ro address-family       identityref
-               +--ro bfd
-               |  +--ro enabled?                    boolean
-               |  +--ro local-multiplier?           bfd-multiplier
-               |  +--ro (interval-config-type)?
-               |     +--:(tx-rx-intervals)
-               |     |  +--ro desired-min-tx-interval     uint32
-               |     |  +--ro required-min-rx-interval    uint32
-               |     +--:(single-interval)
-               |        +--ro min-interval                uint32
+               +--ro bfd {bfd}?
+               |  +--ro enable?   boolean
                +--ro dr-priority?         uint32 {intf-dr-priority}?
                +--ro hello-interval?      timer-value 
 {intf-hello-interval}?
@@ -137,14 +129,16 @@ augment /rt:routing-state/rt:control-plane-protocols:
                |  +--:(holdtime) {intf-hello-holdtime}?
                |  |  +--ro hello-holdtime?      timer-value
                |  +--:(multiplier) {intf-hello-multiplier}?
-               |     +--ro hello-multiplier?    uint8
+               |     +--ro hello-multiplier?    
+rt-types:timer-multiplier
                +--ro jp-interval?         timer-value 
 {intf-jp-interval}?
                +--ro (jp-holdtime-or-multiplier)?
                |  +--:(holdtime) {intf-jp-holdtime}?
                |  |  +--ro jp-holdtime?         timer-value
                |  +--:(multiplier) {intf-jp-multiplier}?
-               |     +--ro jp-multiplier?       uint8
+               |     +--ro jp-multiplier?       
+rt-types:timer-multiplier
                +--ro propagation-delay?   uint16 
 {intf-propagation-delay}?
                +--ro override-interval?   uint16 

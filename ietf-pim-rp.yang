@@ -1,11 +1,15 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-rp@2016-09-22.yang"
+<CODE BEGINS> file "ietf-pim-rp@2017-02-09.yang"
 module ietf-pim-rp {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-rp";
   prefix pim-rp;
 
   import ietf-inet-types {
     prefix "inet";
+  }
+
+  import ietf-routing-types {
+    prefix "rt-types";
   }
 
   import ietf-interfaces {
@@ -52,9 +56,10 @@ module ietf-pim-rp {
                <mailto:hu.fangwei@zte.com.cn>";
 
   description
-    "The YANG module defines a PIM RP (Rendezvous Point) model.";
+    "The YANG module defines a PIM (Protocol Independent Multicast)
+     RP (Rendezvous Point) model.";
 
-  revision 2016-09-22 {
+  revision 2017-02-09 {
     description
       "Initial revision.";
     reference
@@ -66,19 +71,23 @@ module ietf-pim-rp {
    */
   feature bsr {
     description
-      "This feature indicates that the system supports BSR.";
+      "This feature indicates that the system supports BSR
+       (Bootstrap Router).";
   }
 
   feature bsr-election-state {
     description
       "This feature indicates that the system supports providing
        BSR election state.";
+    reference
+      "RFC5059: Bootstrap Router (BSR) Mechanism for Protocol
+       Independent Multicast (PIM).";
   }
 
   feature static-rp-override {
     description
       "This feature indicates that the system supports configuration
-       of static RP override.";
+       of static RP (Rendezvous Point) override.";
   }
 
   feature candidate-interface {
@@ -107,7 +116,7 @@ module ietf-pim-rp {
     type enumeration {
       enum invalid-jp {
         description
-          "An invalid JP message has been received.";
+          "An invalid JP (Join/Prune) message has been received.";
       }
       enum invalid-register {
         description
@@ -350,9 +359,9 @@ module ietf-pim-rp {
               description
                 "The router knows the identity of the current BSR,
                  and is using the RP-Set provided by that BSR. Only
-                 Bootstrap messages from that BSR or from a C-BSR
-                 with higher weight than the current BSR will be
-                 accepted.";
+                 Bootstrap messages from that BSR or from a
+                 Candidate-BSR (C-BSR) with higher weight than the
+                 current BSR will be accepted.";
             }
           }
           description
@@ -429,7 +438,8 @@ module ietf-pim-rp {
 
   grouping static-rp-attributes {
     description
-      "Grouping of static RP attributes, used in augmenting modules.";
+      "Grouping of static RP attributes, used in augmenting
+       modules.";
     leaf policy-name {
       type string;
       description
@@ -489,7 +499,8 @@ module ietf-pim-rp {
     leaf policy {
       type string;
       description
-        "ACL policy used to filter group addresses.";
+        "ACL (Access Control List) policy used to filter group
+         addresses.";
     }
     leaf mode {
       type identityref {
@@ -669,7 +680,7 @@ module ietf-pim-rp {
     }
     uses pim-base:pim-instance-af-state-ref;
     leaf group {
-      type inet:ip-address;
+      type rt-types:ip-multicast-group-address;
       description "Group address.";
     }
     leaf rp-address {
@@ -678,7 +689,7 @@ module ietf-pim-rp {
     }
     leaf is-rpt {
       type boolean;
-      description "'true' if the tree is RPT.";
+      description "'true' if the tree is RPT (RP-Tree).";
     }
     leaf mode {
       type pim-base:pim-mode;

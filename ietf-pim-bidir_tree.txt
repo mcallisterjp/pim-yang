@@ -21,7 +21,7 @@ pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv6-rp:
       +--rw override?      boolean {static-rp-override}?
 augment /rt:routing-state/rt:control-plane-protocols/pim-base:pim/
 pim-base:address-family:
-   +--ro bidir
+   +--ro bidir!
 augment /rt:routing-state/rt:control-plane-protocols/pim-base:pim/
 pim-base:interfaces/pim-base:interface/pim-base:address-family:
    +--ro bidir!

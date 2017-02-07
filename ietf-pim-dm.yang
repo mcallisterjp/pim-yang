@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-dm@2016-09-22.yang"
+<CODE BEGINS> file "ietf-pim-dm@2017-02-09.yang"
 module ietf-pim-dm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-dm";
   prefix pim-dm;
@@ -44,9 +44,10 @@ module ietf-pim-dm {
                <mailto:hu.fangwei@zte.com.cn>";
 
   description
-    "The YANG module defines a DM (Dense Mode) PIM model.";
+    "The YANG module defines a PIM (Protocol Independent Multicast)
+     DM (Dense Mode) model.";
 
-  revision 2016-09-22 {
+  revision 2017-02-09 {
     description
       "Initial revision.";
     reference
@@ -54,24 +55,12 @@ module ietf-pim-dm {
   }
 
   /*
-   * Features
-   */
-
-  /*
-   * Identities
-   */
-
-  /*
-   * Groupings
-   */
-
-  /*
    * Configuration data nodes
    */
 
-  augment "/rt:routing/rt:control-plane-protocols/pim-base:pim/"
-    + "pim-base:address-family" {
-    description "PIM DM augmentation.";
+  augment "/rt:routing/rt:control-plane-protocols/"
+    + "pim-base:pim/pim-base:address-family" {
+    description "PIM DM (Dense Mode) augmentation.";
 
     container dm {
       presence "Present to enable dense-mode.";
@@ -80,8 +69,8 @@ module ietf-pim-dm {
     } // Dm
   } // augment
 
-  augment "/rt:routing/rt:control-plane-protocols/pim-base:pim/"
-    + "pim-base:interfaces/pim-base:interface/"
+  augment "/rt:routing/rt:control-plane-protocols/"
+    + "pim-base:pim/pim-base:interfaces/pim-base:interface/"
     + "pim-base:address-family" {
     description "PIM DM augmentation to PIM base interface.";
 
@@ -98,21 +87,25 @@ module ietf-pim-dm {
 
   augment "/rt:routing-state/rt:control-plane-protocols/"
     + "pim-base:pim/pim-base:address-family" {
-    description
-      "PIM DM state.";
+    description "PIM DM state.";
     container dm {
+      presence "Present to enable dense-mode.";
       description
         "PIM DM state data.";
     } // dm
   } // augment
 
-  /*
-   * RPCs
-   */
+  augment "/rt:routing-state/rt:control-plane-protocols/"
+    + "pim-base:pim/pim-base:interfaces/pim-base:interface/"
+    + "pim-base:address-family" {
+    description "PIM DM augmentation to PIM base interface.";
 
-  /*
-   * Notifications
-   */
+    container dm {
+      presence "Present to enable dense-mode.";
+      description
+        "PIM DM state data.";
+    } // sm
+  } // augment
 }
 <CODE ENDS>
 ]]>

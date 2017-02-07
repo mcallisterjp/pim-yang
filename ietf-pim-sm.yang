@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-sm@2016-09-22.yang"
+<CODE BEGINS> file "ietf-pim-sm@2017-02-09.yang"
 module ietf-pim-sm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-sm";
   prefix pim-sm;
@@ -52,9 +52,10 @@ module ietf-pim-sm {
                <mailto:hu.fangwei@zte.com.cn>";
 
   description
-    "The YANG module defines a sparse mode PIM model.";
+    "The YANG module defines a PIM (Protocol Independent Multicast)
+     SM (Sparse Mode) model.";
 
-  revision 2016-09-22 {
+  revision 2017-02-09 {
     description
       "Initial revision.";
     reference
@@ -67,8 +68,8 @@ module ietf-pim-sm {
   feature spt-switch-infinity {
     description
       "This feature indicates that the system supports configuration
-       choice whether to trigger the switchover from the RPT to the
-       SPT.";
+       choice whether to trigger the switchover from the RPT
+       (Rendezvous Point Tree) to the SPT (Shortest Path Tree).";
   }
 
   feature spt-switch-policy {
@@ -102,7 +103,7 @@ module ietf-pim-sm {
 
         container anycast-rp {
           presence
-            "Present to enable anycast RP.";
+            "Present to enable anycast RP (Rendezvous Point).";
           description
             "Anycast RP attributes.";
 
@@ -171,12 +172,12 @@ module ietf-pim-sm {
             "SPT (Shortest Path Tree) switching attributes.";
           container infinity {
             if-feature spt-switch-infinity;
-            presence 
+            presence
               "Present if SPT switchover threshold is set to
                infinity, according to the policy specified below.";
             description
-              "The receiver's DR never triggers the
-               switchover from the RPT to the SPT.";
+              "The receiver's DR (Designated Router) never triggers
+               the switchover from the RPT to the SPT.";
             leaf policy-name {
               if-feature spt-switch-policy;
               type string;
@@ -303,14 +304,6 @@ module ietf-pim-sm {
 
     uses static-rp-sm-container;
   } // augment
-
-  /*
-   * RPCs
-   */
-
-  /*
-   * Notifications
-   */
 }
 <CODE ENDS>
 ]]>

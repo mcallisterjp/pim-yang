@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-base@2016-09-22.yang"
+<CODE BEGINS> file "ietf-pim-base@2017-02-09.yang"
 module ietf-pim-base {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
   prefix pim-base;
@@ -12,16 +12,16 @@ module ietf-pim-base {
     prefix "yang";
   }
 
+  import ietf-routing-types {
+    prefix "rt-types";
+  }
+
   import ietf-interfaces {
     prefix "if";
   }
 
   import ietf-routing {
     prefix "rt";
-  }
-
-  import ietf-bfd {
-    prefix "bfd";
   }
 
   organization
@@ -57,9 +57,9 @@ module ietf-pim-base {
 
   description
     "The module defines a collection of YANG definitions common for
-     all PIM modes.";
+     all PIM (Protocol Independent Multicast) modes.";
 
-  revision 2016-09-22 {
+  revision 2017-02-09 {
     description
       "Initial revision.";
     reference
@@ -69,9 +69,9 @@ module ietf-pim-base {
   /*
    * Features
    */
-  feature bfd-protocol-parms {
+  feature bfd {
     description
-      "BFD protocol specific parameters support.";
+      "Support BFD (Bidirectional Forwarding Detection).";
   }
 
   feature global-graceful-restart {
@@ -82,7 +82,8 @@ module ietf-pim-base {
 
   feature intf-dr-priority {
     description
-      "Support configuration of interface DR priority.";
+      "Support configuration of interface DR (Designated Router)
+       priority.";
   }
 
   feature intf-hello-holdtime {
@@ -146,11 +147,13 @@ module ietf-pim-base {
       }
       enum new-dr {
         description
-          "A new DR was elected on the connected network.";
+          "A new DR (Designated Router) was elected on the connected
+           network.";
       }
       enum new-df {
         description
-          "A new DF was elected on the connected network.";
+          "A new DF (Designated Forwarder) was elected on the
+           connected network.";
       }
     }
     description "Operational status event type for notifications.";
@@ -178,23 +181,25 @@ module ietf-pim-base {
       }
       enum ssm {
         description
-          "Source-Specific Multicast (SSM) with PIM Sparse Mode.";
+          "PIM operates in the Sparse Mode with Source-Specific
+           Multicast (SSM).";
       }
       enum asm {
         description
-          "Any Source Multicast (ASM) with PIM Sparse Mode.";
+          "PIM operates in the Sparse Mode with Any Source Multicast
+           (ASM).";
       }
       enum bidir {
         description
-        "Bidirectional PIM.";
+          "PIM operates in the Bidirectional Mode.";
       }
       enum dm {
         description
-          "PIM Dense Mode.";
+          "PIM operates in the Dense Mode (DM).";
       }
       enum other {
         description
-          "Any other PIM mode.";
+          "PIM operates in any other mode.";
       }
     }
     description
@@ -202,18 +207,7 @@ module ietf-pim-base {
   }
 
   typedef timer-value {
-    type union {
-      type uint16;
-      type enumeration {
-        enum "infinity" {
-          description "The timer is set to infinity.";
-        }
-        enum "no-expiry" {
-          description "The timer is not set.";
-        }
-      }
-    }
-    units seconds;
+    type rt-types:timer-value-seconds16;
     description "Timer value type.";
   } // timer-value
 
@@ -257,20 +251,19 @@ module ietf-pim-base {
     description
       "A grouping defining interface attributes.";
     container bfd {
-      description "BFD operation.";
-      leaf enabled {
+      if-feature bfd;
+      description
+        "BFD (Bidirectional Forwarding Detection) operation.";
+      leaf enable {
         type boolean;
         description
-          "True if BFD is enabled for the interface.";
-      }
-      uses bfd:bfd-grouping-base-cfg-parms {
-        if-feature bfd-protocol-parms;
+          "'true' to suppport BFD for the interface.";
       }
     }
     leaf dr-priority {
       if-feature intf-dr-priority;
       type uint32;
-      description "DR priority";
+      description "DR (Designated Router) priority";
     }
     leaf hello-interval {
       if-feature intf-hello-interval;
@@ -289,8 +282,8 @@ module ietf-pim-base {
       case multiplier {
         if-feature intf-hello-multiplier;
         leaf hello-multiplier {
-          type uint8;
-          description 
+          type rt-types:timer-multiplier;
+          description
             "Hello multiplier is the number by which the hello
              interval is multplied to obtain the hold time";
         }
@@ -313,8 +306,8 @@ module ietf-pim-base {
       case multiplier {
         if-feature intf-jp-multiplier;
         leaf jp-multiplier {
-          type uint8;
-          description 
+          type rt-types:timer-multiplier;
+          description
             "Join prune multiplier is the number by which the join
              prune interval is multplied to obtain the hold time";
         }
@@ -349,7 +342,7 @@ module ietf-pim-base {
       }
       leaf dr-address {
         type inet:ipv4-address;
-        description "Designated Router (DR) address.";
+        description "DR (Designated Router) address.";
       }
     }
     container ipv6 {
@@ -364,7 +357,7 @@ module ietf-pim-base {
       }
       leaf dr-address {
         type inet:ipv6-address;
-        description "Designated Router (DR) address.";
+        description "DR (Designated Router) address.";
       }
     }
     uses interface-state-af-attributes;
@@ -442,19 +435,21 @@ module ietf-pim-base {
     }
     leaf msdp-learned {
       type boolean;
-      description "'true' if route is learned from MSDP.";
+      description
+        "'true' if route is learned from MSDP (Multicast Source
+          Discovery Protocol).";
     }
     leaf rp-address {
       type inet:ip-address;
-      description "RP address.";
+      description "RP (Rendezvous Point) address.";
     }
     leaf rpf-neighbor {
       type inet:ip-address;
-      description "RPF neighbor address.";
+      description "RPF (Reverse Path Forwarding) neighbor address.";
     }
     leaf spt-bit {
       type boolean;
-      description "'true' if SPT bit is set.";
+      description "'true' if SPT (Shortest Path Tree) bit is set.";
     }
     leaf up-time {
       type uint32;
@@ -514,14 +509,14 @@ module ietf-pim-base {
       type enumeration {
         enum up {
           description
-            "BFD is up.";
+            "BFD (Bidirectional Forwarding Detection) is up.";
         }
         enum down {
           description
-            "BFD is down.";
+            "BFD (Bidirectional Forwarding Detection) is down.";
         }
       }
-      description "BFD status.";
+      description "BFD (Bidirectional Forwarding Detection) status.";
     }
     leaf expiration {
       type timer-value;
@@ -529,7 +524,7 @@ module ietf-pim-base {
     }
     leaf dr-priority {
       type uint32;
-      description "DR priority";
+      description "DR (Designated Router) priority";
     }
     leaf gen-id {
       type uint32;
@@ -698,7 +693,7 @@ module ietf-pim-base {
     leaf bsr {
       type yang:counter64;
       description
-        "The number of BSR messages.";
+        "The number of BSR (Bootstrap Router) messages.";
     }
     leaf candidate-rp-advertisement {
       type yang:counter64;
@@ -708,7 +703,7 @@ module ietf-pim-base {
     leaf df-election {
       type yang:counter64;
       description
-        "The number of DF election messages.";
+        "The number of DF (Designated Forwarder) election messages.";
     }
     leaf hello {
       type yang:counter64;
@@ -815,23 +810,17 @@ module ietf-pim-base {
             key "group source-address is-rpt";
             description "A list of IPv4 routes.";
             leaf group {
-              type inet:ipv4-address;
+              type rt-types:ipv4-multicast-group-address;
               description "Group address.";
             }
             leaf source-address {
-              type union {
-                type enumeration {
-                  enum '*' {
-                    description "Use '*' to indicate any address.";
-                  }
-                }
-                type inet:ipv4-address;
-              }
+              type rt-types:ipv4-multicast-source-address;
               description "Source address.";
             }
             leaf is-rpt {
               type boolean;
-              description "'true' if the tree is RPT.";
+              description
+                "'true' if the tree is RPT (Rendezvous-Point Tree).";
             }
 
             uses multicast-route-attributes;
@@ -845,23 +834,17 @@ module ietf-pim-base {
             key "group source-address is-rpt";
             description "A list of IPv6 routes.";
             leaf group {
-              type inet:ipv6-address;
+              type rt-types:ipv6-multicast-group-address;
               description "Group address.";
             }
             leaf source-address {
-              type union {
-                type enumeration {
-                  enum '*' {
-                    description "Use '*' to indicate any address.";
-                  }
-                }
-                type inet:ipv4-address;
-              }
+              type rt-types:ipv6-multicast-source-address;
               description "Source address.";
             }
             leaf is-rpt {
               type boolean;
-              description "'true' if the tree is RPT.";
+              description
+                "'true' if the tree is RPT (Rendezvous-Point Tree).";
             }
 
             uses multicast-route-attributes;
@@ -930,7 +913,7 @@ module ietf-pim-base {
       }
       leaf dr-address {
         type inet:ipv4-address;
-        description "Designated Router (DR) address.";
+        description "DR (Designated Router) address.";
       }
     }
     container ipv6 {
@@ -941,7 +924,7 @@ module ietf-pim-base {
       }
       leaf dr-address {
         type inet:ipv6-address;
-        description "Designated Router (DR) address.";
+        description "DR (Designated Router) address.";
       }
     }
   }
