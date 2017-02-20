@@ -18,7 +18,7 @@ Expires: August 24, 2017                             Metaswitch Networks
 
 
        A YANG data model for Protocol-Independent Multicast (PIM)
-                         draft-ietf-pim-yang-04
+                         draft-ietf-pim-yang-05
 
 Abstract
 
@@ -105,7 +105,7 @@ Table of Contents
 
    This document defines a YANG data model that can be used to configure
    and manage Protocol-Independent Multicast (PIM) devices.  This model
-   support the core PIM protocol, as well as many other features
+   supports the core PIM protocol, as well as many other features
 
 
 
