@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-base@2017-02-19.yang"
+<CODE BEGINS> file "ietf-pim-base@2017-03-09.yang"
 module ietf-pim-base {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
   prefix pim-base;
@@ -38,7 +38,7 @@ module ietf-pim-base {
                <mailto:mmcbride7@gmail.com>
 
      Editor:   Xufeng Liu
-               <mailto:xliu@kuatrotech.com>
+               <mailto:Xufeng_Liu@jabil.com>
 
      Editor:   Pete McAllister
                <mailto:pete.mcallister@metaswitch.com>
@@ -59,7 +59,7 @@ module ietf-pim-base {
     "The module defines a collection of YANG definitions common for
      all PIM (Protocol Independent Multicast) modes.";
 
-  revision 2017-02-19 {
+  revision 2017-03-09 {
     description
       "Initial revision.";
     reference

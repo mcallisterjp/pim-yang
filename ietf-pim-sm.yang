@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-sm@2017-02-19.yang"
+<CODE BEGINS> file "ietf-pim-sm@2017-03-09.yang"
 module ietf-pim-sm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-sm";
   prefix pim-sm;
@@ -34,7 +34,7 @@ module ietf-pim-sm {
                <mailto:mmcbride7@gmail.com>
 
      Editor:   Xufeng Liu
-               <mailto:xliu@kuatrotech.com>
+               <mailto:Xufeng_Liu@jabil.com>
 
      Editor:   Pete McAllister
                <mailto:pete.mcallister@metaswitch.com>
@@ -55,7 +55,7 @@ module ietf-pim-sm {
     "The YANG module defines a PIM (Protocol Independent Multicast)
      SM (Sparse Mode) model.";
 
-  revision 2017-02-19 {
+  revision 2017-03-09 {
     description
       "Initial revision.";
     reference

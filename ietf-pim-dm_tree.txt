@@ -1,13 +1,13 @@
 module: ietf-pim-dm
-augment /rt:routing/rt:control-plane-protocols/pim-base:pim/
-pim-base:address-family:
+augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family:
    +--rw dm!
-augment /rt:routing/rt:control-plane-protocols/pim-base:pim/
-pim-base:interfaces/pim-base:interface/pim-base:address-family:
+augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:interfaces/pim-base:interface/pim-base:address-family:
    +--rw dm!
-augment /rt:routing-state/rt:control-plane-protocols/pim-base:pim/
-pim-base:address-family:
+augment /rt:routing-state/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family:
    +--ro dm!
-augment /rt:routing-state/rt:control-plane-protocols/pim-base:pim/
-pim-base:interfaces/pim-base:interface/pim-base:address-family:
+augment /rt:routing-state/rt:control-plane-protocols/pim-base:pim
+/pim-base:interfaces/pim-base:interface/pim-base:address-family:
    +--ro dm!

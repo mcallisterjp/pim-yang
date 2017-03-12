@@ -1,6 +1,6 @@
 module: ietf-pim-rp
-augment /rt:routing/rt:control-plane-protocols/pim-base:pim/
-pim-base:address-family:
+augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family:
    +--rw rp
       +--rw static-rp
       |  +--rw ipv4-rp* [ipv4-address]
@@ -18,23 +18,23 @@ pim-base:address-family:
          |  |     +--rw ipv6-address        inet:ipv6-address
          |  +--rw hash-mask-length    uint8
          |  +--rw priority            uint8
-         +--rw rp-candidate-interface* [interface] 
-{candidate-interface}?
+         +--rw rp-candidate-interface* [interface]
+ {candidate-interface}?
          |  +--rw interface    if:interface-ref
          |  +--rw policy?      string
          |  +--rw mode?        identityref
-         +--rw rp-candidate-ipv4-address* [ipv4-address] 
-{candidate-ipv4}?
+         +--rw rp-candidate-ipv4-address* [ipv4-address]
+ {candidate-ipv4}?
          |  +--rw ipv4-address    inet:ipv4-address
          |  +--rw policy?         string
          |  +--rw mode?           identityref
-         +--rw rp-candidate-ipv6-address* [ipv6-address] 
-{candidate-ipv6}?
+         +--rw rp-candidate-ipv6-address* [ipv6-address]
+ {candidate-ipv6}?
             +--rw ipv6-address    inet:ipv6-address
             +--rw policy?         string
             +--rw mode?           identityref
-augment /rt:routing-state/rt:control-plane-protocols/pim-base:pim/
-pim-base:address-family:
+augment /rt:routing-state/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family:
    +--ro rp
       +--ro static-rp
       |  +--ro ipv4-rp* [ipv4-address]
@@ -52,18 +52,18 @@ pim-base:address-family:
       |  |  |     +--ro ipv6-address        inet:ipv6-address
       |  |  +--ro hash-mask-length    uint8
       |  |  +--ro priority            uint8
-      |  +--ro rp-candidate-interface* [interface] 
-{candidate-interface}?
+      |  +--ro rp-candidate-interface* [interface]
+ {candidate-interface}?
       |  |  +--ro interface    if:interface-ref
       |  |  +--ro policy?      string
       |  |  +--ro mode?        identityref
-      |  +--ro rp-candidate-ipv4-address* [ipv4-address] 
-{candidate-ipv4}?
+      |  +--ro rp-candidate-ipv4-address* [ipv4-address]
+ {candidate-ipv4}?
       |  |  +--ro ipv4-address    inet:ipv4-address
       |  |  +--ro policy?         string
       |  |  +--ro mode?           identityref
-      |  +--ro rp-candidate-ipv6-address* [ipv6-address] 
-{candidate-ipv6}?
+      |  +--ro rp-candidate-ipv6-address* [ipv6-address]
+ {candidate-ipv6}?
       |  |  +--ro ipv6-address    inet:ipv6-address
       |  |  +--ro policy?         string
       |  |  +--ro mode?           identityref
@@ -113,8 +113,8 @@ notifications:
    +---n pim-rp-event
       +--ro event-type?              rp-event-type
       +--ro instance-af-state-ref?   leafref
-      +--ro group?                   
-rt-types:ip-multicast-group-address
+      +--ro group?                  
+ rt-types:ip-multicast-group-address
       +--ro rp-address?              inet:ip-address
       +--ro is-rpt?                  boolean
       +--ro mode?                    pim-base:pim-mode

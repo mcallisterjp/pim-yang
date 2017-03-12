@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-rp@2017-02-19.yang"
+<CODE BEGINS> file "ietf-pim-rp@2017-03-09.yang"
 module ietf-pim-rp {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-rp";
   prefix pim-rp;
@@ -38,7 +38,7 @@ module ietf-pim-rp {
                <mailto:mmcbride7@gmail.com>
 
      Editor:   Xufeng Liu
-               <mailto:xliu@kuatrotech.com>
+               <mailto:Xufeng_Liu@jabil.com>
 
      Editor:   Pete McAllister
                <mailto:pete.mcallister@metaswitch.com>
@@ -59,7 +59,7 @@ module ietf-pim-rp {
     "The YANG module defines a PIM (Protocol Independent Multicast)
      RP (Rendezvous Point) model.";
 
-  revision 2017-02-19 {
+  revision 2017-03-09 {
     description
       "Initial revision.";
     reference
@@ -332,7 +332,7 @@ module ietf-pim-rp {
             enum "elected" {
               description
                 "The router is the elected BSR for the scope zone
-                 and it must perform all the BSR functions.";
+                 and it MUST perform all the BSR functions.";
             }
           }
           description

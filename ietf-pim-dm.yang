@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-dm@2017-02-19.yang"
+<CODE BEGINS> file "ietf-pim-dm@2017-03-09.yang"
 module ietf-pim-dm {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-dm";
   prefix pim-dm;
@@ -26,7 +26,7 @@ module ietf-pim-dm {
                <mailto:mmcbride7@gmail.com>
 
      Editor:   Xufeng Liu
-               <mailto:xliu@kuatrotech.com>
+               <mailto:Xufeng_Liu@jabil.com>
 
      Editor:   Pete McAllister
                <mailto:pete.mcallister@metaswitch.com>
@@ -47,7 +47,7 @@ module ietf-pim-dm {
     "The YANG module defines a PIM (Protocol Independent Multicast)
      DM (Dense Mode) model.";
 
-  revision 2017-02-19 {
+  revision 2017-03-09 {
     description
       "Initial revision.";
     reference
