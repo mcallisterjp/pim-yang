@@ -5,42 +5,10 @@ augment /rt:routing/rt:control-plane-protocols:
       |  +--rw enabled?    boolean
       |  +--rw duration?   uint16
       +--rw address-family* [address-family]
-      |  +--rw address-family      identityref
+      |  +--rw address-family        identityref
       |  +--rw graceful-restart
-      |     +--rw enabled?    boolean
-      |     +--rw duration?   uint16
-      +--rw interfaces
-         +--rw interface* [interface]
-            +--rw interface         if:interface-ref
-            +--rw address-family* [address-family]
-               +--rw address-family       identityref
-               +--rw bfd {bfd}?
-               |  +--rw enable?   boolean
-               +--rw dr-priority?         uint32 {intf-dr-priority}?
-               +--rw hello-interval?      timer-value
- {intf-hello-interval}?
-               +--rw (hello-holdtime-or-multiplier)?
-               |  +--:(holdtime) {intf-hello-holdtime}?
-               |  |  +--rw hello-holdtime?      timer-value
-               |  +--:(multiplier) {intf-hello-multiplier}?
-               |     +--rw hello-multiplier?   
- rt-types:timer-multiplier
-               +--rw jp-interval?         timer-value
- {intf-jp-interval}?
-               +--rw (jp-holdtime-or-multiplier)?
-               |  +--:(holdtime) {intf-jp-holdtime}?
-               |  |  +--rw jp-holdtime?         timer-value
-               |  +--:(multiplier) {intf-jp-multiplier}?
-               |     +--rw jp-multiplier?      
- rt-types:timer-multiplier
-               +--rw propagation-delay?   uint16
- {intf-propagation-delay}?
-               +--rw override-interval?   uint16
- {intf-override-interval}?
-augment /rt:routing-state/rt:control-plane-protocols:
-   +--ro pim
-      +--ro address-family* [address-family]
-      |  +--ro address-family        identityref
+      |  |  +--rw enabled?    boolean
+      |  |  +--rw duration?   uint16
       |  +--ro statistics
       |  |  +--ro discontinuity-time?   yang:date-and-time
       |  |  +--ro error
@@ -115,33 +83,33 @@ augment /rt:routing-state/rt:control-plane-protocols:
       |           +--ro expiration?   timer-value
       |           +--ro up-time?      uint32
       |           +--ro jp-state?     enumeration
-      +--ro interfaces
-         +--ro interface* [interface]
-            +--ro interface         if:interface-ref
-            +--ro address-family* [address-family]
-               +--ro address-family       identityref
-               +--ro bfd {bfd}?
-               |  +--ro enable?   boolean
-               +--ro dr-priority?         uint32 {intf-dr-priority}?
-               +--ro hello-interval?      timer-value
+      +--rw interfaces
+         +--rw interface* [interface]
+            +--rw interface         if:interface-ref
+            +--rw address-family* [address-family]
+               +--rw address-family       identityref
+               +--rw bfd {bfd}?
+               |  +--rw enable?   boolean
+               +--rw dr-priority?         uint32 {intf-dr-priority}?
+               +--rw hello-interval?      timer-value
  {intf-hello-interval}?
-               +--ro (hello-holdtime-or-multiplier)?
+               +--rw (hello-holdtime-or-multiplier)?
                |  +--:(holdtime) {intf-hello-holdtime}?
-               |  |  +--ro hello-holdtime?      timer-value
+               |  |  +--rw hello-holdtime?      timer-value
                |  +--:(multiplier) {intf-hello-multiplier}?
-               |     +--ro hello-multiplier?   
+               |     +--rw hello-multiplier?   
  rt-types:timer-multiplier
-               +--ro jp-interval?         timer-value
+               +--rw jp-interval?         timer-value
  {intf-jp-interval}?
-               +--ro (jp-holdtime-or-multiplier)?
+               +--rw (jp-holdtime-or-multiplier)?
                |  +--:(holdtime) {intf-jp-holdtime}?
-               |  |  +--ro jp-holdtime?         timer-value
+               |  |  +--rw jp-holdtime?         timer-value
                |  +--:(multiplier) {intf-jp-multiplier}?
-               |     +--ro jp-multiplier?      
+               |     +--rw jp-multiplier?      
  rt-types:timer-multiplier
-               +--ro propagation-delay?   uint16
+               +--rw propagation-delay?   uint16
  {intf-propagation-delay}?
-               +--ro override-interval?   uint16
+               +--rw override-interval?   uint16
  {intf-override-interval}?
                +--ro ipv4
                |  +--ro address*      inet:ipv4-address
@@ -167,15 +135,15 @@ augment /rt:routing-state/rt:control-plane-protocols:
                   +--ro up-time?       uint32
 notifications:
    +---n pim-neighbor-event
-   |  +--ro event-type?                neighbor-event-type
-   |  +--ro interface-state-ref?       leafref
-   |  +--ro interface-af-state-ref?    leafref
-   |  +--ro neighbor-ipv4-state-ref?   leafref
-   |  +--ro neighbor-ipv6-state-ref?   leafref
-   |  +--ro up-time?                   uint32
+   |  +--ro event-type?          neighbor-event-type
+   |  +--ro interface-ref?       leafref
+   |  +--ro interface-af-ref?    leafref
+   |  +--ro neighbor-ipv4-ref?   leafref
+   |  +--ro neighbor-ipv6-ref?   leafref
+   |  +--ro up-time?             uint32
    +---n pim-interface-event
-      +--ro event-type?            interface-event-type
-      +--ro interface-state-ref?   leafref
+      +--ro event-type?      interface-event-type
+      +--ro interface-ref?   leafref
       +--ro ipv4
       |  +--ro address*      inet:ipv4-address
       |  +--ro dr-address?   inet:ipv4-address

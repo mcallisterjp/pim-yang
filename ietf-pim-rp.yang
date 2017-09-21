@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-rp@2017-03-09.yang"
+<CODE BEGINS> file "ietf-pim-rp@2017-09-19.yang"
 module ietf-pim-rp {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-rp";
   prefix pim-rp;
@@ -16,7 +16,7 @@ module ietf-pim-rp {
     prefix "if";
   }
 
-  import ietf-routing {
+  import ietf-routing-2 {
     prefix "rt";
   }
 
@@ -59,7 +59,7 @@ module ietf-pim-rp {
     "The YANG module defines a PIM (Protocol Independent Multicast)
      RP (Rendezvous Point) model.";
 
-  revision 2017-03-09 {
+  revision 2017-09-19 {
     description
       "Initial revision.";
     reference
@@ -284,6 +284,7 @@ module ietf-pim-rp {
     description
       "Grouping of BSR state attributes.";
     container bsr {
+      config false;
       description
         "BSR information.";
       leaf address {
@@ -310,6 +311,7 @@ module ietf-pim-rp {
     }
     choice election-state {
       if-feature bsr-election-state;
+      config false;
       description "BSR election state.";
       case candidate {
         leaf candidate-bsr-state {
@@ -374,10 +376,12 @@ module ietf-pim-rp {
     leaf bsr-next-bootstrap {
       type uint16;
       units seconds;
+      config false;
       description "The time when next bootstrap will be sent.";
     }
 
     container rp {
+      config false;
       description
         "State information of the RP.";
       leaf rp-address {
@@ -397,6 +401,7 @@ module ietf-pim-rp {
     leaf rp-candidate-next-advertisement {
       type uint16;
       units seconds;
+      config false;
       description
         "When the next advertisement will be sent as RP candidate";
     }
@@ -530,34 +535,11 @@ module ietf-pim-rp {
         description
           "Containing BSR (BootStrap Router) attributes.";
         uses bsr-config-attributes;
-      } // bsr
-    } // rp
-  } // augment
-
-  /*
-   * Operational state data nodes
-   */
-
-  augment "/rt:routing-state/rt:control-plane-protocols/"
-    + "pim-base:pim/pim-base:address-family" {
-    description
-      "PIM SM state.";
-
-    container rp {
-      description
-        "PIM RP state data.";
-
-      uses static-rp-container;
-
-      container bsr {
-        if-feature bsr;
-        description
-          "Containing BSR (BootStrap Router) attributes.";
-        uses bsr-config-attributes;
         uses bsr-state-attributes;
       } // bsr
 
       container rp-list {
+        config false;
         description
           "Containing a list of RPs.";
         list ipv4-rp {
@@ -618,6 +600,7 @@ module ietf-pim-rp {
       } // rp-list
 
       container rp-mappings {
+        config false;
         description
           "Containing a list of group-to-RP mappings.";
         list ipv4-rp {
@@ -664,10 +647,6 @@ module ietf-pim-rp {
       } // rp-mappings
     } // rp
   } // augment
-
-  /*
-   * RPCs
-   */
 
   /*
    * Notifications
