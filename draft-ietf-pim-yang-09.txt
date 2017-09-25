@@ -5,7 +5,7 @@
 PIM Working Group                                                 X. Liu
 Internet-Draft                                                     Jabil
 Intended status: Standards Track                           P. McAllister
-Expires: March 25, 2018                              Metaswitch Networks
+Expires: March 29, 2018                              Metaswitch Networks
                                                                 A. Peter
                                                               Individual
                                                             M. Sivakumar
@@ -14,11 +14,11 @@ Expires: March 25, 2018                              Metaswitch Networks
                                                      Huawei Technologies
                                                                    F. Hu
                                                          ZTE Corporation
-                                                      September 21, 2017
+                                                      September 25, 2017
 
 
        A YANG data model for Protocol-Independent Multicast (PIM)
-                         draft-ietf-pim-yang-08
+                         draft-ietf-pim-yang-09
 
 Abstract
 
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 25, 2018.
+   This Internet-Draft will expire on March 29, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Liu, et al.              Expires March 25, 2018                 [Page 1]
+Liu, et al.              Expires March 29, 2018                 [Page 1]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Liu, et al.              Expires March 25, 2018                 [Page 2]
+Liu, et al.              Expires March 29, 2018                 [Page 2]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -165,7 +165,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                 [Page 3]
+Liu, et al.              Expires March 29, 2018                 [Page 3]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -221,7 +221,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                 [Page 4]
+Liu, et al.              Expires March 29, 2018                 [Page 4]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -277,7 +277,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                 [Page 5]
+Liu, et al.              Expires March 29, 2018                 [Page 5]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -333,7 +333,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                 [Page 6]
+Liu, et al.              Expires March 29, 2018                 [Page 6]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -389,7 +389,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                 [Page 7]
+Liu, et al.              Expires March 29, 2018                 [Page 7]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -445,7 +445,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                 [Page 8]
+Liu, et al.              Expires March 29, 2018                 [Page 8]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -501,7 +501,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                 [Page 9]
+Liu, et al.              Expires March 29, 2018                 [Page 9]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -557,7 +557,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 10]
+Liu, et al.              Expires March 29, 2018                [Page 10]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -613,7 +613,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 11]
+Liu, et al.              Expires March 29, 2018                [Page 11]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -669,7 +669,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 12]
+Liu, et al.              Expires March 29, 2018                [Page 12]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -725,7 +725,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 13]
+Liu, et al.              Expires March 29, 2018                [Page 13]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -781,7 +781,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 14]
+Liu, et al.              Expires March 29, 2018                [Page 14]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -837,7 +837,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 15]
+Liu, et al.              Expires March 29, 2018                [Page 15]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -893,7 +893,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 16]
+Liu, et al.              Expires March 29, 2018                [Page 16]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -949,7 +949,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 17]
+Liu, et al.              Expires March 29, 2018                [Page 17]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1005,7 +1005,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 18]
+Liu, et al.              Expires March 29, 2018                [Page 18]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1061,7 +1061,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 19]
+Liu, et al.              Expires March 29, 2018                [Page 19]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1117,7 +1117,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 20]
+Liu, et al.              Expires March 29, 2018                [Page 20]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1173,7 +1173,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 21]
+Liu, et al.              Expires March 29, 2018                [Page 21]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1229,7 +1229,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 22]
+Liu, et al.              Expires March 29, 2018                [Page 22]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1285,7 +1285,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 23]
+Liu, et al.              Expires March 29, 2018                [Page 23]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1341,7 +1341,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 24]
+Liu, et al.              Expires March 29, 2018                [Page 24]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1397,7 +1397,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 25]
+Liu, et al.              Expires March 29, 2018                [Page 25]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1453,7 +1453,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 26]
+Liu, et al.              Expires March 29, 2018                [Page 26]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1509,7 +1509,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 27]
+Liu, et al.              Expires March 29, 2018                [Page 27]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1565,7 +1565,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 28]
+Liu, et al.              Expires March 29, 2018                [Page 28]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1621,7 +1621,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 29]
+Liu, et al.              Expires March 29, 2018                [Page 29]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1677,7 +1677,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 30]
+Liu, et al.              Expires March 29, 2018                [Page 30]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1733,7 +1733,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 31]
+Liu, et al.              Expires March 29, 2018                [Page 31]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1789,7 +1789,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 32]
+Liu, et al.              Expires March 29, 2018                [Page 32]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1845,7 +1845,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 33]
+Liu, et al.              Expires March 29, 2018                [Page 33]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1901,7 +1901,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 34]
+Liu, et al.              Expires March 29, 2018                [Page 34]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -1957,7 +1957,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 35]
+Liu, et al.              Expires March 29, 2018                [Page 35]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2013,7 +2013,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 36]
+Liu, et al.              Expires March 29, 2018                [Page 36]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2069,7 +2069,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 37]
+Liu, et al.              Expires March 29, 2018                [Page 37]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2125,7 +2125,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 38]
+Liu, et al.              Expires March 29, 2018                [Page 38]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2181,7 +2181,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 39]
+Liu, et al.              Expires March 29, 2018                [Page 39]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2237,7 +2237,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 40]
+Liu, et al.              Expires March 29, 2018                [Page 40]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2293,7 +2293,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 41]
+Liu, et al.              Expires March 29, 2018                [Page 41]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2349,7 +2349,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 42]
+Liu, et al.              Expires March 29, 2018                [Page 42]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2405,7 +2405,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 43]
+Liu, et al.              Expires March 29, 2018                [Page 43]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2461,7 +2461,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 44]
+Liu, et al.              Expires March 29, 2018                [Page 44]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2517,7 +2517,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 45]
+Liu, et al.              Expires March 29, 2018                [Page 45]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2573,7 +2573,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 46]
+Liu, et al.              Expires March 29, 2018                [Page 46]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2629,7 +2629,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 47]
+Liu, et al.              Expires March 29, 2018                [Page 47]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2685,7 +2685,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 48]
+Liu, et al.              Expires March 29, 2018                [Page 48]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2741,7 +2741,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 49]
+Liu, et al.              Expires March 29, 2018                [Page 49]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2797,7 +2797,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 50]
+Liu, et al.              Expires March 29, 2018                [Page 50]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2853,7 +2853,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 51]
+Liu, et al.              Expires March 29, 2018                [Page 51]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2909,7 +2909,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 52]
+Liu, et al.              Expires March 29, 2018                [Page 52]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -2965,7 +2965,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 53]
+Liu, et al.              Expires March 29, 2018                [Page 53]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3021,7 +3021,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 54]
+Liu, et al.              Expires March 29, 2018                [Page 54]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3077,7 +3077,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 55]
+Liu, et al.              Expires March 29, 2018                [Page 55]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3133,7 +3133,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 56]
+Liu, et al.              Expires March 29, 2018                [Page 56]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3189,7 +3189,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 57]
+Liu, et al.              Expires March 29, 2018                [Page 57]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3245,7 +3245,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 58]
+Liu, et al.              Expires March 29, 2018                [Page 58]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3301,7 +3301,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 59]
+Liu, et al.              Expires March 29, 2018                [Page 59]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3357,7 +3357,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 60]
+Liu, et al.              Expires March 29, 2018                [Page 60]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3413,7 +3413,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 61]
+Liu, et al.              Expires March 29, 2018                [Page 61]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3469,7 +3469,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 62]
+Liu, et al.              Expires March 29, 2018                [Page 62]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3525,7 +3525,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 63]
+Liu, et al.              Expires March 29, 2018                [Page 63]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3581,7 +3581,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 64]
+Liu, et al.              Expires March 29, 2018                [Page 64]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3637,7 +3637,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 65]
+Liu, et al.              Expires March 29, 2018                [Page 65]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3693,7 +3693,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 66]
+Liu, et al.              Expires March 29, 2018                [Page 66]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3749,7 +3749,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 67]
+Liu, et al.              Expires March 29, 2018                [Page 67]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3805,7 +3805,7 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 68]
+Liu, et al.              Expires March 29, 2018                [Page 68]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3861,7 +3861,7 @@ Authors' Addresses
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 69]
+Liu, et al.              Expires March 29, 2018                [Page 69]
 
 Internet-Draft                  PIM YANG                  September 2017
 
@@ -3917,4 +3917,4 @@ Internet-Draft                  PIM YANG                  September 2017
 
 
 
-Liu, et al.              Expires March 25, 2018                [Page 70]
+Liu, et al.              Expires March 29, 2018                [Page 70]
