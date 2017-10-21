@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-base@2017-09-19.yang"
+<CODE BEGINS> file "ietf-pim-base@2017-10-19.yang"
 module ietf-pim-base {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
   prefix pim-base;
@@ -20,7 +20,7 @@ module ietf-pim-base {
     prefix "if";
   }
 
-  import ietf-routing-2 {
+  import ietf-routing {
     prefix "rt";
   }
 
@@ -59,7 +59,7 @@ module ietf-pim-base {
     "The module defines a collection of YANG definitions common for
      all PIM (Protocol Independent Multicast) modes.";
 
-  revision 2017-09-19 {
+  revision 2017-10-19 {
     description
       "Initial revision.";
     reference
@@ -767,7 +767,7 @@ module ietf-pim-base {
           config false;
           description "Containing topology tree information.";
           list ipv4-route {
-            when "../../../address-family = 'rt:ipv4'" {
+            when "../../address-family = 'rt:ipv4'" {
               description
                 "Only applicable to IPv4 address family.";
             }
@@ -791,7 +791,7 @@ module ietf-pim-base {
           } // ipv4-route
 
           list ipv6-route {
-            when "../../../address-family = 'rt:ipv6'" {
+            when "../../address-family = 'rt:ipv6'" {
               description
                 "Only applicable to IPv6 address family.";
             }

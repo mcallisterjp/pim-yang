@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-bidir@2017-09-19.yang"
+<CODE BEGINS> file "ietf-pim-bidir@2017-10-19.yang"
 module ietf-pim-bidir {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-bidir";
   prefix pim-bidir;
@@ -12,7 +12,7 @@ module ietf-pim-bidir {
     prefix "if";
   }
 
-  import ietf-routing-2 {
+  import ietf-routing {
     prefix "rt";
   }
 
@@ -59,7 +59,7 @@ module ietf-pim-bidir {
     "The YANG module defines a PIM (Protocol Independent Multicast)
      BIDIR (Bidirectional) mode model.";
 
-  revision 2017-09-19 {
+  revision 2017-10-19 {
     description
       "Initial revision.";
     reference

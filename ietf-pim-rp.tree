@@ -1,86 +1,88 @@
 module: ietf-pim-rp
-augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
 /pim-base:address-family:
-   +--rw rp
-      +--rw static-rp
-      |  +--rw ipv4-rp* [ipv4-address]
-      |  |  +--rw ipv4-address    inet:ipv4-address
-      |  +--rw ipv6-rp* [ipv6-address]
-      |     +--rw ipv6-address    inet:ipv6-address
-      +--rw bsr {bsr}?
-      |  +--rw bsr-candidate!
-      |  |  +--rw (interface-or-address)?
-      |  |  |  +--:(interface) {candidate-interface}?
-      |  |  |  |  +--rw interface           if:interface-ref
-      |  |  |  +--:(ipv4-address) {candidate-ipv4}?
-      |  |  |  |  +--rw ipv4-address        inet:ipv4-address
-      |  |  |  +--:(ipv6-address) {candidate-ipv6}?
-      |  |  |     +--rw ipv6-address        inet:ipv6-address
-      |  |  +--rw hash-mask-length    uint8
-      |  |  +--rw priority            uint8
-      |  +--rw rp-candidate-interface* [interface]
+    +--rw rp
+       +--rw static-rp
+       |  +--rw ipv4-rp* [ipv4-address]
+       |  |  +--rw ipv4-address    inet:ipv4-address
+       |  +--rw ipv6-rp* [ipv6-address]
+       |     +--rw ipv6-address    inet:ipv6-address
+       +--rw bsr {bsr}?
+       |  +--rw bsr-candidate!
+       |  |  +--rw (interface-or-address)?
+       |  |  |  +--:(interface) {candidate-interface}?
+       |  |  |  |  +--rw interface           if:interface-ref
+       |  |  |  +--:(ipv4-address) {candidate-ipv4}?
+       |  |  |  |  +--rw ipv4-address        inet:ipv4-address
+       |  |  |  +--:(ipv6-address) {candidate-ipv6}?
+       |  |  |     +--rw ipv6-address        inet:ipv6-address
+       |  |  +--rw hash-mask-length    uint8
+       |  |  +--rw priority            uint8
+       |  +--rw rp-candidate-interface* [interface]
  {candidate-interface}?
-      |  |  +--rw interface    if:interface-ref
-      |  |  +--rw policy?      string
-      |  |  +--rw mode?        identityref
-      |  +--rw rp-candidate-ipv4-address* [ipv4-address]
+       |  |  +--rw interface    if:interface-ref
+       |  |  +--rw policy?      string
+       |  |  +--rw mode?        identityref
+       |  +--rw rp-candidate-ipv4-address* [ipv4-address]
  {candidate-ipv4}?
-      |  |  +--rw ipv4-address    inet:ipv4-address
-      |  |  +--rw policy?         string
-      |  |  +--rw mode?           identityref
-      |  +--rw rp-candidate-ipv6-address* [ipv6-address]
+       |  |  +--rw ipv4-address    inet:ipv4-address
+       |  |  +--rw policy?         string
+       |  |  +--rw mode?           identityref
+       |  +--rw rp-candidate-ipv6-address* [ipv6-address]
  {candidate-ipv6}?
-      |  |  +--rw ipv6-address    inet:ipv6-address
-      |  |  +--rw policy?         string
-      |  |  +--rw mode?           identityref
-      |  +--ro bsr
-      |  |  +--ro address?            inet:ip-address
-      |  |  +--ro hash-mask-length?   uint8
-      |  |  +--ro priority?           uint8
-      |  |  +--ro up-time?            uint32
-      |  +--ro (election-state)? {bsr-election-state}?
-      |  |  +--:(candidate)
-      |  |  |  +--ro candidate-bsr-state?               enumeration
-      |  |  +--:(non-candidate)
-      |  |     +--ro non-candidate-bsr-state?           enumeration
-      |  +--ro bsr-next-bootstrap?                uint16
-      |  +--ro rp
-      |  |  +--ro rp-address?     inet:ip-address
-      |  |  +--ro group-policy?   string
-      |  |  +--ro up-time?        uint32
-      |  +--ro rp-candidate-next-advertisement?   uint16
-      +--ro rp-list
-      |  +--ro ipv4-rp* [ipv4-address mode]
-      |  |  +--ro ipv4-address           inet:ipv4-address
-      |  |  +--ro mode                   identityref
-      |  |  +--ro info-source-address?   inet:ipv4-address
-      |  |  +--ro info-source-type?      identityref
-      |  |  +--ro up-time?               uint32
-      |  |  +--ro expiration?            pim-base:timer-value
-      |  +--ro ipv6-rp* [ipv6-address mode]
-      |     +--ro ipv6-address           inet:ipv6-address
-      |     +--ro mode                   identityref
-      |     +--ro info-source-address?   inet:ipv6-address
-      |     +--ro info-source-type?      identityref
-      |     +--ro up-time?               uint32
-      |     +--ro expiration?            pim-base:timer-value
-      +--ro rp-mappings
-         +--ro ipv4-rp* [group rp-address]
-         |  +--ro group         inet:ipv4-prefix
-         |  +--ro rp-address    inet:ipv4-address
-         |  +--ro up-time?      uint32
-         |  +--ro expiration?   pim-base:timer-value
-         +--ro ipv6-rp* [group rp-address]
-            +--ro group         inet:ipv6-prefix
-            +--ro rp-address    inet:ipv6-address
-            +--ro up-time?      uint32
-            +--ro expiration?   pim-base:timer-value
-notifications:
-   +---n pim-rp-event
-      +--ro event-type?        rp-event-type
-      +--ro instance-af-ref?   leafref
-      +--ro group?             rt-types:ip-multicast-group-address
-      +--ro rp-address?        inet:ip-address
-      +--ro is-rpt?            boolean
-      +--ro mode?              pim-base:pim-mode
-      +--ro message-origin?    inet:ip-address
+       |  |  +--rw ipv6-address    inet:ipv6-address
+       |  |  +--rw policy?         string
+       |  |  +--rw mode?           identityref
+       |  +--ro bsr
+       |  |  +--ro address?            inet:ip-address
+       |  |  +--ro hash-mask-length?   uint8
+       |  |  +--ro priority?           uint8
+       |  |  +--ro up-time?            uint32
+       |  +--ro (election-state)? {bsr-election-state}?
+       |  |  +--:(candidate)
+       |  |  |  +--ro candidate-bsr-state?               enumeration
+       |  |  +--:(non-candidate)
+       |  |     +--ro non-candidate-bsr-state?           enumeration
+       |  +--ro bsr-next-bootstrap?                uint16
+       |  +--ro rp
+       |  |  +--ro rp-address?     inet:ip-address
+       |  |  +--ro group-policy?   string
+       |  |  +--ro up-time?        uint32
+       |  +--ro rp-candidate-next-advertisement?   uint16
+       +--ro rp-list
+       |  +--ro ipv4-rp* [ipv4-address mode]
+       |  |  +--ro ipv4-address           inet:ipv4-address
+       |  |  +--ro mode                   identityref
+       |  |  +--ro info-source-address?   inet:ipv4-address
+       |  |  +--ro info-source-type?      identityref
+       |  |  +--ro up-time?               uint32
+       |  |  +--ro expiration?            pim-base:timer-value
+       |  +--ro ipv6-rp* [ipv6-address mode]
+       |     +--ro ipv6-address           inet:ipv6-address
+       |     +--ro mode                   identityref
+       |     +--ro info-source-address?   inet:ipv6-address
+       |     +--ro info-source-type?      identityref
+       |     +--ro up-time?               uint32
+       |     +--ro expiration?            pim-base:timer-value
+       +--ro rp-mappings
+          +--ro ipv4-rp* [group rp-address]
+          |  +--ro group         inet:ipv4-prefix
+          |  +--ro rp-address    inet:ipv4-address
+          |  +--ro up-time?      uint32
+          |  +--ro expiration?   pim-base:timer-value
+          +--ro ipv6-rp* [group rp-address]
+             +--ro group         inet:ipv6-prefix
+             +--ro rp-address    inet:ipv6-address
+             +--ro up-time?      uint32
+             +--ro expiration?   pim-base:timer-value
+
+  notifications:
+    +---n pim-rp-event
+       +--ro event-type?        rp-event-type
+       +--ro instance-af-ref?   -> /rt:routing
+/control-plane-protocols/pim-base:pim/address-family/address-family
+       +--ro group?             rt-types:ip-multicast-group-address
+       +--ro rp-address?        inet:ip-address
+       +--ro is-rpt?            boolean
+       +--ro mode?              pim-base:pim-mode
+       +--ro message-origin?    inet:ip-address
