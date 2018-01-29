@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-base@2017-10-19.yang"
+<CODE BEGINS> file "ietf-pim-base@2017-12-08.yang"
 module ietf-pim-base {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
   prefix pim-base;
@@ -22,6 +22,10 @@ module ietf-pim-base {
 
   import ietf-routing {
     prefix "rt";
+  }
+
+  import ietf-bfd-types {
+    prefix "bfd-types";
   }
 
   organization
@@ -59,7 +63,7 @@ module ietf-pim-base {
     "The module defines a collection of YANG definitions common for
      all PIM (Protocol Independent Multicast) modes.";
 
-  revision 2017-10-19 {
+  revision 2017-12-08 {
     description
       "Initial revision.";
     reference
@@ -254,11 +258,7 @@ module ietf-pim-base {
       if-feature bfd;
       description
         "BFD (Bidirectional Forwarding Detection) operation.";
-      leaf enable {
-        type boolean;
-        description
-          "'true' to suppport BFD for the interface.";
-      }
+      uses bfd-types:client-cfg-parms;
     }
     leaf dr-priority {
       if-feature intf-dr-priority;

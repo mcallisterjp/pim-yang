@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-bidir@2017-10-19.yang"
+<CODE BEGINS> file "ietf-pim-bidir@2017-12-08.yang"
 module ietf-pim-bidir {
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-bidir";
   prefix pim-bidir;
@@ -59,7 +59,7 @@ module ietf-pim-bidir {
     "The YANG module defines a PIM (Protocol Independent Multicast)
      BIDIR (Bidirectional) mode model.";
 
-  revision 2017-10-19 {
+  revision 2017-12-08 {
     description
       "Initial revision.";
     reference
@@ -156,7 +156,7 @@ module ietf-pim-bidir {
            When a DF election Offer or Winner message fails to be
            received, the message is retransmitted.
            The offer-multiplier sets the minimum number of DF
-           election messages that MUST fail to be received for DF
+           election messages that must fail to be received for DF
            election to fail.
            If a router receives from a neighbor a better offer than
            its own, the router stops participating in the election

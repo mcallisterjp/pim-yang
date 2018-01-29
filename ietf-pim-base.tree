@@ -89,7 +89,14 @@ module: ietf-pim-base
              +--rw address-family* [address-family]
                 +--rw address-family       identityref
                 +--rw bfd {bfd}?
-                |  +--rw enable?   boolean
+                |  +--rw enable?                     boolean
+                |  +--rw local-multiplier?           multiplier
+                |  +--rw (interval-config-type)?
+                |     +--:(tx-rx-intervals)
+                |     |  +--rw desired-min-tx-interval     uint32
+                |     |  +--rw required-min-rx-interval    uint32
+                |     +--:(single-interval)
+                |        +--rw min-interval                uint32
                 +--rw dr-priority?         uint32 {intf-dr-priority}?
                 +--rw hello-interval?      timer-value
  {intf-hello-interval}?
