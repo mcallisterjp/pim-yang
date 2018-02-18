@@ -1,11 +1,16 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-bidir@2017-12-08.yang"
+<CODE BEGINS> file "ietf-pim-bidir@2018-01-29.yang"
 module ietf-pim-bidir {
+  yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-bidir";
   prefix pim-bidir;
 
   import ietf-inet-types {
     prefix "inet";
+  }
+
+  import ietf-routing-types {
+    prefix "rt-types";
   }
 
   import ietf-interfaces {
@@ -31,12 +36,6 @@ module ietf-pim-bidir {
     "WG Web:   <http://tools.ietf.org/wg/pim/>
      WG List:  <mailto:pim@ietf.org>
 
-     WG Chair: Stig Venaas
-               <mailto:stig@venaas.com>
-
-     WG Chair: Mike McBride
-               <mailto:mmcbride7@gmail.com>
-
      Editor:   Xufeng Liu
                <mailto:Xufeng_Liu@jabil.com>
 
@@ -59,11 +58,14 @@ module ietf-pim-bidir {
     "The YANG module defines a PIM (Protocol Independent Multicast)
      BIDIR (Bidirectional) mode model.";
 
-  revision 2017-12-08 {
+  revision 2018-01-29 {
     description
       "Initial revision.";
     reference
-      "RFC XXXX: A YANG Data Model for PIM";
+      "RFC XXXX: A YANG Data Model for PIM.
+       RFC5015: Bidirectional Protocol Independent Multicast
+       (BIDIR-PIM).";
+
   }
 
   /*
@@ -72,6 +74,9 @@ module ietf-pim-bidir {
   feature intf-df-election {
     description
       "Support configuration of interface DF election.";
+    reference
+      "RFC5015: Bidirectional Protocol Independent Multicast
+       (BIDIR-PIM). Sec. 3.5.";
   }
 
   /*
@@ -121,52 +126,8 @@ module ietf-pim-bidir {
   }
 
   /*
-   * Typedefs
-   */
-
-  /*
    * Groupings
    */
-  grouping df-election-container {
-    description
-      "Grouping that contains DF (Designated Forwarder) election
-       attributes.";
-    container df-election {
-      if-feature intf-df-election;
-      description
-        "DF election attributes.";
-      leaf offer-interval {
-        type pim-base:timer-value;
-        description
-          "Offer interval specifies the interval between repeated
-           DF election messages.";
-      }
-      leaf backoff-interval {
-        type pim-base:timer-value;
-        description
-          "This is the interval that the acting DF waits between
-           receiving a better DF Offer and sending the Pass message
-           to transfer DF responsibility";
-      }
-      leaf offer-multiplier {
-        type uint8;
-        description
-          "This is number of transmission attempts for DF election
-           messages.
-           When a DF election Offer or Winner message fails to be
-           received, the message is retransmitted.
-           The offer-multiplier sets the minimum number of DF
-           election messages that must fail to be received for DF
-           election to fail.
-           If a router receives from a neighbor a better offer than
-           its own, the router stops participating in the election
-           for a period of offer-multiplier * offer-interval.
-           Eventually, all routers except the best candidate stop
-           sending Offer messages.";
-      }
-    } // df-election
-  } // df-election-container
-
   grouping static-rp-bidir-container {
     description
       "Grouping that contains BIDIR (Bidirectional) attributes for
@@ -181,8 +142,40 @@ module ietf-pim-bidir {
     } // bidir
   } // static-rp-bidir-container
 
+  grouping interface-df-election-state-attributes {
+    description
+      "Grouping that contains the state attributes of a DF election
+       on an interface.";
+    leaf interface-state {
+      type identityref {
+        base df-state;
+      }
+      description
+        "Interface state with respect to the DF election.";
+    }
+    leaf up-time {
+      type rt-types:timeticks64;
+      description
+        "The number of time ticks (hundredths of a second) since the
+         current DF has been elected as the winner.";
+    }
+    leaf winner-metric {
+      type uint32;
+      description
+        "The unicast routing metric used by the DF to reach the RP.
+         The value is announced by the DF.";
+    }
+    leaf winner-metric-preference {
+      type uint32;
+      description
+        "The preference value assigned to the unicast routing
+         protocol that the DF used to obtain the route to the RP.
+         The value is announced by the DF.";
+    }
+  } // interface-df-election-state-attributes
+
   /*
-   * Configuration data nodes
+   * Configuration data and operational state date nodes
    */
 
   augment "/rt:routing/rt:control-plane-protocols/"
@@ -205,8 +198,45 @@ module ietf-pim-bidir {
       presence "Present to enable BIDIR mode.";
       description
         "PIM BIDIR configuration data.";
-
-      uses df-election-container;
+      container df-election {
+        if-feature intf-df-election;
+        description
+          "DF election attributes.";
+        leaf offer-interval {
+          type uint16;
+          units milliseconds;
+          default 100;
+          description
+            "Offer interval specifies the interval between repeated
+             DF election messages.";
+        }
+        leaf backoff-interval {
+          type uint16;
+          units milliseconds;
+          default 1000;
+          description
+            "This is the interval that the acting DF waits between
+             receiving a better DF Offer and sending the Pass message
+             to transfer DF responsibility";
+        }
+        leaf offer-multiplier {
+          type uint8;
+          default 3;
+          description
+            "This is number of transmission attempts for DF election
+             messages.
+             When a DF election Offer or Winner message fails to be
+             received, the message is retransmitted.
+             The offer-multiplier sets the minimum number of DF
+             election messages that must fail to be received for DF
+             election to fail.
+             If a router receives from a neighbor a better offer than
+             its own, the router stops participating in the election
+             for a period of offer-multiplier * offer-interval.
+             Eventually, all routers except the best candidate stop
+             sending Offer messages.";
+        }
+      } // df-election
     } // bidir
   } // augment
 
@@ -232,7 +262,7 @@ module ietf-pim-bidir {
 
   augment "/rt:routing/rt:control-plane-protocols/"
     + "pim-base:pim/pim-base:address-family/pim-rp:rp" {
-    description "PIM BIDIR augmentation.";
+    description "PIM BIDIR augmentation to RP state data.";
 
     container bidir {
       config false;
@@ -246,10 +276,10 @@ module ietf-pim-bidir {
             description
               "Only applicable to IPv4 address family.";
           }
-          key "ipv4-address";
+          key "rp-address";
           description
             "A list of IPv4 RP addresses.";
-          leaf ipv4-address {
+          leaf rp-address {
             type inet:ipv4-address;
             description
               "The address of the RP.";
@@ -260,10 +290,10 @@ module ietf-pim-bidir {
             description
               "Only applicable to IPv6 address family.";
           }
-          key "ipv6-address";
+          key "rp-address";
           description
             "A list of IPv6 RP addresses.";
-          leaf ipv6-address {
+          leaf rp-address {
             type inet:ipv6-address;
             description
               "The address of the RP.";
@@ -279,10 +309,10 @@ module ietf-pim-bidir {
             description
               "Only applicable to IPv4 address family.";
           }
-          key "ipv4-address interface-name";
+          key "rp-address interface-name";
           description
             "A list of IPv4 RP addresses.";
-          leaf ipv4-address {
+          leaf rp-address {
             type inet:ipv4-address;
             description
               "The address of the RP.";
@@ -290,30 +320,26 @@ module ietf-pim-bidir {
           leaf interface-name {
             type if:interface-ref;
             description
-              "The address of the RP.";
+              "The name of the interface for which the DF state is
+               being maintained.";
           }
           leaf df-address {
             type inet:ipv4-address;
             description
-              "DF address.";
+              "The address of the elected DF, which is the winner of
+               the DF Election process.";
           }
-          leaf interface-state {
-            type identityref {
-              base df-state;
-            }
-            description
-              "Interface state.";
-          }
+          uses interface-df-election-state-attributes;
         } // ipv4-rp
         list ipv6-rp {
           when "../../../../pim-base:address-family = 'rt:ipv6'" {
             description
               "Only applicable to IPv6 address family.";
           }
-          key "ipv6-address interface-name";
+          key "rp-address interface-name";
           description
             "A list of IPv6 RP addresses.";
-          leaf ipv6-address {
+          leaf rp-address {
             type inet:ipv6-address;
             description
               "The address of the RP.";
@@ -328,15 +354,37 @@ module ietf-pim-bidir {
             description
               "DF address.";
           }
-          leaf interface-state {
-            type identityref {
-              base df-state;
-            }
-            description
-              "Interface state.";
-          }
+          uses interface-df-election-state-attributes;
         } // ipv6-rp
       } // interface-df-election
+    }
+  } // augment
+
+  augment "/rt:routing/rt:control-plane-protocols/"
+    + "pim-base:pim/pim-base:interfaces/pim-base:interface/"
+    + "pim-base:address-family/pim-base:neighbors/"
+    + "pim-base:ipv4-neighbor" {
+    description
+      "PIM BIDIR augmentation to the IPv4 neighbor state data.";
+    leaf bidir-capable {
+      type boolean;
+      description
+        "'true' if the neighbor is using the Bidirectional Capable
+         option in the last Hello message.";
+    }
+  } // augment
+
+  augment "/rt:routing/rt:control-plane-protocols/"
+    + "pim-base:pim/pim-base:interfaces/pim-base:interface/"
+    + "pim-base:address-family/pim-base:neighbors/"
+    + "pim-base:ipv6-neighbor" {
+    description
+      "PIM BIDIR augmentation to the IPv6 neighbor state data.";
+    leaf bidir-capable {
+      type boolean;
+      description
+        "'true' if the neighbor is using the Bidirectional Capable
+         option in the last Hello message.";
     }
   } // augment
 }

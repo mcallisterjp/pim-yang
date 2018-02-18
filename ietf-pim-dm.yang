@@ -1,6 +1,7 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-dm@2017-12-08.yang"
+<CODE BEGINS> file "ietf-pim-dm@2018-01-29.yang"
 module ietf-pim-dm {
+  yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-dm";
   prefix pim-dm;
 
@@ -18,12 +19,6 @@ module ietf-pim-dm {
   contact
     "WG Web:   <http://tools.ietf.org/wg/pim/>
      WG List:  <mailto:pim@ietf.org>
-
-     WG Chair: Stig Venaas
-               <mailto:stig@venaas.com>
-
-     WG Chair: Mike McBride
-               <mailto:mmcbride7@gmail.com>
 
      Editor:   Xufeng Liu
                <mailto:Xufeng_Liu@jabil.com>
@@ -47,11 +42,13 @@ module ietf-pim-dm {
     "The YANG module defines a PIM (Protocol Independent Multicast)
      DM (Dense Mode) model.";
 
-  revision 2017-12-08 {
+  revision 2018-01-29 {
     description
       "Initial revision.";
     reference
-      "RFC XXXX: A YANG Data Model for PIM";
+      "RFC XXXX: A YANG Data Model for PIM.
+       RFC 3973: Protocol Independent Multicast - Dense Mode
+      (PIM-DM): Protocol Specification (Revised).";
   }
 
   /*

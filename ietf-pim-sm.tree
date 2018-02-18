@@ -4,14 +4,12 @@ module: ietf-pim-sm
     +--rw sm
        +--rw asm
        |  +--rw anycast-rp!
-       |  |  +--rw ipv4
-       |  |  |  +--rw ipv4-anycast-rp* [anycast-address rp-address]
-       |  |  |     +--rw anycast-address    inet:ipv4-address
-       |  |  |     +--rw rp-address         inet:ipv4-address
-       |  |  +--rw ipv6
-       |  |     +--rw ipv6-anycast-rp* [anycast-address rp-address]
-       |  |        +--rw anycast-address    inet:ipv6-address
-       |  |        +--rw rp-address         inet:ipv6-address
+       |  |  +--rw ipv4-anycast-rp* [anycast-address rp-address]
+       |  |  |  +--rw anycast-address    inet:ipv4-address
+       |  |  |  +--rw rp-address         inet:ipv4-address
+       |  |  +--rw ipv6-anycast-rp* [anycast-address rp-address]
+       |  |     +--rw anycast-address    inet:ipv6-address
+       |  |     +--rw rp-address         inet:ipv6-address
        |  +--rw spt-switch
        |     +--rw infinity! {spt-switch-infinity}?
        |        +--rw policy-name?   string {spt-switch-policy}?
