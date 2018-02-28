@@ -571,7 +571,7 @@ module: ietf-pim-base
       </t>
     </section>
 
-    <section title="PIM Inteface Modeling">
+    <section title="PIM Interface Modeling">
       <t>
 	The configuration and operational state data of PIM interfaces
 	is modeled as below:
