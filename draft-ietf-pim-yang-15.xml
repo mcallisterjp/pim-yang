@@ -1,0 +1,2256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+    <!ENTITY pim-base-tree SYSTEM "ietf-pim-base.tree">
+    <!ENTITY pim-base-yang SYSTEM "ietf-pim-base.yang">
+    <!ENTITY pim-rp-tree SYSTEM "ietf-pim-rp.tree">
+    <!ENTITY pim-rp-yang SYSTEM "ietf-pim-rp.yang">
+    <!ENTITY pim-sm-tree SYSTEM "ietf-pim-sm.tree">
+    <!ENTITY pim-sm-yang SYSTEM "ietf-pim-sm.yang">
+    <!ENTITY pim-dm-tree SYSTEM "ietf-pim-dm.tree">
+    <!ENTITY pim-dm-yang SYSTEM "ietf-pim-dm.yang">
+    <!ENTITY pim-bidir-tree SYSTEM "ietf-pim-bidir.tree">
+    <!ENTITY pim-bidir-yang SYSTEM "ietf-pim-bidir.yang">
+]>
+
+<!-- may be omitted for very short documents -->
+<?rfc toc="yes"?>
+<?rfc sortrefs="no"?>
+<?rfc symrefs="yes"?>
+<?rfc strict="no"?>
+<?rfc rfcedstyle="yes"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes"?>
+
+<!-- these two save paper: start new sections from the same page etc. -->
+<?rfc compact="yes"?> <?rfc subcompact="no"?>
+
+<!-- other categories: bcp, exp, historic, std -->
+<rfc ipr="trust200902" category="std" docName="draft-ietf-pim-yang-15">
+  
+  <front>
+    
+    <title abbrev='PIM YANG'>
+      A YANG Data Model for Protocol Independent Multicast (PIM)
+    </title>
+
+    <author fullname="Xufeng Liu" initials="X." surname="Liu">
+      <organization>Jabil</organization>
+      <address>
+        <postal>
+          <street>8281 Greensboro Drive, Suite 200</street>
+          <city>McLean</city>
+          <code>VA 22102</code>
+          <country>USA</country>
+        </postal>
+        <email>Xufeng_Liu@jabil.com</email>
+      </address>
+    </author>
+
+    <author fullname="Pete McAllister" initials="P." surname="McAllister">
+      <organization>Metaswitch Networks</organization>
+      <address>
+        <postal>
+          <street>100 Church Street</street>
+          <city>Enfield</city>
+          <code>EN2 6BQ</code>
+          <country>UK</country>
+        </postal>
+        <email> pete.mcallister@metaswitch.com</email>
+      </address>
+    </author>
+
+    <author fullname="Anish Peter" initials="A." surname="Peter">
+      <organization>Individual</organization>
+      <address>
+        <email>anish.ietf@gmail.com</email>
+      </address>
+    </author>
+
+    <author fullname="Mahesh Sivakumar" initials="M." surname="Sivakumar">
+      <organization>Cisco Systems</organization>
+      <address>
+        <postal>
+        <street>510 McCarthy Boulevard</street>
+        <city>Milpitas</city>
+        <region>California</region>
+        <country>USA</country>
+        </postal>
+        <email>masivaku@cisco.com</email>
+      </address>
+    </author>
+
+    <author fullname="Yisong Liu" initials="Y." surname="Liu">
+      <organization>Huawei Technologies</organization>
+      <address>
+        <postal>
+        <street>Huawei Administration Building</street>
+        <city>Longgang</city>
+        <region>Guangdong</region>
+        <code>518129</code>
+        <country>China</country>
+        </postal>
+        <email>liuyisong@huawei.com</email>
+      </address>
+    </author>
+
+    <author fullname="Fangwei Hu" initials="F." surname="Hu">
+      <organization>ZTE Corporation</organization>
+      <address>
+        <postal>
+        <street>889 Bibo Road</street>
+        <city>Shanghai</city>
+        <region>Shanghai</region>
+        <code>201203</code>
+        <country>China</country>
+        </postal>
+        <email>hu.fangwei@zte.com.cn</email>
+      </address>
+    </author>
+
+    <date year="2018"/>
+    <area>Routing</area>
+    <workgroup>PIM Working Group</workgroup>
+
+    <keyword>Network Management</keyword>
+    <keyword>PIM</keyword>
+    <keyword>YANG</keyword>
+
+    <abstract>
+      <t>
+        This document defines a YANG data model that can be used to configure
+        and manage devices supporting Protocol Independent Multicast (PIM). 
+	The model covers the PIM protocol configuration,
+	operational state, and event notifications data.
+      </t>
+    </abstract>
+  </front>
+  
+  <middle>
+
+<section title="Introduction">
+  <t>
+    YANG <xref target="RFC7950"/> is a data
+    modeling language that was introduced to model the configuration
+    and operational state of a device managed using network management
+    protocols such as NETCONF <xref target="RFC6241"/> or RESTCONF 
+    <xref target="RFC8040"/>.
+    YANG is now also being used as a component of wider management
+    interfaces, such as CLIs.
+  </t>
+  <t>
+    This document defines a YANG data model that can be used to
+    configure and manage devices supporting Protocol Independent
+    Multicast (PIM).
+    This model supports the core PIM
+    protocol, as well as many other features described in Section 2.1.
+   Non-core features are defined as optional in the provided data model.
+  </t>
+
+  <section title="Terminology">
+    <t>
+      The terminology for describing YANG data models is found in
+      <xref target="RFC7950"/>.
+    </t>
+    <t>
+      The following abbreviations are used in this document and
+      the defined model:
+      <list style="hanging">
+	<t hangText="ASM:"><vspace blankLines="0" />
+	Any-Source Multicast service model
+	<xref target="RFC3569"/> <xref target="RFC4607"/>.
+	</t>
+	
+	<t hangText="BFD:"><vspace blankLines="0" />
+	Bidirectional Forwarding Detection <xref target="RFC5880"/>.
+	</t>
+	
+	<t hangText="BSR:"><vspace blankLines="0" />
+	Bootstrap Router <xref target="RFC5059"/>.
+	</t>
+	
+	<t hangText="DF:"><vspace blankLines="0" />
+	Designated Forwarder <xref target="RFC5015"/>.
+	</t>
+     
+	<t hangText="DR:"><vspace blankLines="0" />
+	Designated Router <xref target="RFC7761"/>.
+	</t>
+	
+	<t hangText="IGMP:"><vspace blankLines="0" />
+	Internet Group Management Protocol <xref target="RFC3376"/>.
+	</t>
+	
+	<t hangText="MLD:"><vspace blankLines="0" />
+	Multicast Listener Discovery <xref target="RFC3810"/>.
+	</t>
+	
+	<t hangText="MSDP:"><vspace blankLines="0" />
+	Multicast Source Discovery Protocol <xref target="RFC3618"/>.
+	</t>
+     
+	<t hangText="mLDP:"><vspace blankLines="0" />
+	Multipoint extensions for LDP <xref target="RFC6388"/>.
+	</t>
+	
+	<t hangText="MRIB:"><vspace blankLines="0" />
+	Multicast Routing Information Base <xref target="RFC3973"/> 
+	<xref target="RFC5015"/> <xref target="RFC7761"/>.
+	</t>
+	
+	<t hangText="mVPN:"><vspace blankLines="0" />
+	Multicast VPN.
+	</t>
+	
+	<t hangText="PIM:"><vspace blankLines="0" />
+	Protocol Independent Multicast. <xref target="RFC3973"/> 
+	<xref target="RFC5015"/> <xref target="RFC7761"/>.
+	</t>
+     
+	<t hangText="PIM-BIDIR:"><vspace blankLines="0" />
+	Protocol Independent Multicast - Bidirectional Mode
+	<xref target="RFC5015"/>.
+	</t>
+	
+	<t hangText="PIM-DM:"><vspace blankLines="0" />
+	Protocol Independent Multicast - Dense Mode
+	<xref target="RFC3973"/>.
+	</t>
+	
+	<t hangText="PIM-SM:"><vspace blankLines="0" />
+	Protocol Independent Multicast - Sparse Mode
+	<xref target="RFC7761"/>.
+	</t>
+	
+	<t hangText="RP:"><vspace blankLines="0" />
+	Rendezvous Point. <xref target="RFC7761"/>.
+	</t>
+	
+	<t hangText="RPA:"><vspace blankLines="0" />
+	Rendezvous Point Address. <xref target="RFC5015"/>.
+	</t>
+	
+	<t hangText="RPF:"><vspace blankLines="0" />
+	Reverse Path Forwarding. <xref target="RFC3973"/> 
+	<xref target="RFC5015"/> <xref target="RFC7761"/>.
+	</t>
+     
+	<t hangText="RPT:"><vspace blankLines="0" />
+	Rendezvous-Point Tree. <xref target="RFC7761"/>.
+	</t>
+     
+	<t hangText="SPT:"><vspace blankLines="0" />
+	Shortest Path Tree. <xref target="RFC7761"/>.
+	</t>
+     
+	<t hangText="SSM:"><vspace blankLines="0" />
+	Source-Specific Multicast service model
+	<xref target="RFC3569"/> <xref target="RFC4607"/>.
+	</t>
+	
+	<t hangText="VRF:"><vspace blankLines="0" />
+	Virtual Routing and Forwarding.
+	</t>
+      </list>
+    </t>
+  </section>
+
+  <section title="Tree Diagrams Prefixes">
+    <t>
+      Tree diagrams used in this document follow the notation defined in
+      <xref target="I-D.ietf-netmod-yang-tree-diagrams"/>.
+    </t>
+  </section>
+
+  <section title="Prefixes in Data Node Names">
+    <t>
+      In this document, names of data nodes, actions, and other data model
+      objects are often used without a prefix, as long as it is clear from
+      the context in which YANG module each name is defined.  Otherwise,
+      names are prefixed using the standard prefix associated with the
+      corresponding YANG module, as shown in Table 1.
+    </t>
+
+    <texttable anchor='table_prefixes' 
+	       title="Prefixes and Corresponding YANG Modules">
+      <ttcol>Prefix</ttcol>
+      <ttcol>YANG module</ttcol>
+      <ttcol>Reference</ttcol>
+      <c>yang</c>
+      <c>ietf-yang-types</c>
+      <c><xref target="RFC6991"/></c>
+      
+      <c>inet</c>
+      <c>ietf-inet-types</c>
+      <c><xref target="RFC6991"/></c>
+      
+      <c>if</c>
+      <c>ietf-interfaces</c>
+      <c><xref target="I-D.ietf-netmod-rfc7223bis"/></c>
+      
+      <c>rt</c>
+      <c>ietf-routing</c>
+      <c><xref target="I-D.ietf-netmod-rfc8022bis"/></c>
+      
+      <c>rt-types</c>
+      <c>ietf-routing-types</c>
+      <c><xref target="RFC8294"/></c>
+
+      <c>bfd-types</c>
+      <c>ietf-bfd-types</c>
+      <c><xref target="I-D.ietf-bfd-yang"/></c>
+    </texttable>
+  </section>
+
+</section>
+
+<section title="Design of Data Model">
+  <section title="Scope of Model">
+    <t>
+      The model covers PIM Sparse Mode <xref target="RFC7761"/>, including the
+      Source-Specific subset <xref target="RFC3569"/> 
+      <xref target="RFC4607"/>, Dense Mode
+      <xref target="RFC3973"/>, and Bi-directional PIM <xref target="RFC5015"/>.
+    </t>
+    <t>
+      The PIM extensions represented in the model include BSR
+      <xref target="RFC5059"/> and Anycast-RP <xref target="RFC4610"/>.
+    </t>
+    <t>
+      The data model can be used to configure and manage these
+      protocol features. The operational state data and statistics
+      can be retrieved by this model. The protocol specific
+      notifications are also defined in the model.
+    </t>
+    <t>
+      This model does not cover other multicast protocols such as IGMP/MLD,
+      MSDP, mVPN, or mLDP in-band signalling. It does not cover
+      any configuration required to generate the MRIB. These will
+      be specified in separate documents.
+    </t>
+  </section>
+  <section title="Optional Capabilities">
+    <t>
+      This model is designed to represent the capabilities of
+      devices supporting PIM 
+      with various specifications, including some with basic subsets of the
+      PIM protocol. The main design goals of this document are that any major
+      now-existing implementation may be said to support the base model, and
+      that the configuration of all implementations meeting the specification
+      is easy to express through some combination of the features in the base
+      model and simple vendor augmentations.
+    </t>
+    <t>
+      There is also value in widely-supported features being standardized, to
+      save work for individual vendors, and so that mapping between different
+      vendors' configuration is not needlessly complicated. Therefore, these
+      modules declare a number of features representing capabilities that
+      not all deployed devices support.
+    </t>
+    <t>
+      The extensive use of feature declarations should also substantially
+      simplify the capability negotiation process for a vendor's PIM
+      implementation.
+    </t>
+    <t>
+      On the other hand, operational state parameters are not so widely
+      designated as features, as there are many cases where the defaulting
+      of an operational state parameter would not cause any harm to the
+      system, and it is much more likely that an implementation without
+      native support for a piece of operational state would be able to
+      derive a suitable value for a state variable that is not natively
+      supported.
+    </t>
+    <t>
+      For the same reason, wide constant ranges (for example, timer maxima
+      and minima) are used in the model. It is expected that
+      vendors will augment the model with any specific extensions
+      and restrictions needed to adapt it to their vendor specific
+      implementation.  
+    </t>
+  </section>
+  <section title="Datastore Applicability">
+    <t>
+      This model conforms to the Network Management Datastore
+      Architecture (NMDA) 
+      <xref target="I-D.ietf-netmod-revised-datastores"/>.
+      The operational state data is combined with the associated
+      configuration data in the same hierarchy
+      <xref target="I-D.ietf-netmod-rfc6087bis"/>.
+    </t>
+  </section>
+  <section title="Module and Hierarchy Organization">
+    <t>
+      This model defines several separate modules for modelling PIM
+      configuration, defined below. Again, this separation makes it
+      easier to express the specific capabilities of a PIM device. 
+      The module organization, along with the usage of the YANG
+      extensible features such as identity, allows the model to be
+      easily augmented for new capabilities.  
+    </t>
+    <t>
+      The hierarchy of PIM configuration is designed so that objects that
+      are only relevant for one situation or feature are collected in a
+      container for that feature. For example, the configuration for PIM-SM
+      that is not relevant for an SSM-only implementation is collected in an
+      ASM container.
+    </t>
+    <t>
+      Where fields are not genuinely essential to protocol operation, they
+      are marked as optional. Some fields are essential but have a
+      default specified, so they need not be explicitly configured.
+    </t>
+    <t>
+      This module structure also applies, where applicable, to the operational
+      state and notifications of the model.
+    </t>
+  </section>
+  <section title="Position of Address Family in Hierarchy">
+    <t>
+      This document contains address-family as a node in the hierarchy
+      multiple times: both under the interface list, and under the
+      PIM instance.
+    </t>
+    <t>
+      The reasoning for this is to make it easier for implementations in which
+      configuration options are not supported for specific address families.
+    </t>
+    <t>
+      For these implementations, the restriction that interface configuration
+      must be address-family independent may either be expressed as a vendor
+      augmentation of an address-family-independent parameter above the
+      address-family level, or by a constraint on the base model objects of a
+      form similar to:
+    </t>
+    <figure><artwork>
+<![CDATA[
+deviation "/rt:routing/rt:control-plane-protocols/"
+  + "pim-base:pim/pim-base:interfaces/pim-base:interface/"
+  + "pim-base:address-family" {
+
+  deviate add {
+    must "(address-family = 'rt:ipv4' and dr-priority = " 
+      + "../address-family[address-family = 'rt:ipv6']/"
+      + "dr-priority) or "
+      + "(address-family = 'rt:ipv6' and dr-priority = " 
+      + "../address-family[address-family = 'rt:ipv4']/"
+      + "dr-priority)" {
+      error-message
+        "Error: IPv6 DR priority must match IPv4 DR priority.";
+      error-app-tag "dr-priority-mismatch";
+    }
+  }
+}
+]]>
+    </artwork></figure>
+  </section>
+</section>
+
+<section title="Module Structure">
+  <section title="PIM Base Module">
+    <t>
+      The PIM base module defines the base framework not
+      specific to any PIM mode, and is imported by the other
+      modules. The base module by itself does not provide
+      sufficient data for any PIM mode to operate. Other mode
+      specific and feature specific modules need to be implemented
+      in addition to this module, depending on the feature set
+      required by the implementation.
+    </t>
+    <t>
+      This model augments the core routing data model "ietf-routing"
+      specified in <xref target="I-D.ietf-netmod-rfc8022bis"/>.
+      The PIM base model augments 
+      "/rt:routing/rt:control-plane-protocols” as opposed to
+      augmenting 
+      "/rt:routing/rt:control-plane-protocols/rt:control-plane-protocol”,
+      as the 
+      latter would allow multiple protocol instances,
+      while the PIM protocol is designed to be enabled or
+      disabled as a single protocol instnace on a network instance or
+      a logical network element. 
+    </t>
+
+    <section title="High-Level Structure">
+      <t>
+	The high-level structure of the model is shown below:
+      </t>
+      
+      <figure><artwork>
+<![CDATA[
+module: ietf-pim-base
+  augment /rt:routing/rt:control-plane-protocols:
+    +--rw pim!
+       +--rw <global configuration>
+       +--ro <global operational state>
+       +--rw address-family* [address-family]
+       |  +--rw address-family        identityref
+       |  +--rw <per address family configuration>
+       |  +--ro <per address family operational state>
+       +--rw interfaces
+          +--rw interface* [name]
+             +--rw name              if:interface-ref
+             +--rw address-family* [address-family]
+                +--rw address-family       identityref
+                +--rw <per interface configuration>
+                +--ro <per interface operational state>
+                +--ro neighbors
+                   +--ro ipv4-neighbor* [address]
+                   |  +--ro address            inet:ipv4-address
+                   |  +--ro <IPv4 per neighbor operational state>
+                   +--ro ipv6-neighbor* [address]
+                      +--ro address            inet:ipv6-address
+                      +--ro <IPv4 per neighbor operational state>
+]]>
+      </artwork></figure>
+
+      <t>
+	The presence of the top-level container "pim" enables the PIM
+	protocols.
+      </t>
+    </section>
+
+    <section title="Global Data">
+      <t>
+	The global configuration and operational state data covers the
+	support for graceful restart in the PIM base model. Additional
+	features can be added by augmentation if required by an
+	implementation.
+      </t>
+    </section>
+
+    <section title="Per Address Family Data">
+      <t>
+	The support for per address family data is shown below:
+      </t>
+      
+      <figure><artwork>
+<![CDATA[
++--rw pim!
+   +--rw address-family* [address-family]
+   |  +--rw address-family        identityref
+   |  +--rw graceful-restart
+            ...
+   |  +--ro statistics
+   |  |  +--ro discontinuity-time?   yang:date-and-time
+   |  |  +--ro error
+   |  |  |  +--ro assert?                       yang:counter32
+                  ...
+   |  |  +--ro queue
+   |  |  |  +--ro size?       uint32
+   |  |  |  +--ro overflow?   yang:counter32
+   |  |  +--ro received
+   |  |  |  +--ro assert?                       yang:counter32
+                  ...
+   |  |  +--ro sent
+   |  |     +--ro assert?                       yang:counter32
+                  ...
+   |  +--ro topology-tree-info
+   |  |  +--ro ipv4-route* [group source-address is-rpt]
+   |  |  |  +--ro group
+   |  |  |  |       rt-types:ipv4-multicast-group-address
+   |  |  |  +--ro source-address
+   |  |  |  |       rt-types:ipv4-multicast-source-address
+   |  |  |  +--ro is-rpt                boolean
+   |  |  +--ro ipv6-route* [group source-address is-rpt]
+   |  |     +--ro group
+   |  |     |       rt-types:ipv6-multicast-group-address
+   |  |     +--ro source-address
+   |  |     |       rt-types:ipv6-multicast-source-address
+   |  |     +--ro is-rpt                boolean
+                  ...
+   |  |     +--ro incoming-interface?   if:interface-ref
+                  ...
+   |  |     +--ro outgoing-interface* [name]
+   |  |        +--ro name          if:interface-ref
+   |  |        +--ro expiration?   rt-types:timer-value-seconds16
+   |  |        +--ro up-time?      rt-types:timeticks64
+   |  |        +--ro jp-state?     enumeration
+]]>
+      </artwork></figure>
+      <t>
+	This is the location that most of the PIM RP module
+	(ietf-pim-rp) augments. Each of the mode specific modules also
+	augments this schema tree.
+      </t>
+    </section>
+
+    <section title="PIM Interface Modeling">
+      <t>
+	The configuration and operational state data of PIM interfaces
+	is modeled as below:
+      </t>
+      
+      <figure><artwork>
+<![CDATA[
++--rw pim!
+   +--rw interfaces
+      +--rw interface* [name]
+         +--rw name              if:interface-ref
+         +--rw address-family* [address-family]
+            +--rw address-family       identityref
+            +--rw bfd {bfd}?
+                  ...
+            +--rw dr-priority?         uint32 {intf-dr-priority}?
+            +--rw hello-interval?      rt-types:timer-value-seconds16
+            |       {intf-hello-interval}?
+            +--rw (hello-holdtime-or-multiplier)?
+            |  +--:(holdtime) {intf-hello-holdtime}?
+            |  |  +--rw hello-holdtime?
+            |  |          rt-types:timer-value-seconds16
+            |  +--:(multiplier) {intf-hello-multiplier}?
+            |     +--rw hello-multiplier?
+            |             rt-types:timer-multiplier
+            +--rw jp-interval?         rt-types:timer-value-seconds16
+            |       {intf-jp-interval}?
+            +--rw (jp-holdtime-or-multiplier)?
+            |  +--:(holdtime) {intf-jp-holdtime}?
+            |  |  +--rw jp-holdtime?
+            |  |          rt-types:timer-value-seconds16
+            |  +--:(multiplier) {intf-jp-multiplier}?
+            |     +--rw jp-multiplier?
+            |             rt-types:timer-multiplier
+            +--rw override-interval?   uint16
+            |       {intf-override-interval}?
+            +--rw propagation-delay?   uint16
+            |       {intf-propagation-delay}?
+            +--ro oper-status?         enumeration
+            +--ro gen-id?              uint32
+            +--ro hello-expiration?    rt-types:timer-value-seconds16
+            +--ro ipv4
+            |  +--ro address*      inet:ipv4-address
+            |  +--ro dr-address?   inet:ipv4-address
+            +--ro ipv6
+            |  +--ro address*      inet:ipv6-address
+            |  +--ro dr-address?   inet:ipv6-address
+]]>
+      </artwork></figure>
+      <t>
+	The support for bfd is achieved by using a grouping provided
+	by an external module ietf-bfd-types, defined in 
+	<xref target="I-D.ietf-bfd-yang"/>.
+      </t>
+    </section>
+
+    <section title="Neighbor Modeling">
+      <t>
+	For each PIM interface, there can be a list of neighbors,
+	which conatin operational state data. To model such data, the
+	following structure is specified:
+      </t>
+      
+      <figure><artwork>
+<![CDATA[
++--rw pim!
+   +--rw interfaces
+      +--rw interface* [name]
+         +--rw address-family* [address-family]
+            +--ro neighbors
+               +--ro ipv4-neighbor* [address]
+               |  +--ro address            inet:ipv4-address
+               |  +--ro bfd-status?        enumeration
+               |  +--ro expiration?
+               |  |       rt-types:timer-value-seconds16
+               |  +--ro dr-priority?       uint32
+               |  +--ro gen-id?            uint32
+               |  +--ro lan-prune-delay
+               |  |  +--ro present?             boolean
+               |  |  +--ro override-interval?   uint16
+               |  |  +--ro propagation-delay?   uint16
+               |  |  +--ro t-bit?               boolean
+               |  +--ro up-time?           rt-types:timeticks64
+               +--ro ipv6-neighbor* [address]
+                  +--ro address            inet:ipv6-address
+                  +--ro bfd-status?        enumeration
+                  +--ro expiration?
+                  |       rt-types:timer-value-seconds16
+                  +--ro dr-priority?       uint32
+                  +--ro gen-id?            uint32
+                  +--ro lan-prune-delay
+                  |  +--ro present?             boolean
+                  |  +--ro override-interval?   uint16
+                  |  +--ro propagation-delay?   uint16
+                  |  +--ro t-bit?               boolean
+                  +--ro up-time?           rt-types:timeticks64
+]]>
+      </artwork></figure>
+    </section>
+    <section title="Notifications">
+      <t>
+	The PIM base module also defines the notifications for PIM
+	interface and neighbor events, as shown below:
+      </t>
+      
+      <figure><artwork>
+<![CDATA[
+  notifications:
+    +---n pim-neighbor-event
+    |  +--ro event-type?          neighbor-event-type
+    |  +--ro interface-ref?       leafref
+    |  +--ro interface-af-ref?    leafref
+    |  +--ro neighbor-ipv4-ref?   leafref
+    |  +--ro neighbor-ipv6-ref?   leafref
+    |  +--ro up-time?             rt-types:timeticks64
+    +---n pim-interface-event
+       +--ro event-type?      interface-event-type
+       +--ro interface-ref?   leafref
+       +--ro ipv4
+       |  +--ro address*      inet:ipv4-address
+       |  +--ro dr-address?   inet:ipv4-address
+       +--ro ipv6
+          +--ro address*      inet:ipv6-address
+          +--ro dr-address?   inet:ipv6-address
+]]>
+      </artwork></figure>
+    </section>
+  </section>
+  <section title="PIM RP Module">
+    <t>
+      The PIM RP module augments the PIM base module to define
+      the configuration and operational state information scoped to RP
+      related features:
+    </t>
+      <figure><artwork>
+<![CDATA[
+module: ietf-pim-rp
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family:
+    +--rw rp
+       +--rw static-rp
+             ...
+       +--rw bsr {bsr}?
+             ...
+       +--ro rp-list
+             ...
+       +--ro rp-mappings
+             ...
+]]>
+      </artwork></figure>
+    <t>
+      This module is shared by the PIM-SM mode and
+      the PIM-BIDIR mode, but not by the PIM-DM mode. PIM-SM module
+      and PIM-BIDIR module augment this module to cover mode specific
+      data.
+    </t>
+    <t>
+      The following sections describe the features and capabilities
+      coverred in this module.
+    </t>
+    <section title="Static RP">
+      <t>
+	Static RPs can be configured by using the following portion of
+	the module:
+      </t>
+      
+      <figure><artwork>
+<![CDATA[
++--rw rp
+   +--rw static-rp
+   |  +--rw ipv4-rp* [rp-address]
+   |  |  +--rw rp-address    inet:ipv4-address
+   |  +--rw ipv6-rp* [rp-address]
+   |     +--rw rp-address    inet:ipv6-address
+]]>
+      </artwork></figure>
+    </section>
+
+    <section title="BSR">
+      <t>
+	The support for BSR includes both configuration data and
+	operational state data, as shown below:
+      </t>
+      
+      <figure><artwork>
+<![CDATA[
++--rw rp
+   +--rw bsr {bsr}?
+   |  +--rw bsr-candidate!
+   |  |  +--rw (interface-or-address)?
+   |  |  |  +--:(interface) {candidate-interface}?
+   |  |  |  |  +--rw interface           if:interface-ref
+   |  |  |  +--:(ipv4-address) {candidate-ipv4}?
+   |  |  |  |  +--rw ipv4-address        inet:ipv4-address
+   |  |  |  +--:(ipv6-address) {candidate-ipv6}?
+   |  |  |     +--rw ipv6-address        inet:ipv6-address
+   |  |  +--rw hash-mask-length    uint8
+   |  |  +--rw priority?           uint8
+   |  +--rw rp-candidate
+   |  |  +--rw interface* [name] {candidate-interface}?
+   |  |  |  +--rw name           if:interface-ref
+   |  |  |  +--rw policy-name?   string
+   |  |  |  +--rw mode?          identityref
+   |  |  +--rw ipv4-address* [address] {candidate-ipv4}?
+   |  |  |  +--rw address        inet:ipv4-address
+   |  |  |  +--rw policy-name?   string
+   |  |  |  +--rw mode?          identityref
+   |  |  +--rw ipv6-address* [address] {candidate-ipv6}?
+   |  |     +--rw address        inet:ipv6-address
+   |  |     +--rw policy-name?   string
+   |  |     +--rw mode?          identityref
+   |  +--ro bsr
+   |  |  +--ro address?            inet:ip-address
+   |  |  +--ro hash-mask-length?   uint8
+   |  |  +--ro priority?           uint8
+   |  |  +--ro up-time?            rt-types:timeticks64
+   |  +--ro (election-state)? {bsr-election-state}?
+   |  |  +--:(candidate)
+   |  |  |  +--ro candidate-bsr-state?               enumeration
+   |  |  +--:(non-candidate)
+   |  |     +--ro non-candidate-bsr-state?           enumeration
+   |  +--ro bsr-next-bootstrap?                uint16
+   |  +--ro rp
+   |  |  +--ro rp-address?    inet:ip-address
+   |  |  +--ro policy-name?   string
+   |  |  +--ro up-time?       rt-types:timeticks64
+   |  +--ro rp-candidate-next-advertisement?   uint16
+]]>
+      </artwork></figure>
+    </section>
+
+    <section title="RP State Data">
+      <t>
+	This portion of the model provides the operational state
+	information for all RPs on the router, including the statically
+	configured RPs and the BSR elected RPs.
+      </t>
+      
+      <figure><artwork>
+<![CDATA[
++--rw rp
+   +--ro rp-list
+   |  +--ro ipv4-rp* [rp-address mode]
+   |  |  +--ro rp-address             inet:ipv4-address
+   |  |  +--ro mode                   identityref
+   |  |  +--ro info-source-address?   inet:ipv4-address
+   |  |  +--ro info-source-type?      identityref
+   |  |  +--ro up-time?               rt-types:timeticks64
+   |  |  +--ro expiration?            rt-types:timer-value-seconds16
+   |  +--ro ipv6-rp* [rp-address mode]
+   |     +--ro rp-address             inet:ipv6-address
+   |     +--ro mode                   identityref
+   |     +--ro info-source-address?   inet:ipv6-address
+   |     +--ro info-source-type?      identityref
+   |     +--ro up-time?               rt-types:timeticks64
+   |     +--ro expiration?            rt-types:timer-value-seconds16
+]]>
+      </artwork></figure>
+    </section>
+
+    <section title="RP to Group Mappings">
+      <t>
+	The operational state data of the mappings between RPs and
+	multicast groups is modeled as follows:
+      </t>
+      
+      <figure><artwork>
+<![CDATA[
++--rw rp
+   +--ro rp-mappings
+      +--ro ipv4-rp* [group rp-address]
+      |  +--ro group         inet:ipv4-prefix
+      |  +--ro rp-address    inet:ipv4-address
+      |  +--ro up-time?      rt-types:timeticks64
+      |  +--ro expiration?   rt-types:timer-value-seconds16
+      +--ro ipv6-rp* [group rp-address]
+         +--ro group         inet:ipv6-prefix
+         +--ro rp-address    inet:ipv6-address
+         +--ro up-time?      rt-types:timeticks64
+         +--ro expiration?   rt-types:timer-value-seconds16
+]]>
+      </artwork></figure>
+    </section>
+
+    <section title="Notifications">
+      <t>
+	The PIM RP module also defines the notifications for RP related
+	events, as shown below:
+      </t>
+      
+      <figure><artwork>
+<![CDATA[
+  notifications:
+    +---n pim-rp-event
+       +--ro event-type?        rp-event-type
+       +--ro instance-af-ref?   leafref
+       +--ro group?             rt-types:ip-multicast-group-address
+       +--ro rp-address?        inet:ip-address
+       +--ro is-rpt?            boolean
+       +--ro mode?              pim-base:pim-mode
+       +--ro message-origin?    inet:ip-address
+]]>
+      </artwork></figure>
+    </section>
+  </section>
+  <section title="PIM-SM Module">
+    <t>
+      The PIM-SM module covers Sparse Mode modeling, including PIM-ASM
+      and PIM-SSM. This module has dependencies on PIM base module and PIM
+      RP module, both of which are augemented by this module.
+    </t>
+    <t>
+      The augmentation to the address-family branch of the PIM base
+      module is shown below:
+    </t>
+    <figure><artwork>
+<![CDATA[
+module: ietf-pim-sm
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family:
+    +--rw sm
+       +--rw asm
+       |  +--rw anycast-rp!
+       |  |  +--rw ipv4-anycast-rp* [anycast-address rp-address]
+       |  |  |  +--rw anycast-address    inet:ipv4-address
+       |  |  |  +--rw rp-address         inet:ipv4-address
+       |  |  +--rw ipv6-anycast-rp* [anycast-address rp-address]
+       |  |     +--rw anycast-address    inet:ipv6-address
+       |  |     +--rw rp-address         inet:ipv6-address
+       |  +--rw spt-switch
+       |     +--rw infinity! {spt-switch-infinity}?
+       |        +--rw policy-name?   string {spt-switch-policy}?
+       +--rw ssm!
+          +--rw range-policy?   string
+]]>
+    </artwork></figure>
+
+    <t>
+      To support SM mode on an interface, this module augments the 
+      the interface branch of the PIM base module, as follows:
+    </t>
+    <figure><artwork>
+<![CDATA[
+module: ietf-pim-sm
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:interfaces/pim-base:interface/pim-base:address-family:
+    +--rw sm!
+       +--rw passive?   empty
+]]>
+    </artwork></figure>
+
+    <t>
+      This module also augments the PIM RP module to allow an RP to be
+      configured in the PIM-SM mode:
+    </t>
+    <figure><artwork>
+<![CDATA[
+module: ietf-pim-sm
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv4-rp:
+    +--rw sm!
+       +--rw policy-name?   string
+       +--rw override?      boolean {static-rp-override}?
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv6-rp:
+    +--rw sm!
+       +--rw policy-name?   string
+       +--rw override?      boolean {static-rp-override}?
+]]>
+    </artwork></figure>
+
+  </section>
+  <section title="PIM-DM Module">
+    <t>
+      The PIM-DM module covers Dense Mode modeling. This module
+      augments the PIM base module, but it has no dependency on the
+      PIM RP module.
+    </t>
+    <figure><artwork>
+&pim-dm-tree;
+    </artwork></figure>
+  </section>
+  <section title="PIM-BIDIR Module">
+    <t>
+      The PIM-BIDIR module covers Bidirectional PIM modeling.
+      Like PIM-SM, this module augments both PIM base module and PIM
+      RP module.
+    </t>
+    <t>
+      The followings are the augmentations to the PIM base module, on
+      the address-family, the interface, and the neighbor branches:
+    </t>
+    <figure><artwork>
+<![CDATA[
+module: ietf-pim-bidir
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family:
+    +--rw bidir!
+
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:interfaces/pim-base:interface/pim-base:address-family:
+    +--rw bidir!
+       +--rw df-election {intf-df-election}?
+          +--rw offer-interval?     uint16
+          +--rw backoff-interval?   uint16
+          +--rw offer-multiplier?   uint8
+
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:interfaces/pim-base:interface/pim-base:address-family
+/pim-base:neighbors/pim-base:ipv4-neighbor:
+    +--ro bidir-capable?   boolean
+
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:interfaces/pim-base:interface/pim-base:address-family
+/pim-base:neighbors/pim-base:ipv6-neighbor:
+    +--ro bidir-capable?   boolean
+]]>
+    </artwork></figure>
+
+    <t>
+      This module also augments the PIM RP module to extend the
+      capabilities of RP for the PIM-BIDIR mode:
+    </t>
+    <figure><artwork>
+<![CDATA[
+module: ietf-pim-bidir
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv4-rp:
+    +--rw bidir!
+       +--rw policy-name?   string
+       +--rw override?      boolean {static-rp-override}?
+
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv6-rp:
+    +--rw bidir!
+       +--rw policy-name?   string
+       +--rw override?      boolean {static-rp-override}?
+
+  augment /rt:routing/rt:control-plane-protocols/pim-base:pim
+/pim-base:address-family/pim-rp:rp:
+    +--ro bidir
+       +--ro df-election
+       |  +--ro ipv4-rp* [rp-address]
+       |  |  +--ro rp-address    inet:ipv4-address
+       |  +--ro ipv6-rp* [rp-address]
+       |     +--ro rp-address    inet:ipv6-address
+       +--ro interface-df-election
+          +--ro ipv4-rp* [rp-address interface-name]
+          |  +--ro rp-address                  inet:ipv4-address
+          |  +--ro interface-name              if:interface-ref
+          |  +--ro df-address?                 inet:ipv4-address
+          |  +--ro interface-state?            identityref
+          |  +--ro up-time?                    rt-types:timeticks64
+          |  +--ro winner-metric?              uint32
+          |  +--ro winner-metric-preference?   uint32
+          +--ro ipv6-rp* [rp-address interface-name]
+             +--ro rp-address                  inet:ipv6-address
+             +--ro interface-name              if:interface-ref
+             +--ro df-address?                 inet:ipv6-address
+             +--ro interface-state?            identityref
+             +--ro up-time?                    rt-types:timeticks64
+             +--ro winner-metric?              uint32
+             +--ro winner-metric-preference?   uint32
+]]>
+    </artwork></figure>
+  </section>
+</section>
+
+    <section title="Complete Tree Structure">
+      <section title="PIM Base Module">
+        <figure><artwork>
+&pim-base-tree;
+        </artwork></figure>
+      </section>
+      <section title="PIM RP Module">
+        <figure><artwork>
+&pim-rp-tree;
+        </artwork></figure>
+      </section>
+      <section title="PIM-SM Module">
+        <figure><artwork>
+&pim-sm-tree;
+        </artwork></figure>
+      </section>
+      <section title="PIM-DM Module">
+        <figure><artwork>
+&pim-dm-tree;
+        </artwork></figure>
+      </section>
+      <section title="PIM-BIDIR Module">
+        <figure><artwork>
+&pim-bidir-tree;
+        </artwork></figure>
+      </section>
+    </section>
+
+    <section title="Relationship to the PIM-STD-MIB">
+      <t>
+	The following sections describe the mappings between the
+	objects in the PIM-STD-MIB defined in
+	<xref target="RFC5060"/> and the YANG data nodes defined in
+	this document.
+      </t>
+
+      <section title="pimInterfaceTable">
+	<t>
+	  pimInterfaceTable is mapped to pim/interfaces/interface.
+	  The key of pimInterfaceTable is  pimInterfaceIfIndex and
+	  pimInterfaceIPVersion, while the key of the "interface"
+	  list in YANG is the node "name". For each value of
+	  pimInterfaceIPVersion, the "interface" list contains a
+	  corresponding sublist whose key is the node "address-family".
+	</t>
+
+	<t>
+	  The following table lists the YANG data nodes with
+	  corresponding objects of pimInterfaceTable in the PIM-STD-MIB. 
+	</t>
+	
+	
+	<texttable anchor='table_yang_and_mib' 
+		   title="YANG Nodes and pimInterfaceTable Objects">
+	  <ttcol>YANG node</ttcol>
+	  <ttcol>PIM-STD-MIB object</ttcol>
+	  
+	  <c>address-family</c>
+	  <c>pimInterfaceAddressType</c>
+
+	  <c>ipv4/address</c>
+	  <c>pimInterfaceAddress</c>
+	  
+	  <c>ipv6/address</c>
+	  <c></c>
+	  
+	  <c>gen-id</c>
+	  <c>pimInterfaceGenerationIDValue</c>
+	  
+	  <c>ipv4/dr-address</c>
+	  <c>pimInterfaceDR</c>
+
+	  <c>ipv6/dr-address</c>
+	  <c></c>
+	  
+	  <c>dr-priority</c>
+	  <c>pimInterfaceDRPriority</c>
+	  
+	  <c>hello-interval</c>
+	  <c>pimInterfaceHelloInterval</c>
+	
+	  <c>hello-holdtime</c>
+	  <c>pimInterfaceHelloHoldtime</c>
+	  
+	  <c>jp-interval</c>
+	  <c>pimInterfaceJoinPruneInterval</c>
+	  
+	  <c>jp-holdtime</c>
+	  <c>pimInterfaceJoinPruneHoldtime</c>
+	  
+	  <c>bidir/offer-multiplier</c>
+	  <c>pimInterfaceDFElectionRobustness</c>
+	  
+	  <c>propagation-delay</c>
+	  <c>pimInterfacePropagationDelay</c>
+	  
+	  <c>override-interval</c>
+	  <c>pimInterfaceOverrideInterval</c>
+	</texttable>
+      </section>
+
+      <section title="pimNeighborTable">
+	<t>
+	  pimNeighborTable is mapped to 
+	  pim/interfaces/interface/neighbors/ipv4-neighbor and
+	  pim/interfaces/interface/neighbors/ipv6-neighbor.
+	</t>
+
+	<t>
+	  The following table lists the YANG data nodes with
+	  corresponding objects of pimNeighborTable in the PIM-STD-MIB. 
+	</t>
+	
+	
+	<texttable anchor='table_mib_pimNeighborTable' 
+		   title="YANG Nodes and pimNeighborTable Objects">
+	  <ttcol>YANG node</ttcol>
+	  <ttcol>PIM-STD-MIB object</ttcol>
+
+	  <c>ipv4-neighbor</c>
+	  <c>pimNeighborAddressType</c>
+
+	  <c>ipv6-neighbor</c>
+	  <c></c>
+
+	  <c>address</c>
+	  <c>pimNeighborAddress</c>
+
+	  <c>gen-id</c>
+	  <c>pimNeighborGenerationIDValue</c>
+	  
+	  <c>up-time</c>
+	  <c>pimNeighborUpTime</c>
+	  
+	  <c>expiration</c>
+	  <c>pimNeighborExpiryTime</c>
+	  
+	  <c>dr-priority</c>
+	  <c>pimNeighborDRPriority</c>
+	  
+	  <c>lan-prune-delay/present</c>
+	  <c>pimNeighborLanPruneDelayPresent</c>
+	  
+	  <c>lan-prune-delay/t-bit</c>
+	  <c>pimNeighborTBit</c>
+	  
+	  <c>lan-prune-delay/</c>
+	  <c>pimNeighborPropagationDelay</c>
+	  
+	  <c>propagation-delay</c>
+	  <c></c>
+	  
+	  <c>lan-prune-delay/</c>
+	  <c>pimNeighborOverrideInterval</c>
+	  
+	  <c>override-interval</c>
+	  <c></c>
+	  
+	  <c>ietf-pim-bidir:bidir-capable</c>
+	  <c>pimNeighborBidirCapable</c>
+	</texttable>
+      </section>
+
+      <section title="pimStarGTable">
+	<t>
+	  pimStarGTable is mapped to 
+	  pim/address-family/topology-tree-info/ipv4-route and
+	  pim/address-family/topology-tree-info/ipv6-route, when the
+	  value of source-address leaf is "ietf-routing-types:*" and
+	  the value of is-rpt leaf is "false".
+	</t>
+	
+	<t>
+	  The following table lists the YANG data nodes with
+	  corresponding objects of pimStarGTable in the PIM-STD-MIB. 
+	</t>
+	
+	
+	<texttable anchor='table_mib_pimStarGTable' 
+		   title="YANG Nodes and pimStarGTable Objects">
+	  <ttcol>YANG node</ttcol>
+	  <ttcol>PIM-STD-MIB object</ttcol>
+
+	  <c>ipv4-route</c>
+	  <c>pimStarGAddressType</c>
+
+	  <c>ipv6-route</c>
+	  <c></c>
+
+	  <c>group</c>
+	  <c>pimStarGGrpAddress</c>
+
+	  <c>up-time</c>
+	  <c>pimStarGUpTime</c>
+	  
+	  <c>mode</c>
+	  <c>pimStarGPimMode</c>
+	  
+	  <c>rp-address</c>
+	  <c>pimStarGRPAddressType</c>
+	  
+	  <c>rp-address</c>
+	  <c>pimStarGRPAddress</c>
+	  
+	  <c>rpf-neighbor</c>
+	  <c>pimStarGUpstreamNeighborType</c>
+	  
+	  <c>rpf-neighbor</c>
+	  <c>pimStarGUpstreamNeighbor</c>
+	  
+	  <c>incoming-interface</c>
+	  <c>pimStarGRPFIfIndex</c>
+	</texttable>
+
+	<t>
+	  In addtion, the object pimStarGPimModeOrigin in
+	  pimStarGTable is mapped 
+	  to the node rp/rp-list/ipv4-rp/info-source-type 
+	  or the node rp/rp-list/ipv6-rp/info-source-type in the YANG
+	  module ietf-pim-rp.
+	</t>
+      </section>
+
+      <section title="pimSGTable">
+	<t>
+	  pimSGTable is mapped to 
+	  pim/address-family/topology-tree-info/ipv4-route and
+	  pim/address-family/topology-tree-info/ipv6-route, when the
+	  value of source-address leaf is not "ietf-routing-types:*"
+	  and the value of is-rpt leaf is "false".
+	</t>
+
+	<t>
+	  The following table lists the YANG data nodes with
+	  corresponding objects of pimSGTable in the PIM-STD-MIB. 
+	</t>
+	
+	<texttable anchor='table_mib_pimSGTable' 
+		   title="YANG Nodes and pimSGTable Objects">
+	  <ttcol>YANG node</ttcol>
+	  <ttcol>PIM-STD-MIB object</ttcol>
+
+	  <c>ipv4-route</c>
+	  <c>pimSGAddressType</c>
+
+	  <c>ipv6-route</c>
+	  <c></c>
+
+	  <c>group</c>
+	  <c>pimSGGrpAddress</c>
+	  
+	  <c>source-address</c>
+	  <c>pimSGSrcAddress</c>
+	  
+	  <c>up-time</c>
+	  <c>pimSGUpTime</c>
+	  
+	  <c>mode</c>
+	  <c>pimSGPimMode</c>
+	  
+	  <c>rpf-neighbor</c>
+	  <c>pimStarGUpstreamNeighbor</c>
+	  
+	  <c>incoming-interface</c>
+	  <c>pimStarGRPFIfIndex</c>
+	  
+	  <c>is-spt</c>
+	  <c>pimSGSPTBit</c>
+	  
+	  <c>expiration</c>
+	  <c>pimSGKeepaliveTimer</c>
+	</texttable>
+      </section>
+
+      <section title="pimSGRptTable">
+	<t>
+	  pimSGRptTable is mapped to 
+	  pim/address-family/topology-tree-info/ipv4-route and
+	  pim/address-family/topology-tree-info/ipv6-route, when the
+	  value of is-rpt leaf is "true".
+	</t>
+
+	<t>
+	  The following table lists the YANG data nodes with
+	  corresponding objects of pimSGRptTable in the PIM-STD-MIB. 
+	</t>
+	
+	<texttable anchor='table_mib_pimSGRptTable' 
+		   title="YANG Nodes and pimSGRptTable Objects">
+	  <ttcol>YANG node</ttcol>
+	  <ttcol>PIM-STD-MIB object</ttcol>
+
+	  <c>ipv4-route</c>
+	  <c>pimStarGAddressType</c>
+
+	  <c>ipv6-route</c>
+	  <c></c>
+
+	  <c>group</c>
+	  <c>pimStarGGrpAddress</c>
+	  	  
+	  <c>source-address</c>
+	  <c>pimSGRptSrcAddress</c>	  
+	  
+	  <c>up-time</c>
+	  <c>pimSGRptUpTime</c>
+	</texttable>
+      </section>
+
+      <section title="pimBidirDFElectionTable">
+	<t>
+	  pimBidirDFElectionTable is mapped to 
+	  pim/address-family/rp/bidir/interface-df-election/ipv4-rp
+	  and
+	  pim/address-family/rp/bidir/interface-df-election/ipv6-rp.
+	  The key of pimBidirDFElectionTable includes
+	  pimBidirDFElectionIfIndex whose type is InterfaceIndex,
+	  while the YANG lists use a node "name" with the type string
+	  instead.
+	</t>
+
+	<t>
+	  The following table lists the YANG data nodes with
+	  corresponding objects of pimBidirDFElectionTable in the PIM-STD-MIB. 
+	</t>
+	
+	<texttable anchor='table_mib_pimBidirDFElectionTable' 
+		   title="YANG Nodes and pimBidirDFElectionTable Objects">
+	  <ttcol>YANG node</ttcol>
+	  <ttcol>PIM-STD-MIB object</ttcol>
+	  
+	  <c>ipv4-rp</c>
+	  <c>pimBidirDFElectionAddressType</c>
+
+	  <c>ipv6-rp</c>
+	  <c></c>
+
+	  <c>rp-address</c>
+	  <c>pimBidirDFElectionRPAddress</c>
+
+	  <c>df-address</c>
+	  <c>pimBidirDFElectionWinnerAddressType</c>	  
+	  
+	  <c></c>
+	  <c>pimBidirDFElectionWinnerAddress</c>	  
+	  
+	  <c>up-time</c>
+	  <c>pimBidirDFElectionWinnerUpTime</c>	  
+	  
+	  <c>winner-metric-preference</c>
+	  <c>pimBidirDFElectionWinnerMetricPref</c>	  
+	  
+	  <c>winner-metric-preference</c>
+	  <c>pimBidirDFElectionWinnerMetric</c>	  
+	  
+	  <c>interface-state</c>
+	  <c>pimBidirDFElectionState</c>	  
+	</texttable>
+      </section>
+
+      <section title="pimStaticRPTable">
+	<t>
+	  pimStaticRPTable is mapped to 
+	  pim/address-family/rp/static-rp/ipv4-rp and  
+	  pim/address-family/rp/static-rp/ipv6-rp.
+	</t>
+
+	<t>
+	  The following table lists the YANG data nodes with
+	  corresponding objects of pimStaticRPTable in the PIM-STD-MIB. 
+	</t>
+	
+	<texttable anchor='table_mib_pimStaticRPTable' 
+		   title="YANG Nodes and pimStaticRPTable Objects">
+	  <ttcol>YANG node</ttcol>
+	  <ttcol>PIM-STD-MIB object</ttcol>
+	  
+	  <c>ipv4-rp</c>
+	  <c>pimStaticRPAddressType</c>	  
+	  
+	  <c>ipv6-rp</c>
+	  <c></c>	  
+
+	  <c>rp-address</c>
+	  <c>pimStaticRPRPAddress</c>	  
+	  
+	  <c>bidir</c>
+	  <c>pimStaticRPPimMode</c>	  
+
+	  <c>sm</c>
+	  <c></c>	  
+	  
+	  <c>bidir/override</c>
+	  <c>pimStaticRPOverrideDynamic</c>
+	  
+	  <c>sm/override</c>
+	  <c></c>
+	</texttable>
+      </section>
+
+      <section title="pimAnycastRPSetTable">
+	<t>
+	  pimAnycastRPSetTable is mapped to 
+	  pim/address-family/sm/asm/anycast-rp/ipv4-anycast-rp and 
+	  pim/address-family/sm/asm/anycast-rp/ipv6-anycast-rp.
+	</t>
+
+	<t>
+	  The following table lists the YANG data nodes with
+	  corresponding objects of pimAnycastRPSetTable in the PIM-STD-MIB. 
+	</t>
+	
+	<texttable anchor='table_mib_pimAnycastRPSetTable' 
+		   title="YANG Nodes and pimAnycastRPSetTable Objects">
+	  <ttcol>YANG node</ttcol>
+	  <ttcol>PIM-STD-MIB object</ttcol>
+	  
+	  <c>ipv4-anycast-rp</c>
+	  <c>pimAnycastRPSetAddressType</c>
+	  
+	  <c>ipv6-anycast-rp</c>
+	  <c></c>
+	  
+	  <c>anycast-address</c>
+	  <c>pimAnycastRPSetAnycastAddress</c>	  
+	  
+	  <c>rp-address</c>
+	  <c>pimAnycastRPSetRouterAddress</c>	  
+	</texttable>
+      </section>
+
+      <section title="pimGroupMappingTable">
+	<t>
+	  pimGroupMappingTable is mapped to 
+	  pim/address-family/rp/rp-mappings/ipv4-rp and 
+	  pim/address-family/rp/rp-mappings/ipv6-rp.
+	</t>
+
+	<t>
+	  The following table lists the YANG data nodes with
+	  corresponding objects of pimGroupMappingTable in the PIM-STD-MIB. 
+	</t>
+	
+	<texttable anchor='table_mib_pimGroupMappingTable' 
+		   title="YANG Nodes and pimGroupMappingTable Objects">
+	  <ttcol>YANG node</ttcol>
+	  <ttcol>PIM-STD-MIB object</ttcol>
+	  
+	  <c>ipv4-rp</c>
+	  <c>pimGroupMappingAddressType</c>
+	  
+	  <c>ipv6-rp</c>
+	  <c></c>
+	  
+	  <c>group</c>
+	  <c>pimGroupMappingGrpAddress</c>	  
+	  
+	  <c></c>
+	  <c>pimGroupMappingGrpPrefixLength</c>	  
+	  
+	  <c>ipv4-rp</c>
+	  <c>pimGroupMappingRPAddressType</c>
+	  
+	  <c>ipv6-rp</c>
+	  <c></c>
+	  
+	  <c>rp-address</c>
+	  <c>pimGroupMappingRPAddress</c>	  
+	  
+	  <c></c>
+	  <c>pimGroupMappingPimMode</c>	  
+	</texttable>
+
+	<t>
+	  In addtion, the object pimGroupMappingPimMode in
+	  pimGroupMappingTable is mapped 
+	  to the node rp/rp-list/ipv4-rp/mode 
+          or the node rp/rp-list/ipv6-rp/mode in the YANG
+	  module ietf-pim-rp.
+	</t>
+      </section>
+    </section>
+
+
+    <section title="PIM YANG Modules">
+      <section title="PIM base module">
+        <figure><artwork>
+          &pim-base-yang;
+        </artwork></figure>
+      </section>
+      <section title="PIM RP Module">
+        <figure><artwork>
+          &pim-rp-yang;
+        </artwork></figure>
+      </section>
+      <section title="PIM-SM Module">
+        <figure><artwork>
+          &pim-sm-yang;
+        </artwork></figure>
+      </section>
+      <section title="PIM-DM Module">
+        <figure><artwork>
+          &pim-dm-yang;
+        </artwork></figure>
+      </section>
+      <section title="PIM-BIDIR Module">
+        <figure><artwork>
+          &pim-bidir-yang;
+        </artwork></figure>
+      </section>
+    </section>
+
+    <section title="Implementation Status">
+      <t>
+	This section to be removed by the RFC editor.
+      </t>
+
+      <t>
+	This section records the status of known implementations of the
+	protocol defined by this specification at the time of posting of this
+	Internet-Draft, and is based on a proposal described in <xref target="RFC7942"/>.
+	The description of implementations in this section is intended to
+	assist the IETF in its decision processes in progressing drafts to
+	RFCs.  Please note that the listing of any individual implementation
+	here does not imply endorsement by the IETF.  Furthermore, no effort
+	has been spent to verify the information presented here that was
+	supplied by IETF contributors.  This is not intended as, and must not
+	be construed to be, a catalog of available implementations or their
+	features.  Readers are advised to note that other implementations may
+	exist.
+      </t>
+
+      <t>
+	According to RFC 7942, "this will allow reviewers and working groups
+	to assign due consideration to documents that have the benefit of
+	running code, which may serve as evidence of valuable experimentation
+	and feedback that have made the implemented protocols more mature.
+	It is up to the individual working groups to use this information as
+	they see fit".
+      </t>
+
+      <t>
+	This document is the work result of the PIM working group's YANG multicast design
+	team. The following wiki page contains the information on the 
+	design team members, the meeting discussions, lists of modeled
+	features, and which features are supported by which existing
+	implementations:
+      </t>
+     
+      <t>
+	https://trac.ietf.org/trac/pim/wiki/yang
+      </t>
+    </section>
+
+<section title="Security Considerations">
+ <t>
+   The YANG module specified in this document defines a schema for
+   data that is designed to be accessed via network management
+   protocols such as NETCONF <xref target="RFC6241"/> or RESTCONF 
+   <xref target="RFC8040"/>. The
+   lowest NETCONF layer is the secure transport layer, and the
+   mandatory-to-implement secure transport is Secure Shell (SSH)
+   <xref target="RFC6242"/>. The lowest RESTCONF layer is HTTPS, and the
+   mandatory-to-implement secure transport is TLS <xref target="RFC5246"/>.
+ </t>
+
+ <t>
+   The NETCONF access control model <xref target="RFC6536"/> provides
+   the means to 
+   restrict access for particular NETCONF or RESTCONF users to a
+   preconfigured subset of all available NETCONF or RESTCONF protocol
+   operations and content. 
+ </t>
+
+ <t>
+   There are a number of data nodes defined in this YANG module that
+   are writable/creatable/deletable (i.e., config true, which is the
+   default). These data nodes may be considered sensitive or
+   vulnerable in some network environments. Write operations (e.g.,
+   edit-config) to these data nodes without proper protection can have
+   a negative effect on network operations. These are the subtrees and
+   data nodes and their sensitivity/vulnerability:
+ </t>
+
+ <t>
+ <list style="hanging">
+   <t hangText="pim-base:graceful-restart"><vspace blankLines="0" />
+   This subtree specifies the configuration for the PIM graceful
+   restart at the global level on a device. Modifying the
+   configuration can cause temporary interruption to the multicast
+   routing during restart. 
+   </t>
+
+   <t hangText="pim-base:address-family/pim-base:graceful-restart"><vspace blankLines="0" />
+   This subtree specifies the per address family configuration for the
+   PIM graceful restart on a device. Modifying the configuration can
+   cause temporary interruption to the multicast routing during restart.
+   </t>
+
+   <t hangText="pim-base:address-family/pim-rp:pim-rp:rp">
+     <vspace blankLines="0" />
+   This subtree specifies the configuration for the PIM Rendezvous Point (RP)
+   on a device. Modifying the configuration can cause RP malfunctions.
+   </t>
+
+
+   <t hangText="pim-base:address-family/pim-sm:sm">
+     <vspace blankLines="0" />
+     This subtree specifies the configuration for the PIM Sparse Mode (PIM-SM)
+     on a device. Modifying the configuration can cause multicast
+     traffic disabled or rerouted in PIM-SM.
+   </t>
+ 
+  <t hangText="pim-base:address-family/pim-dm:dm">
+    <vspace blankLines="0" />
+    This subtree specifies the configuration for the PIM Dense Mode (PIM-DM)
+    on a device. Modifying the configuration can cause multicast
+    traffic disabled or rerouted in PIM-DM.
+  </t>
+
+  <t hangText="pim-base:address-family/pim-bidir:bidir">
+    <vspace blankLines="0" />
+    This subtree specifies the configuration for the 
+    PIM Bidirectional Mode (PIM-BIDIR)
+    on a device. Modifying the configuration can cause multicast
+    traffic disabled or rerouted in PIM-BIDIR.
+  </t>
+
+  <t hangText="pim-base:interfaces">
+    <vspace blankLines="0" />
+    This subtree specifies the configuration for the PIM interfaces
+    on a device. Modifying the configuration can cause the PIM protocol
+    to get insufficient or incorrect information.
+  </t>
+ </list>
+ </t>
+
+ <t>
+   These subtrees are all nnder
+   /rt:routing/rt:control-plane-protocols/pim-base:pim. 
+ </t>
+
+ <t>
+   Unauthorized access to any data node of these subtrees can
+   adversely affect the multicast routing subsystem of both the local device and
+   the network.  This may lead to network malfunctions, delivery of
+   packets to inappropriate destinations, and other problems.
+ </t>
+
+ <t>
+   Some of the readable data nodes in this YANG module may be
+   considered sensitive or vulnerable in some network environments. It
+   is thus important to control read access (e.g., via get,
+   get-config, or notification) to these data nodes. These are the
+   subtrees and data nodes and their sensitivity/vulnerability:
+ </t>
+
+ <t>
+   /rt:routing/rt:control-plane-protocols/pim-base:pim
+ </t>
+
+ <t>
+   Unauthorized access to any data node of the above subtree can disclose the
+   operational state information of PIM on this device.
+ </t>
+</section>
+
+    <section title="IANA Considerations">
+      <t>
+        RFC Ed.: In this section, replace all occurrences of 'XXXX' with the
+	actual RFC number (and remove this note).
+      </t>
+      <t>
+	This document registers the following namespace URIs in the IETF XML
+	registry <xref target="RFC3688"/>:
+      </t>
+      <figure><artwork>
+--------------------------------------------------------------------
+URI: urn:ietf:params:xml:ns:yang:ietf-pim-base
+Registrant Contact: The IESG.
+XML: N/A, the requested URI is an XML namespace.
+--------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+--------------------------------------------------------------------
+URI: urn:ietf:params:xml:ns:yang:ietf-pim-bidir
+Registrant Contact: The IESG.
+XML: N/A, the requested URI is an XML namespace.
+--------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+--------------------------------------------------------------------
+URI: urn:ietf:params:xml:ns:yang:ietf-pim-dm
+Registrant Contact: The IESG.
+XML: N/A, the requested URI is an XML namespace.
+--------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+--------------------------------------------------------------------
+URI: urn:ietf:params:xml:ns:yang:ietf-pim-rp
+Registrant Contact: The IESG.
+XML: N/A, the requested URI is an XML namespace.
+--------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+--------------------------------------------------------------------
+URI: urn:ietf:params:xml:ns:yang:ietf-pim-sm
+Registrant Contact: The IESG.
+XML: N/A, the requested URI is an XML namespace.
+--------------------------------------------------------------------
+      </artwork></figure>
+      
+      <t>
+	This document registers the following YANG modules in the YANG Module
+	Names registry <xref target="RFC7950"/>:
+      </t>
+      <figure><artwork>
+--------------------------------------------------------------------
+name:         ietf-pim-base
+namespace:    urn:ietf:params:xml:ns:yang:ietf-pim-base
+prefix:       pim-base
+reference:    RFC XXXX
+--------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+--------------------------------------------------------------------
+name:         ietf-pim-bidir
+namespace:    urn:ietf:params:xml:ns:yang:ietf-pim-bidir
+prefix:       pim-bidir
+reference:    RFC XXXX
+--------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+--------------------------------------------------------------------
+name:         ietf-pim-dm
+namespace:    urn:ietf:params:xml:ns:yang:ietf-pim-dm
+prefix:       pim-dm
+reference:    RFC XXXX
+--------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+--------------------------------------------------------------------
+name:         ietf-pim-rp
+namespace:    urn:ietf:params:xml:ns:yang:ietf-pim-rp
+prefix:       pim-rp
+reference:    RFC XXXX
+--------------------------------------------------------------------
+      </artwork></figure>
+      <figure><artwork>
+--------------------------------------------------------------------
+name:         ietf-pim-sm
+namespace:    urn:ietf:params:xml:ns:yang:ietf-pim-sm
+prefix:       pim-sm
+reference:    RFC XXXX
+--------------------------------------------------------------------
+      </artwork></figure>
+    </section>
+
+    <section title='Acknowledgements'>
+      <t>
+        The authors would like to thank Steve Baillargeon, Guo Feng,
+        Robert Kebler, Tanmoy Kundu, 
+        and Stig Venaas for their valuable contributions.
+      </t>
+    </section>
+
+  </middle>
+
+  <back>
+
+    <references title="Normative References">
+      <?rfc include="reference.RFC.3569"?>
+      <?rfc include="reference.RFC.3688"?>
+      <?rfc include="reference.RFC.3973"?>
+      <?rfc include="reference.RFC.4607"?>
+      <?rfc include="reference.RFC.4610"?>
+      <?rfc include="reference.RFC.5015"?>
+      <?rfc include="reference.RFC.5059"?>
+      <?rfc include="reference.RFC.5060"?>
+      <?rfc include="reference.RFC.5246"?>
+      <?rfc include="reference.RFC.6241"?>
+      <?rfc include="reference.RFC.6242"?>
+      <?rfc include="reference.RFC.6536"?>
+      <?rfc include="reference.RFC.6991"?>
+      <?rfc include="reference.RFC.7761"?>
+      <?rfc include="reference.RFC.7950"?>
+      <?rfc include="reference.RFC.8040"?>
+      <?rfc include="reference.RFC.8294"?>
+      <?rfc include="reference.I-D.ietf-netmod-revised-datastores.xml"?>
+      <?rfc include="reference.I-D.ietf-netmod-rfc7223bis"?>
+      <?rfc include="reference.I-D.ietf-netmod-rfc8022bis"?>
+      <?rfc include="reference.I-D.ietf-bfd-yang.xml"?>
+    </references>
+
+    <references title="Informative References">
+      <?rfc include="reference.RFC.3376"?>
+      <?rfc include="reference.RFC.3618"?>
+      <?rfc include="reference.RFC.3810"?>
+      <?rfc include="reference.RFC.5880"?>
+      <?rfc include="reference.RFC.6388"?>
+      <?rfc include="reference.RFC.7942"?>
+      <?rfc include="reference.RFC.7951"?>
+      <?rfc include="reference.I-D.ietf-netmod-rfc6087bis.xml"?>
+      <?rfc include="reference.I-D.ietf-netmod-yang-tree-diagrams.xml"?>
+    </references>
+
+<section title="Data Tree Example">
+ <t>
+   This section contains an example of an instance data tree in the JSON
+   encoding <xref target="RFC7951"/>, containing both configuration and
+   state data. 
+ </t>
+
+ <figure><artwork>
+                    lo0: 2001:db8:0:200::1 (RP address)
+                          |   +-------+   |                       
+                          |   | Router|   |                       
+                    eth21 +---+  R2   +---+ eth23                 
+                          |   | (RP)  |   |                       
+                          |   +-------+   | lo0: 2001:db8:0:300::1
+           |  +-------+   |               |   +-------+  |
+           |  | Router|   |               |   | Router|  |
+     eth10 +--+  R1   +---+ eth12   eth32 +---+  R3   +--+ eth30
+           |  |       |   |               |   |       |  |
+           |  +-------+   |                   +-------+  |
++-------+  |              |   +-------+                  |  +-------+
+|       |  |              |   | Router|   |              |  |       |
+|       +--+              +---+  R4   +---+   +-------+  +--+       |
+|       |  |              |   |       |   |   | Router|  |  |       |
++-------+  |              |   +-------+   +---+  R5   |  |  +-------+
+ Source                                   |   |       |      Receiver
+                                          |   +-------+
+ </artwork></figure>
+
+ <t>
+   The configuration instance data tree for Router R3 in the
+   above figure could be as follows: 
+ </t>
+
+ <figure><artwork>
+{
+  "ietf-interfaces:interfaces": {
+    "interface": [
+      {
+        "name": "lo0",
+        "description": "R3 loopback interface.",
+        "type": "iana-if-type:softwareLoopback",
+        "ietf-ip:ipv6": {
+          "address": [
+            {
+              "ip": "2001:db8:0:300::1",
+              "prefix-length": 64
+            }
+          ],
+        }
+      },
+      {
+        "name": "eth30",
+        "description": "An interface connected to the receiver.",
+        "type": "iana-if-type:ethernetCsmacd",
+        "ietf-ip:ipv6": {
+          "forwarding": true
+        }
+      },
+      {
+        "name": "eth32",
+        "description": "An interface connected to RP (R2).",
+        "type": "iana-if-type:ethernetCsmacd",
+        "ietf-ip:ipv6": {
+          ],
+          "forwarding": true
+        }
+      }
+    ]
+  },
+  "ietf-routing:routing": {
+    "router-id": "203.0.113.3",
+    "control-plane-protocols": {
+      "ietf-pim-base:pim": {
+        "address-family": [
+          {
+            "address-family": "ietf-routing:ipv6",
+            "ietf-pim-rp:rp": {
+              "static-rp": {
+                "ipv6-rp": [
+                  {
+                    "rp-address": "2001:db8:0:200::1",
+                    "ietf-pim-sm:sm" {
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "interfaces": {
+          "interface": [
+            {
+              "name": "lo0",
+              "address-family": [
+                {
+                  "address-family": "ietf-routing:ipv6",
+                  "hello-interval": "ietf-routing-types:infinity",
+                  "pim-sm:sm": [null]
+                }
+              ]
+            },
+            {
+              "name": "eth30",
+              "address-family": [
+                {
+                  "address-family": "ietf-routing:ipv6",
+                  "pim-sm:sm": [null]
+                }
+              ]
+            },
+            {
+              "name": "eth32",
+              "address-family": [
+                {
+                  "address-family": "ietf-routing:ipv6",
+                  "pim-sm:sm": [null]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+ </artwork></figure>
+
+ <t>
+   The cooresponding operational state data for Router R3
+   could be as follows: 
+ </t>
+
+ <figure><artwork>
+{
+  "ietf-interfaces:interfaces": {
+    "interface": [
+      {
+        "name": "lo0",
+        "description": "R3 loopback interface.",
+        "type": "iana-if-type:softwareLoopback",
+        "phys-address": "00:00:5e:00:53:03",
+        "oper-status": "up",
+        "statistics": {
+          "discontinuity-time": "2018-01-23T12:34:56-05:00"
+        },
+        "ietf-ip:ipv6": {
+          "mtu": 1500,
+          "address": [
+            {
+              "ip": "2001:db8:0:300::1",
+              "prefix-length": 64
+              "origin": "static",
+              "status": "preferred"
+            },
+            {
+              "ip": "fe80::200:5eff:fe00:5303",
+              "prefix-length": 64,
+              "origin": "link-layer",
+              "status": "preferred"
+            }
+          ],
+          "neighbor": [
+          ]
+        }
+      },
+      {
+        "name": "eth30",
+        "description": "An interface connected to the receiver.",
+        "type": "iana-if-type:ethernetCsmacd",
+        "phys-address": "00:00:5e:00:53:30",
+        "oper-status": "up",
+        "statistics": {
+          "discontinuity-time": "2018-01-23T12:34:56-05:00"
+        },
+        "ietf-ip:ipv6": {
+          "forwarding": true,
+          "mtu": 1500,
+          "address": [
+            {
+              "ip": "fe80::200:5eff:fe00:5330",
+              "prefix-length": 64,
+              "origin": "link-layer",
+              "status": "preferred"
+            }
+          ],
+          "neighbor": [
+          ]
+        }
+      },
+      {
+        "name": "eth32",
+        "description": "An interface connected to RP (R2).",
+        "type": "iana-if-type:ethernetCsmacd",
+        "phys-address": "00:00:5e:00:53:32",
+        "oper-status": "up",
+        "statistics": {
+          "discontinuity-time": "2018-01-23T12:34:56-05:00"
+        },
+        "ietf-ip:ipv6": {
+          "forwarding": true,
+          "mtu": 1500,
+          "address": [
+            {
+              "ip": "fe80::200:5eff:fe00:5332",
+              "prefix-length": 64,
+              "origin": "link-layer",
+              "status": "preferred"
+            }
+          ],
+          "neighbor": [
+            {
+              "ip": "fe80::200:5eff:fe00:5323",
+              "link-layer-address": "00:00:5e:00:53:23",
+              "origin": "dynamic",
+              "is-router": [null],
+              "state": "reachable"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "ietf-routing:routing": {
+    "router-id": "203.0.113.1",
+    "interfaces": {
+      "interface": [
+        "lo0",
+        "eth30",
+        "eth32"
+      ]
+    },
+    "control-plane-protocols": {
+      "ietf-pim-base:pim": {
+        "address-family": [
+          {
+            "address-family": "ietf-routing:ipv6",
+            "statistics": {
+              "discontinuity-time": "2018-01-23T12:34:56-05:00"
+            },
+            "topology-tree-info": {
+              "ipv6-route": [
+                {
+                  "group": "ff06::1",
+                  "source-address": "ietf-routing-types:*",
+                  "is-rpt": true,
+                  "expiration": 16,
+                  "incoming-interface": "eth32",
+                  "is-spt": false,
+                  "mode": "pim-asm",
+                  "msdp-learned": false,
+                  "rp-address": "2001:db8:0:200::1",
+                  "rpf-neighbor": "fe80::200:5eff:fe00:5323",
+                  "up-time": 123400,
+                  "outgoing-interface": [
+                    {
+                      "name": "eth30",
+                      "expiration": 36,
+                      "up-time": 223400,
+                      "jp-state": "join"
+                    }
+                  ]
+                },
+                {
+                  "group": "ff06::1",
+                  "source-address": "2001:db8:1:1::100",
+                  "is-rpt": false,
+                  "expiration": 8,
+                  "incoming-interface": "eth32",
+                  "is-spt": true,
+                  "mode": "pim-asm",
+                  "msdp-learned": false,
+                  "rp-address": "2001:db8:0:200::1",
+                  "rpf-neighbor": "fe80::200:5eff:fe00:5323",
+                  "up-time": 5200,
+                  "outgoing-interface": [
+                    {
+                      "name": "eth30",
+                      "expiration": 6,
+                      "up-time": 5600,
+                      "jp-state": "join"
+                    }
+                  ]
+                }
+              ]
+            },
+            "ietf-pim-rp:rp": {
+              "static-rp": {
+                "ipv6-rp": [
+                  {
+                    "rp-address": "2001:db8:0:200::1",
+                    "ietf-pim-sm:sm" {
+                    }
+                  }
+                ]
+              },
+              "rp-list": {
+                "ipv6-rp": [
+                  {
+                    "rp-address": "2001:db8:0:200::1",
+                    "mode": "ietf-pim-sm:rp-sm",
+                    "info-source-type": "static",
+                    "up-time": 323400,
+                    "expiration": "ietf-routing-types:not-set"
+                  }
+                ]
+              }
+              "rp-mappings": {
+                "ipv6-rp": [
+                  {
+                    "group": "ff06::1",
+                    "rp-address": "2001:db8:0:200::1",
+                    "up-time": 123400,
+                    "expiration": "36"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "interfaces": {
+          "interface": [
+            {
+              "name": "lo0",
+              "address-family": [
+                {
+                  "address-family": "ietf-routing:ipv6",
+                  "hello-interval": "ietf-routing-types:infinity",
+                  "pim-sm:sm": [null],
+                  "oper-status": "up",
+                  "gen-id": 103689,
+                  "hello-expiration": "ietf-routing-types:infinity",
+                  "ipv6": {
+                    "address": "fe80::200:5eff:fe00:5303",
+                    "dr-address": "fe80::200:5eff:fe00:5303"
+                  },
+                  "neighbors": {
+                    "ipv6-neighbor": [
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "eth30",
+              "address-family": [
+                {
+                  "address-family": "ietf-routing:ipv6",
+                  "pim-sm:sm": [null]
+                  "oper-status": "up",
+                  "gen-id": 203689,
+                  "hello-expiration": 18,
+                  "ipv6": {
+                    "address": "fe80::200:5eff:fe00:5330",
+                    "dr-address": "fe80::200:5eff:fe00:5330"
+                  },
+                  "neighbors": {
+                    "ipv6-neighbor": [
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "eth32",
+              "address-family": [
+                {
+                  "address-family": "ietf-routing:ipv6",
+                  "pim-sm:sm": [null]
+                  "oper-status": "up",
+                  "gen-id": 303689,
+                  "hello-expiration": 21,
+                  "ipv6": {
+                    "address": "fe80::200:5eff:fe00:5332",
+                    "dr-address": "fe80::200:5eff:fe00:5332"
+                  },
+                  "neighbors": {
+                    "ipv6-neighbor": [
+                      {
+                        "address": "fe80::200:5eff:fe00:5323",
+                        "expiration": 28,
+                        "dr-priority": 1,
+                        "gen-id": 102,
+                        "lan-prune-delay": {
+                          "present": false
+                        },
+                        "up-time": 323500
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+ </artwork></figure>
+
+</section>
+
+  </back>
+
+</rfc>

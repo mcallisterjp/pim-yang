@@ -83,5 +83,5 @@ module: ietf-pim-rp
        +--ro group?             rt-types:ip-multicast-group-address
        +--ro rp-address?        inet:ip-address
        +--ro is-rpt?            boolean
-       +--ro mode?              pim-base:pim-mode
+       +--ro mode?              identityref
        +--ro message-origin?    inet:ip-address

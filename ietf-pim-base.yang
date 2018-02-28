@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-base@2018-01-29.yang"
+<CODE BEGINS> file "ietf-pim-base@2018-02-29.yang"
 module ietf-pim-base {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
@@ -56,9 +56,22 @@ module ietf-pim-base {
 
   description
     "The module defines a collection of YANG definitions common for
-     all PIM (Protocol Independent Multicast) modes.";
+     all PIM (Protocol Independent Multicast) modes.
 
-  revision 2018-01-29 {
+     Copyright (c) 2018 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Simplified BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (http://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX; see the
+     RFC itself for full legal notices.";
+
+  revision 2018-02-29 {
     description
       "Initial revision.";
     reference
@@ -219,37 +232,44 @@ module ietf-pim-base {
     description "Operational status event type for notifications.";
   }
 
-  typedef pim-mode {
-    type enumeration {
-      enum none {
-        description
-          "PIM is not operating.";
-      }
-      enum ssm {
-        description
-          "PIM operates in the Sparse Mode with Source-Specific
-           Multicast (SSM).";
-      }
-      enum asm {
-        description
-          "PIM operates in the Sparse Mode with Any Source Multicast
-           (ASM).";
-      }
-      enum bidir {
-        description
-          "PIM operates in the Bidirectional Mode.";
-      }
-      enum dm {
-        description
-          "PIM operates in the Dense Mode (DM).";
-      }
-      enum other {
-        description
-          "PIM operates in any other mode.";
-      }
-    }
+  /*
+   * Identities
+   */
+  identity pim-mode {
     description
       "The PIM mode in which a group is operating.";
+  }
+  identity pim-none {
+    base pim-mode;
+    description
+      "PIM is not operating.";
+  }
+  identity pim-bidir {
+    base pim-mode;
+    description
+      "PIM operates in the Bidirectional Mode.";
+  }
+  identity pim-dm {
+    base pim-mode;
+    description
+      "PIM operates in the Dense Mode (DM).";
+  }
+  identity pim-sm {
+    base pim-mode;
+    description
+      "PIM operates in the Sparse Mode (SM).";
+  }
+  identity pim-asm {
+    base pim-sm;
+    description
+      "PIM operates in the Sparse Mode with Any Source Multicast
+       (ASM).";
+  }  
+  identity pim-ssm {
+    base pim-sm;
+    description
+      "PIM operates in the Sparse Mode with Source-Specific
+       Multicast (SSM).";
   }
 
   /*
@@ -303,7 +323,9 @@ module ietf-pim-base {
         (PIM-SM): Protocol Specification (Revised). Sec. 4.1.3.";
     }
     leaf mode {
-      type pim-mode;
+      type identityref {
+        base pim-mode;
+      }
       description "PIM mode.";
     }
     leaf msdp-learned {
@@ -378,17 +400,8 @@ module ietf-pim-base {
   grouping neighbor-state-af-attributes {
     description
       "A grouping defining neighbor per address family attributes.";
-    leaf bfd-status {
-      type enumeration {
-        enum up {
-          description
-            "BFD (Bidirectional Forwarding Detection) is up.";
-        }
-        enum down {
-          description
-            "BFD (Bidirectional Forwarding Detection) is down.";
-        }
-      }
+    leaf bfd-state {
+      type bfd-types:state;
       description "BFD (Bidirectional Forwarding Detection) status.";
     }
     leaf expiration {
