@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-base@2018-02-29.yang"
+<CODE BEGINS> file "ietf-pim-base@2018-04-16.yang"
 module ietf-pim-base {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-base";
@@ -37,7 +37,7 @@ module ietf-pim-base {
      WG List:  <mailto:pim@ietf.org>
 
      Editor:   Xufeng Liu
-               <mailto:Xufeng_Liu@jabil.com>
+               <mailto:xufeng.liu.ietf@gmail.com>
 
      Editor:   Pete McAllister
                <mailto:pete.mcallister@metaswitch.com>
@@ -71,7 +71,7 @@ module ietf-pim-base {
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.";
 
-  revision 2018-02-29 {
+  revision 2018-04-16 {
     description
       "Initial revision.";
     reference
@@ -519,67 +519,67 @@ module ietf-pim-base {
        RFC7761: Protocol Independent Multicast - Sparse Mode
        (PIM-SM): Protocol Specification (Revised). Sec. 4.9.";
     leaf assert {
-      type yang:counter32;
+      type yang:counter64;
       description
         "The number of Assert messages, with the message Type
          of 5 in RFC3973 and RFC7761.";
     }
     leaf bsr {
-      type yang:counter32;
+      type yang:counter64;
       description
         "The number of Bootstrap messages, with the message Type
          of 4 in RFC3973 and RFC7761.";
     }
     leaf candidate-rp-advertisement {
-      type yang:counter32;
+      type yang:counter64;
       description
         "The number of Candidate RP Advertisement messages, with the
          message Type of 8 in RFC3973 and RFC7761.";
     }
     leaf df-election {
-      type yang:counter32;
+      type yang:counter64;
       description
         "The number of DF (Designated Forwarder) Election messages,
          with the message Type of 10 in RFC5015.";
     }
     leaf graft {
-      type yang:counter32;
+      type yang:counter64;
       description
         "The number of Graft messages, with the message Type
          of 6 in RFC3973 and RFC7761.";
     }
     leaf graft-ack {
-      type yang:counter32;
+      type yang:counter64;
       description
         "The number of Graft-Ack messages, with the message Type
          of 7 in RFC3973 and RFC7761.";
     }
     leaf hello {
-      type yang:counter32;
+      type yang:counter64;
       description
         "The number of Hello messages, with the message Type
          of 0 in RFC3973 and RFC7761.";
     }
     leaf join-prune {
-      type yang:counter32;
+      type yang:counter64;
       description
         "The number of Join/Prune messages, with the message Type
          of 3 in RFC3973 and RFC7761.";
     }
     leaf register {
-      type yang:counter32;
+      type yang:counter64;
       description
         "The number of Register messages, with the message Type
          of 1 in RFC3973 and RFC7761.";
     }
     leaf register-stop {
-      type yang:counter32;
+      type yang:counter64;
       description
         "The number of Register Stop messages, with the message Type
          of 2 in RFC3973 and RFC7761.";
     }
     leaf state-refresh {
-      type yang:counter32;
+      type yang:counter64;
       description
         "The number of State Refresh messages, with the message Type
          of 9 in RFC3973.";
@@ -642,13 +642,13 @@ module ietf-pim-base {
                  'received' container.";
             }
             leaf checksum {
-              type yang:counter32;
+              type yang:counter64;
               description
                 "The number of PIM messages that were passed to PIM
                  and contained checksum errors.";
             }
             leaf format {
-              type yang:counter32;
+              type yang:counter64;
               description
                 "The number of PIM messages that passed checksum
                  validation but contained format errors, including

@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-rp@2018-02-29.yang"
+<CODE BEGINS> file "ietf-pim-rp@2018-04-16.yang"
 module ietf-pim-rp {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-rp";
@@ -33,7 +33,7 @@ module ietf-pim-rp {
      WG List:  <mailto:pim@ietf.org>
 
      Editor:   Xufeng Liu
-               <mailto:Xufeng_Liu@jabil.com>
+               <mailto:xufeng.liu.ietf@gmail.com>
 
      Editor:   Pete McAllister
                <mailto:pete.mcallister@metaswitch.com>
@@ -67,7 +67,7 @@ module ietf-pim-rp {
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.";
 
-  revision 2018-02-29 {
+  revision 2018-04-16 {
     description
       "Initial revision.";
     reference
@@ -646,13 +646,13 @@ module ietf-pim-rp {
             description
               "Only applicable to IPv4 address family.";
           }
-          key "group rp-address";
+          key "group-range rp-address";
           description
             "A list of group-to-RP mappings.";
-          leaf group {
+          leaf group-range {
             type inet:ipv4-prefix;
             description
-              "Group prefix.";
+              "Group range presented in the format of prefix.";
           }
           leaf rp-address {
             type inet:ipv4-address;
@@ -667,13 +667,13 @@ module ietf-pim-rp {
             description
               "Only applicable to IPv6 address family.";
           }
-          key "group rp-address";
+          key "group-range rp-address";
           description
             "A list of IPv6 RP addresses.";
-          leaf group {
+          leaf group-range {
             type inet:ipv6-prefix;
             description
-              "Group prefix.";
+              "Group range presented in the format of prefix.";
           }
           leaf rp-address {
             type inet:ipv6-address;

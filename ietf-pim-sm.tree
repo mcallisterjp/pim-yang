@@ -1,6 +1,7 @@
+
 module: ietf-pim-sm
   augment /rt:routing/rt:control-plane-protocols/pim-base:pim
-/pim-base:address-family:
+            /pim-base:address-family:
     +--rw sm
        +--rw asm
        |  +--rw anycast-rp!
@@ -16,16 +17,19 @@ module: ietf-pim-sm
        +--rw ssm!
           +--rw range-policy?   string
   augment /rt:routing/rt:control-plane-protocols/pim-base:pim
-/pim-base:interfaces/pim-base:interface/pim-base:address-family:
+            /pim-base:interfaces/pim-base:interface
+            /pim-base:address-family:
     +--rw sm!
        +--rw passive?   empty
   augment /rt:routing/rt:control-plane-protocols/pim-base:pim
-/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv4-rp:
+            /pim-base:address-family/pim-rp:rp/pim-rp:static-rp
+            /pim-rp:ipv4-rp:
     +--rw sm!
        +--rw policy-name?   string
        +--rw override?      boolean {static-rp-override}?
   augment /rt:routing/rt:control-plane-protocols/pim-base:pim
-/pim-base:address-family/pim-rp:rp/pim-rp:static-rp/pim-rp:ipv6-rp:
+            /pim-base:address-family/pim-rp:rp/pim-rp:static-rp
+            /pim-rp:ipv6-rp:
     +--rw sm!
        +--rw policy-name?   string
        +--rw override?      boolean {static-rp-override}?

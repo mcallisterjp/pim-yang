@@ -1,3 +1,4 @@
+
 module: ietf-pim-base
   augment /rt:routing/rt:control-plane-protocols:
     +--rw pim!
@@ -12,46 +13,46 @@ module: ietf-pim-base
        |  +--ro statistics
        |  |  +--ro discontinuity-time?   yang:date-and-time
        |  |  +--ro error
-       |  |  |  +--ro assert?                       yang:counter32
-       |  |  |  +--ro bsr?                          yang:counter32
-       |  |  |  +--ro candidate-rp-advertisement?   yang:counter32
-       |  |  |  +--ro df-election?                  yang:counter32
-       |  |  |  +--ro graft?                        yang:counter32
-       |  |  |  +--ro graft-ack?                    yang:counter32
-       |  |  |  +--ro hello?                        yang:counter32
-       |  |  |  +--ro join-prune?                   yang:counter32
-       |  |  |  +--ro register?                     yang:counter32
-       |  |  |  +--ro register-stop?                yang:counter32
-       |  |  |  +--ro state-refresh?                yang:counter32
-       |  |  |  +--ro checksum?                     yang:counter32
-       |  |  |  +--ro format?                       yang:counter32
+       |  |  |  +--ro assert?                       yang:counter64
+       |  |  |  +--ro bsr?                          yang:counter64
+       |  |  |  +--ro candidate-rp-advertisement?   yang:counter64
+       |  |  |  +--ro df-election?                  yang:counter64
+       |  |  |  +--ro graft?                        yang:counter64
+       |  |  |  +--ro graft-ack?                    yang:counter64
+       |  |  |  +--ro hello?                        yang:counter64
+       |  |  |  +--ro join-prune?                   yang:counter64
+       |  |  |  +--ro register?                     yang:counter64
+       |  |  |  +--ro register-stop?                yang:counter64
+       |  |  |  +--ro state-refresh?                yang:counter64
+       |  |  |  +--ro checksum?                     yang:counter64
+       |  |  |  +--ro format?                       yang:counter64
        |  |  +--ro queue
        |  |  |  +--ro size?       uint32
        |  |  |  +--ro overflow?   yang:counter32
        |  |  +--ro received
-       |  |  |  +--ro assert?                       yang:counter32
-       |  |  |  +--ro bsr?                          yang:counter32
-       |  |  |  +--ro candidate-rp-advertisement?   yang:counter32
-       |  |  |  +--ro df-election?                  yang:counter32
-       |  |  |  +--ro graft?                        yang:counter32
-       |  |  |  +--ro graft-ack?                    yang:counter32
-       |  |  |  +--ro hello?                        yang:counter32
-       |  |  |  +--ro join-prune?                   yang:counter32
-       |  |  |  +--ro register?                     yang:counter32
-       |  |  |  +--ro register-stop?                yang:counter32
-       |  |  |  +--ro state-refresh?                yang:counter32
+       |  |  |  +--ro assert?                       yang:counter64
+       |  |  |  +--ro bsr?                          yang:counter64
+       |  |  |  +--ro candidate-rp-advertisement?   yang:counter64
+       |  |  |  +--ro df-election?                  yang:counter64
+       |  |  |  +--ro graft?                        yang:counter64
+       |  |  |  +--ro graft-ack?                    yang:counter64
+       |  |  |  +--ro hello?                        yang:counter64
+       |  |  |  +--ro join-prune?                   yang:counter64
+       |  |  |  +--ro register?                     yang:counter64
+       |  |  |  +--ro register-stop?                yang:counter64
+       |  |  |  +--ro state-refresh?                yang:counter64
        |  |  +--ro sent
-       |  |     +--ro assert?                       yang:counter32
-       |  |     +--ro bsr?                          yang:counter32
-       |  |     +--ro candidate-rp-advertisement?   yang:counter32
-       |  |     +--ro df-election?                  yang:counter32
-       |  |     +--ro graft?                        yang:counter32
-       |  |     +--ro graft-ack?                    yang:counter32
-       |  |     +--ro hello?                        yang:counter32
-       |  |     +--ro join-prune?                   yang:counter32
-       |  |     +--ro register?                     yang:counter32
-       |  |     +--ro register-stop?                yang:counter32
-       |  |     +--ro state-refresh?                yang:counter32
+       |  |     +--ro assert?                       yang:counter64
+       |  |     +--ro bsr?                          yang:counter64
+       |  |     +--ro candidate-rp-advertisement?   yang:counter64
+       |  |     +--ro df-election?                  yang:counter64
+       |  |     +--ro graft?                        yang:counter64
+       |  |     +--ro graft-ack?                    yang:counter64
+       |  |     +--ro hello?                        yang:counter64
+       |  |     +--ro join-prune?                   yang:counter64
+       |  |     +--ro register?                     yang:counter64
+       |  |     +--ro register-stop?                yang:counter64
+       |  |     +--ro state-refresh?                yang:counter64
        |  +--ro topology-tree-info
        |     +--ro ipv4-route* [group source-address is-rpt]
        |     |  +--ro group
@@ -97,19 +98,20 @@ module: ietf-pim-base
           +--rw interface* [name]
              +--rw name              if:interface-ref
              +--rw address-family* [address-family]
-                +--rw address-family       identityref
+                +--rw address-family            identityref
                 +--rw bfd {bfd}?
-                |  +--rw enable?                     boolean
-                |  +--rw local-multiplier?           multiplier
+                |  +--rw enable?                           boolean
+                |  +--rw local-multiplier?                 multiplier
                 |  +--rw (interval-config-type)?
                 |     +--:(tx-rx-intervals)
                 |     |  +--rw desired-min-tx-interval     uint32
                 |     |  +--rw required-min-rx-interval    uint32
                 |     +--:(single-interval)
                 |        +--rw min-interval                uint32
-                +--rw dr-priority?         uint32 {intf-dr-priority}?
-                +--rw hello-interval?     
- rt-types:timer-value-seconds16
+                +--rw dr-priority?              uint32
+                |       {intf-dr-priority}?
+                +--rw hello-interval?
+                |       rt-types:timer-value-seconds16
                 |       {intf-hello-interval}?
                 +--rw (hello-holdtime-or-multiplier)?
                 |  +--:(holdtime) {intf-hello-holdtime}?
@@ -118,8 +120,8 @@ module: ietf-pim-base
                 |  +--:(multiplier) {intf-hello-multiplier}?
                 |     +--rw hello-multiplier?
                 |             rt-types:timer-multiplier
-                +--rw jp-interval?        
- rt-types:timer-value-seconds16
+                +--rw jp-interval?
+                |       rt-types:timer-value-seconds16
                 |       {intf-jp-interval}?
                 +--rw (jp-holdtime-or-multiplier)?
                 |  +--:(holdtime) {intf-jp-holdtime}?
@@ -128,14 +130,14 @@ module: ietf-pim-base
                 |  +--:(multiplier) {intf-jp-multiplier}?
                 |     +--rw jp-multiplier?
                 |             rt-types:timer-multiplier
-                +--rw override-interval?   uint16
+                +--rw override-interval?        uint16
                 |       {intf-override-interval}?
-                +--rw propagation-delay?   uint16
+                +--rw propagation-delay?        uint16
                 |       {intf-propagation-delay}?
-                +--ro oper-status?         enumeration
-                +--ro gen-id?              uint32
-                +--ro hello-expiration?   
- rt-types:timer-value-seconds16
+                +--ro oper-status?              enumeration
+                +--ro gen-id?                   uint32
+                +--ro hello-expiration?
+                |       rt-types:timer-value-seconds16
                 +--ro ipv4
                 |  +--ro address*      inet:ipv4-address
                 |  +--ro dr-address?   inet:ipv4-address

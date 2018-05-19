@@ -1,5 +1,5 @@
 <![CDATA[
-<CODE BEGINS> file "ietf-pim-sm@2018-02-29.yang"
+<CODE BEGINS> file "ietf-pim-sm@2018-04-16.yang"
 module ietf-pim-sm {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-pim-sm";
@@ -29,7 +29,7 @@ module ietf-pim-sm {
      WG List:  <mailto:pim@ietf.org>
 
      Editor:   Xufeng Liu
-               <mailto:Xufeng_Liu@jabil.com>
+               <mailto:xufeng.liu.ietf@gmail.com>
 
      Editor:   Pete McAllister
                <mailto:pete.mcallister@metaswitch.com>
@@ -63,7 +63,7 @@ module ietf-pim-sm {
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.";
 
-  revision 2018-02-29 {
+  revision 2018-04-16 {
     description
       "Initial revision.";
     reference

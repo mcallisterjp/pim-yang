@@ -1,6 +1,7 @@
+
 module: ietf-pim-rp
   augment /rt:routing/rt:control-plane-protocols/pim-base:pim
-/pim-base:address-family:
+            /pim-base:address-family:
     +--rw rp
        +--rw static-rp
        |  +--rw ipv4-rp* [rp-address]
@@ -11,13 +12,13 @@ module: ietf-pim-rp
        |  +--rw bsr-candidate!
        |  |  +--rw (interface-or-address)?
        |  |  |  +--:(interface) {candidate-interface}?
-       |  |  |  |  +--rw interface           if:interface-ref
+       |  |  |  |  +--rw interface       if:interface-ref
        |  |  |  +--:(ipv4-address) {candidate-ipv4}?
-       |  |  |  |  +--rw ipv4-address        inet:ipv4-address
+       |  |  |  |  +--rw ipv4-address    inet:ipv4-address
        |  |  |  +--:(ipv6-address) {candidate-ipv6}?
-       |  |  |     +--rw ipv6-address        inet:ipv6-address
-       |  |  +--rw hash-mask-length    uint8
-       |  |  +--rw priority?           uint8
+       |  |  |     +--rw ipv6-address    inet:ipv6-address
+       |  |  +--rw hash-mask-length      uint8
+       |  |  +--rw priority?             uint8
        |  +--rw rp-candidate
        |  |  +--rw interface* [name] {candidate-interface}?
        |  |  |  +--rw name           if:interface-ref
@@ -38,9 +39,9 @@ module: ietf-pim-rp
        |  |  +--ro up-time?            rt-types:timeticks64
        |  +--ro (election-state)? {bsr-election-state}?
        |  |  +--:(candidate)
-       |  |  |  +--ro candidate-bsr-state?               enumeration
+       |  |  |  +--ro candidate-bsr-state?         enumeration
        |  |  +--:(non-candidate)
-       |  |     +--ro non-candidate-bsr-state?           enumeration
+       |  |     +--ro non-candidate-bsr-state?     enumeration
        |  +--ro bsr-next-bootstrap?                uint16
        |  +--ro rp
        |  |  +--ro rp-address?    inet:ip-address
@@ -54,27 +55,27 @@ module: ietf-pim-rp
        |  |  +--ro info-source-address?   inet:ipv4-address
        |  |  +--ro info-source-type?      identityref
        |  |  +--ro up-time?               rt-types:timeticks64
-       |  |  +--ro expiration?           
- rt-types:timer-value-seconds16
+       |  |  +--ro expiration?
+       |  |          rt-types:timer-value-seconds16
        |  +--ro ipv6-rp* [rp-address mode]
        |     +--ro rp-address             inet:ipv6-address
        |     +--ro mode                   identityref
        |     +--ro info-source-address?   inet:ipv6-address
        |     +--ro info-source-type?      identityref
        |     +--ro up-time?               rt-types:timeticks64
-       |     +--ro expiration?           
- rt-types:timer-value-seconds16
+       |     +--ro expiration?
+       |             rt-types:timer-value-seconds16
        +--ro rp-mappings
-          +--ro ipv4-rp* [group rp-address]
-          |  +--ro group         inet:ipv4-prefix
-          |  +--ro rp-address    inet:ipv4-address
-          |  +--ro up-time?      rt-types:timeticks64
-          |  +--ro expiration?   rt-types:timer-value-seconds16
-          +--ro ipv6-rp* [group rp-address]
-             +--ro group         inet:ipv6-prefix
-             +--ro rp-address    inet:ipv6-address
-             +--ro up-time?      rt-types:timeticks64
-             +--ro expiration?   rt-types:timer-value-seconds16
+          +--ro ipv4-rp* [group-range rp-address]
+          |  +--ro group-range    inet:ipv4-prefix
+          |  +--ro rp-address     inet:ipv4-address
+          |  +--ro up-time?       rt-types:timeticks64
+          |  +--ro expiration?    rt-types:timer-value-seconds16
+          +--ro ipv6-rp* [group-range rp-address]
+             +--ro group-range    inet:ipv6-prefix
+             +--ro rp-address     inet:ipv6-address
+             +--ro up-time?       rt-types:timeticks64
+             +--ro expiration?    rt-types:timer-value-seconds16
 
   notifications:
     +---n pim-rp-event
